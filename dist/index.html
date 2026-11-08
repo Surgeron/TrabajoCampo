@@ -1,116 +1,14 @@
 <!doctype html>
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hola Mundo</title>
-  <style>
-    :root {
-      color-scheme: dark;
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    body {
-      min-height: 100vh;
-      margin: 0;
-      display: grid;
-      place-items: center;
-      overflow: hidden;
-      color: #ffffff;
-      background:
-        radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.28), transparent 32rem),
-        radial-gradient(circle at 80% 80%, rgba(168, 85, 247, 0.3), transparent 32rem),
-        #090b14;
-    }
-
-    .card {
-      position: relative;
-      width: min(90vw, 620px);
-      padding: clamp(2rem, 7vw, 4.5rem);
-      text-align: center;
-      border: 1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 28px;
-      background: rgba(255, 255, 255, 0.07);
-      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
-      backdrop-filter: blur(18px);
-      animation: appear 800ms cubic-bezier(.2, .8, .2, 1) both;
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(3.5rem, 12vw, 7rem);
-      line-height: 0.95;
-      letter-spacing: -0.06em;
-      background: linear-gradient(135deg, #67e8f9, #ffffff 48%, #c084fc);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-    }
-
-    p {
-      margin: 1.5rem 0 0;
-      color: rgba(255, 255, 255, 0.72);
-      font-size: clamp(1rem, 3vw, 1.25rem);
-    }
-
-    .dot {
-      position: absolute;
-      width: 7px;
-      height: 7px;
-      border-radius: 50%;
-      background: #67e8f9;
-      box-shadow: 0 0 18px #67e8f9;
-      animation: float 5s ease-in-out infinite alternate;
-    }
-
-    .dot:first-child {
-      top: -20px;
-      left: 18%;
-    }
-
-    .dot:last-child {
-      right: 12%;
-      bottom: -18px;
-      animation-delay: -2.5s;
-      background: #c084fc;
-      box-shadow: 0 0 18px #c084fc;
-    }
-
-    @keyframes appear {
-      from {
-        opacity: 0;
-        transform: translateY(24px) scale(0.96);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-      }
-    }
-
-    @keyframes float {
-      to {
-        transform: translateY(-12px);
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .card,
-      .dot {
-        animation: none;
-      }
-    }
-  </style>
-</head>
-<body>
-  <main class="card">
-    <span class="dot" aria-hidden="true"></span>
-    <h1>Hola, mundo.</h1>
-    <p>Bienvenido a tu primer mundo digital.</p>
-    <span class="dot" aria-hidden="true"></span>
-  </main>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trabajo Campo</title>
+    <script type="module" crossorigin src="/TrabajoCampo/assets/index-CgMtSTEU.js"></script>
+    <link rel="stylesheet" crossorigin href="/TrabajoCampo/assets/index-I6cGQ-pn.css">
+  </head>
+  <body>
+    <!-- Este div es indispensable para que React monte tus componentes -->
+    <div id="root"></div>
+  </body>
 </html>
