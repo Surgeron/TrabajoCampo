@@ -2,6 +2,10 @@ import { useEffect, useState } from "react";
 import { db } from "./firebase";
 import { collection, getDocs } from "firebase/firestore";
 
+import PruebaBackend from "./PruebaBackend";
+
+// dentro del return de App:
+
 export default function App() {
   const [categories, setCategories] = useState([]);
   const [cargando, setCargando] = useState(true);
@@ -30,23 +34,7 @@ export default function App() {
   }
 
   return (
-    <div style={{ padding: "20px", fontFamily: "sans-serif" }}>
-      <h1>Lista de Categorías</h1>
+      <PruebaBackend />
 
-      {categories.length === 0 ? (
-        <p>No se encontraron categorías en la base de datos.</p>
-      ) : (
-        <ul>
-          {categories.map((cat) => (
-            <li key={cat.id} style={{ margin: "8px 0" }}>
-              <strong>ID:</strong> {cat.id}
-              <pre style={{ background: "#f4f4f4", padding: "10px", borderRadius: "5px" }}>
-                {JSON.stringify(cat, null, 2)}
-              </pre>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
   );
 }
