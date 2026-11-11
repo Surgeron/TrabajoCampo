@@ -27,3 +27,6 @@ dist-ssr
 .venv/
 backend/serviceAccountKey.json
 __pycache__/
+
+#carpetas
+/docs/
