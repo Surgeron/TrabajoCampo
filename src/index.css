@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Nunito, "Segoe UI", sans-serif;
+  color: #1b2333;
+  background: #f4f6fb;
+}
+
+#root {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  text-align: left;
+  border: none;
+  min-height: 100vh;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+h1,
+h2,
+p {
+  margin: 0;
+}
