@@ -28,6 +28,8 @@ dist-ssr
 
 
 .venv/
+backend/venv/
+backend/seed/estado_actual.json
 backend/serviceAccountKey.json
 __pycache__/
 

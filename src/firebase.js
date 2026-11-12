@@ -18,7 +18,16 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const app = initializeApp(firebaseConfig);
 
+let analyticsInstance = null;
+try {
+  if (typeof window !== "undefined") {
+    analyticsInstance = getAnalytics(app);
+  }
+} catch {
+  // Analytics es opcional y puede no estar disponible en entornos locales.
+}
+
+export const analytics = analyticsInstance;
 export const db = getFirestore(app);
