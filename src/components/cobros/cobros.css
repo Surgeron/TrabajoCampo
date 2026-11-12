@@ -1,0 +1,58 @@
+.editor-cobro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.editor-cobro__bloque {
+  min-width: 0;
+  margin: 0;
+  padding: 14px;
+  border: 1.5px solid var(--color-borde);
+  border-radius: var(--radio);
+}
+
+@media (max-width: 399px) {
+  .editor-cobro__bloque {
+    padding: 10px;
+  }
+}
+
+.editor-cobro__bloque legend {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 6px;
+  font-weight: 800;
+}
+
+.editor-cobro__quitar {
+  min-height: 32px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 8px;
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.editor-cobro__saldo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px 12px;
+  padding: 12px 14px;
+  border-radius: var(--radio-sm);
+  font-weight: 700;
+}
+
+.editor-cobro__saldo--pendiente {
+  background: var(--color-alerta-suave);
+  color: #7a4a00;
+}
+
+.editor-cobro__saldo--ok {
+  background: var(--color-exito-suave);
+  color: #17744a;
+}

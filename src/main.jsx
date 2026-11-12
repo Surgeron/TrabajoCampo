@@ -1,10 +1,23 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css' // O el archivo de estilos que estés usando
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { HashRouter } from "react-router-dom";
+import App from "./App.jsx";
+import { DatosProvider } from "./context/DatosContext";
+import { FeedbackProvider } from "./context/FeedbackContext";
+import { SesionProvider } from "./context/SesionContext";
+import "./index.css";
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+// HashRouter (#/ruta) funciona en GitHub Pages sin configuración extra del servidor.
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <App />
+    <HashRouter>
+      <FeedbackProvider>
+        <DatosProvider>
+          <SesionProvider>
+            <App />
+          </SesionProvider>
+        </DatosProvider>
+      </FeedbackProvider>
+    </HashRouter>
   </React.StrictMode>,
-)
+);

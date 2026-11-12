@@ -7,19 +7,29 @@
 .layout__body {
   flex: 1;
   min-width: 0;
-  padding: 18px 22px 32px;
 }
 
 .layout__main {
-  padding-top: 8px;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 16px var(--espacio-pagina) calc(var(--alto-barra-inferior) + 28px);
 }
 
-@media (max-width: 760px) {
-  .layout {
-    flex-direction: column;
+@media (min-width: 768px) {
+  .layout__main {
+    padding: 22px var(--espacio-pagina) 36px;
+  }
+}
+
+@media print {
+  .layout .sidebar,
+  .layout .topbar,
+  .barra-inferior {
+    display: none !important;
   }
 
-  .layout__body {
-    padding: 14px 14px 28px;
+  .layout__main {
+    padding: 0;
   }
 }

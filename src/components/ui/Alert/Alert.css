@@ -1,0 +1,57 @@
+.aviso {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1.5px solid;
+  border-radius: var(--radio);
+  font-size: 14.5px;
+  font-weight: 700;
+}
+
+.aviso__icono {
+  display: grid;
+  place-items: center;
+  margin-top: 1px;
+}
+
+.aviso__texto {
+  display: flex;
+  flex: 1 1 200px;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.aviso__titulo {
+  font-weight: 800;
+}
+
+.aviso__accion {
+  flex-shrink: 0;
+}
+
+.aviso--info {
+  border-color: #c9d9ff;
+  background: var(--color-primario-suave);
+  color: #234aa3;
+}
+
+.aviso--exito {
+  border-color: #b9e6cf;
+  background: var(--color-exito-suave);
+  color: #17744a;
+}
+
+.aviso--advertencia {
+  border-color: #f5d79a;
+  background: var(--color-alerta-suave);
+  color: #7a4a00;
+}
+
+.aviso--error {
+  border-color: #f6c0c0;
+  background: var(--color-peligro-suave);
+  color: #a12626;
+}

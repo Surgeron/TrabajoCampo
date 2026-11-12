@@ -1,0 +1,142 @@
+.tarjeta {
+  min-width: 0;
+  padding: 16px;
+  border-radius: var(--radio-lg);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra);
+}
+
+.tarjeta--sin-relleno {
+  padding: 0;
+  overflow: hidden;
+}
+
+.tarjeta--sin-relleno > .tarjeta__cabecera {
+  padding: 16px 16px 0;
+}
+
+.tarjeta__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tarjeta__titulos {
+  min-width: 0;
+}
+
+.tarjeta__titulo {
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.25;
+}
+
+.tarjeta__subtitulo {
+  margin-top: 2px;
+  color: var(--color-texto-3);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.tarjeta__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+@media (min-width: 768px) {
+  .tarjeta {
+    padding: 20px;
+  }
+
+  .tarjeta--sin-relleno > .tarjeta__cabecera {
+    padding: 20px 20px 0;
+  }
+}
+
+.indicador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+  padding: 14px;
+  border: 0;
+  border-radius: var(--radio-lg);
+  background: var(--color-superficie);
+  box-shadow: var(--sombra);
+  text-align: left;
+}
+
+.indicador--accion {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.indicador--accion:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 26px rgba(24, 39, 75, 0.1);
+}
+
+.indicador__icono {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+}
+
+.indicador__icono--info {
+  background: var(--color-primario-suave);
+  color: var(--color-primario-oscuro);
+}
+
+.indicador__icono--exito {
+  background: var(--color-exito-suave);
+  color: var(--color-exito);
+}
+
+.indicador__icono--alerta {
+  background: var(--color-alerta-suave);
+  color: var(--color-alerta);
+}
+
+.indicador__icono--peligro {
+  background: var(--color-peligro-suave);
+  color: var(--color-peligro);
+}
+
+.indicador__icono--violeta {
+  background: var(--color-violeta-suave);
+  color: var(--color-violeta);
+}
+
+.indicador__texto {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.indicador__etiqueta {
+  overflow: hidden;
+  color: var(--color-texto-3);
+  font-size: 13.5px;
+  font-weight: 800;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.indicador__valor {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.indicador__detalle {
+  color: var(--color-texto-3);
+  font-size: 12.5px;
+  font-weight: 700;
+}
