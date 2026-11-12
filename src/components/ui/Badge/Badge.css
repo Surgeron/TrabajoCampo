@@ -1,0 +1,52 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 100%;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.badge--grande {
+  padding: 5px 12px;
+  font-size: 14px;
+}
+
+.badge--info {
+  background: var(--color-primario-suave);
+  color: var(--color-primario-oscuro);
+}
+
+.badge--exito {
+  background: var(--color-exito-suave);
+  color: #17744a;
+}
+
+.badge--alerta {
+  background: var(--color-alerta-suave);
+  color: #8f5600;
+}
+
+.badge--peligro {
+  background: var(--color-peligro-suave);
+  color: #b02a2a;
+}
+
+.badge--neutro {
+  background: #eceff5;
+  color: var(--color-texto-2);
+}
+
+.badge--violeta {
+  background: var(--color-violeta-suave);
+  color: #5f37a8;
+}
+
+.badge--naranja {
+  background: var(--color-naranja-suave);
+  color: #a94e05;
+}

@@ -1,0 +1,87 @@
+.comandas__filtros {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.comandas__buscar {
+  position: relative;
+  display: block;
+}
+
+.comandas__buscar .icono {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  color: var(--color-texto-3);
+  transform: translateY(-50%);
+  pointer-events: none;
+}
+
+.comandas__buscar .control {
+  padding-left: 44px;
+}
+
+.comandas__ayuda {
+  margin: -4px 0 12px;
+  font-weight: 700;
+}
+
+.comandas__grilla {
+  display: grid;
+  gap: 12px;
+}
+
+.comandas__barra-seleccion {
+  position: fixed;
+  left: 10px;
+  right: 10px;
+  bottom: calc(var(--alto-barra-inferior) + 10px + env(safe-area-inset-bottom));
+  z-index: 35;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: var(--radio-lg);
+  background: var(--color-marca);
+  color: #fff;
+  box-shadow: var(--sombra-fuerte);
+  font-weight: 700;
+}
+
+.comandas__barra-seleccion .boton--fantasma {
+  color: #fff;
+}
+
+@media (min-width: 768px) {
+  .comandas__filtros {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .comandas__buscar {
+    flex: 0 0 220px;
+  }
+
+  .comandas__grilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+
+  .comandas__barra-seleccion {
+    left: auto;
+    right: 24px;
+    bottom: 24px;
+    min-width: 420px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .comandas__grilla {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}

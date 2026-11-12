@@ -1,0 +1,37 @@
+.grafico {
+  margin: 0 0 16px;
+  padding: 14px;
+  border: 1px solid var(--color-borde);
+  border-radius: var(--radio);
+  background: var(--color-superficie);
+}
+
+.grafico__titulo {
+  margin-bottom: 8px;
+  font-weight: 800;
+}
+
+.grafico__svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.grafico__guia {
+  stroke: var(--color-borde);
+  stroke-width: 1;
+}
+
+.grafico__eje {
+  fill: var(--color-texto-3);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.grafico__barra {
+  fill: var(--color-primario);
+}
+
+.grafico__barra:hover {
+  fill: var(--color-primario-oscuro);
+}

@@ -1,0 +1,107 @@
+.cocina__cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.cocina__cabecera h2 {
+  font-size: 22px;
+  font-weight: 800;
+}
+
+.cocina__cabecera p {
+  font-weight: 700;
+}
+
+.cocina__en-vivo {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--color-exito);
+  animation: latido 1.6s ease infinite;
+}
+
+@keyframes latido {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.cocina__selector-movil {
+  margin-bottom: 12px;
+}
+
+.cocina__tablero {
+  display: grid;
+  gap: 16px;
+}
+
+.cocina__columna {
+  min-width: 0;
+}
+
+.cocina__columna--oculta-movil {
+  display: none;
+}
+
+.cocina__titulo-columna {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.cocina__titulo-columna span {
+  min-width: 28px;
+  padding: 1px 9px;
+  border-radius: 999px;
+  background: var(--color-primario);
+  color: #fff;
+  font-size: 14px;
+  text-align: center;
+}
+
+.cocina__columna--listas .cocina__titulo-columna span {
+  background: var(--color-exito);
+}
+
+.cocina__lista {
+  display: grid;
+  gap: 12px;
+}
+
+.cocina__columna--listas .comanda-card {
+  opacity: 0.85;
+}
+
+/* Tablet en adelante: tablero de dos columnas siempre visibles. */
+@media (min-width: 768px) {
+  .cocina__selector-movil {
+    display: none;
+  }
+
+  .cocina__columna--oculta-movil {
+    display: block;
+  }
+
+  .cocina__titulo-columna {
+    display: flex;
+  }
+
+  .cocina__tablero {
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+@media (min-width: 1280px) {
+  .cocina__columna:first-child .cocina__lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}

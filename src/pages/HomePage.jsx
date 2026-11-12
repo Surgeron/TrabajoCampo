@@ -1,3 +1,7 @@
+import { useNavigate } from "react-router-dom";
+import { StatCard } from "../components/ui/Card/Card";
+import { useSesion } from "../context/SesionContext";
+import { useContadores } from "../hooks/useContadores";
 import MealArtwork from "./MealArtwork";
 import "./HomePage.css";
 
@@ -8,18 +12,28 @@ const MEALS = [
   { id: "cena", title: "Cena", tone: "dinner" },
 ];
 
+/** Inicio del mozo: cada tarjeta abre una comanda nueva con esa comida cargada (CU-03). */
 export default function HomePage() {
+  const navigate = useNavigate();
+  const { usuario } = useSesion();
+  const contadores = useContadores();
+
   return (
     <section className="home">
       <div className="home__welcome">
         <Rays />
-        <h2 className="home__title">¡Bienvenido!</h2>
+        <h2 className="home__title">¡Hola, {usuario?.nombre}!</h2>
         <Rays flip />
       </div>
       <p className="home__subtitle">Seleccioná el pedido que deseas realizar:</p>
       <div className="home__grid">
         {MEALS.map((meal) => (
-          <button key={meal.id} type="button" className={`meal-card meal-card--${meal.tone}`}>
+          <button
+            key={meal.id}
+            type="button"
+            className={`meal-card meal-card--${meal.tone}`}
+            onClick={() => navigate(`/comandas/nueva?categoria=${meal.id}`)}
+          >
             <MealArtwork type={meal.id} />
             <span className="meal-card__body">
               <span className="meal-card__title">{meal.title}</span>
@@ -38,6 +52,30 @@ export default function HomePage() {
             </span>
           </button>
         ))}
+      </div>
+
+      <div className="home__pendientes">
+        <StatCard
+          icono="check"
+          tono="exito"
+          etiqueta="Listas para entregar"
+          valor={contadores.listas}
+          onClick={() => navigate("/comandas?vista=listas")}
+        />
+        <StatCard
+          icono="cobrar"
+          tono="alerta"
+          etiqueta="Entregadas sin cobrar"
+          valor={contadores.entregadas}
+          onClick={() => navigate("/comandas?vista=entregadas")}
+        />
+        <StatCard
+          icono="factura"
+          tono="peligro"
+          etiqueta="Cobradas sin facturar"
+          valor={contadores.sinFacturar}
+          onClick={() => navigate("/facturas-pendientes")}
+        />
       </div>
     </section>
   );

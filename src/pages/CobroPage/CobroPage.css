@@ -1,0 +1,92 @@
+.cobro {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cobro--angosto {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.cobro .encabezado {
+  margin-bottom: 0;
+}
+
+.cobro__grilla {
+  display: grid;
+  gap: 14px;
+}
+
+.cobro__columna {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  min-width: 0;
+}
+
+.cobro__comandas {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cobro__comandas li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: var(--radio-sm);
+  background: var(--color-superficie-2);
+  font-weight: 700;
+}
+
+.cobro__comandas li > span {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.cobro__comandas .texto-secundario {
+  font-size: 13.5px;
+}
+
+.cobro__sumar {
+  margin-top: 10px;
+}
+
+.cobro__total {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-top: 14px;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.cobro__total strong {
+  font-size: 24px;
+}
+
+.cobro__error {
+  margin-top: 12px;
+}
+
+.cobro__confirmar {
+  padding: 4px 0;
+}
+
+@media (min-width: 1024px) {
+  .cobro__grilla {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: start;
+    gap: 20px;
+  }
+
+  .cobro__columna {
+    gap: 20px;
+  }
+}
