@@ -3,7 +3,16 @@ import { defineConfig } from 'vite'
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: mode === "pages" ? "/nombre-del-repo/" : "/",
-  // lo que ya tenías
+  base: mode === "pages" ? "/TrabajoCampo/" : "/",
   plugins: [react()],
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          firebase: ["firebase/app", "firebase/firestore", "firebase/analytics"],
+          vendor: ["react", "react-dom", "react-router-dom"],
+        },
+      },
+    },
+  },
 }));
