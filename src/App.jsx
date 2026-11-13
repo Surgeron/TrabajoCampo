@@ -9,16 +9,18 @@ import {
   CONFIG_ESCENARIOS
 } from "./domain/mockData";
 
-// Gestores (Capa de Control / Servicios)
+// Gestores (Capa de Control / Servicios - BCE Pattern)
 import { GestorPriorizacionDSS } from "./services/GestorPriorizacionDSS";
 import { GestorCatastro } from "./services/GestorCatastro";
 import { GestorMeteorologico } from "./services/GestorMeteorologico";
 import { GestorOperacionesCosecha } from "./services/GestorOperacionesCosecha";
 import { GestorParadasFabrica } from "./services/GestorParadasFabrica";
+import { GestorAutenticacion } from "./services/GestorAutenticacion";
 
 // Componentes y Vistas (Capa Boundary / UI)
 import Navbar from "./components/Navbar";
 import KpiBar from "./components/KpiBar";
+import LoginView from "./views/LoginView";
 import CentroControlView from "./views/CentroControlView";
 import CatastroView from "./views/CatastroView";
 import AuditoriaParadasView from "./views/AuditoriaParadasView";
@@ -26,7 +28,11 @@ import CosechadorFrenteView from "./views/CosechadorFrenteView";
 import PluviometroView from "./views/PluviometroView";
 
 export default function App() {
+  // Estado de Sesión y Autenticación (Principio de Mínimo Privilegio)
+  const [usuarioActual, setUsuarioActual] = useState(null);
   const [vistaActual, setVistaActual] = useState("centro-control");
+
+  // Estado de Dominio
   const [lotes, setLotes] = useState(LOTES_INICIALES);
   const [paradas, setParadas] = useState(PARADAS_INICIALES);
   const [lecturasPluv, setLecturasPluv] = useState(LECTURAS_PLUV_INICIALES);
@@ -63,7 +69,19 @@ export default function App() {
   const rankingDSS = GestorPriorizacionDSS.generarRanking(lotes, cfgClima, filtroActivo);
   const metricasGlobales = GestorOperacionesCosecha.calcularMetricas(lotes, rankingDSS);
 
-  // 2. Controladores de Acciones invocando Gestores
+  // 2. Controladores de Sesión
+  const handleLogin = (usuario) => {
+    setUsuarioActual(usuario);
+    setVistaActual(usuario.vistaPorDefecto || "centro-control");
+    showToast(`Sesión iniciada: ${usuario.nombre} (${usuario.cargo})`);
+  };
+
+  const handleLogout = () => {
+    setUsuarioActual(null);
+    showToast("Sesión cerrada correctamente. Volviendo al inicio.");
+  };
+
+  // 3. Controladores de Acciones invocando Gestores
   const handleCambiarEscenario = (nuevoEscenario) => {
     setEscenarioActual(nuevoEscenario);
     showToast(`Escenario activado: ${configEscenarios[nuevoEscenario].nombre}`);
@@ -108,27 +126,52 @@ export default function App() {
     setLecturasPluv(LECTURAS_PLUV_INICIALES);
     setEscenarioActual("live");
     setLoteSeleccionadoId(null);
-    setVistaActual("centro-control");
+    if (usuarioActual) {
+      setVistaActual(usuarioActual.vistaPorDefecto);
+    }
     showToast("Demostración restablecida a valores iniciales.");
   };
 
+  // SI NO HAY SESIÓN ACTIVA: Renderizar LoginView (PoLP Gate)
+  if (!usuarioActual) {
+    return (
+      <div className="app-container">
+        <LoginView onLoginExitoso={handleLogin} />
+        {toast.visible && (
+          <div className="toast">
+            <span>✅</span> <span>{toast.text}</span>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // SESIÓN ACTIVA: Renderizar solo los módulos autorizados para el rol
   return (
     <div className="app-container">
-      {/* NAVEGACIÓN DESACOPLADA POR ROL */}
+      {/* NAVEGACIÓN BASADA EN EL PRINCIPIO DE MÍNIMO PRIVILEGIO (PoLP) */}
       <Navbar
+        usuario={usuarioActual}
         vistaActual={vistaActual}
         onCambiarVista={(v) => {
-          setVistaActual(v);
-          window.scrollTo({ top: 0, behavior: "smooth" });
+          if (GestorAutenticacion.tienePermiso(usuarioActual, v)) {
+            setVistaActual(v);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } else {
+            showToast("Acceso denegado según Principio de Mínimo Privilegio.");
+          }
         }}
+        onCerrarSesion={handleLogout}
         onResetDemo={handleResetDemo}
       />
 
-      {/* KPI GLOBAL STRIP */}
-      <KpiBar metricas={metricasGlobales} />
+      {/* KPI GLOBAL STRIP - Solo para perfiles con alcance global/estratégico */}
+      {usuarioActual.rol !== "COSECHADOR_CAMPO" && (
+        <KpiBar metricas={metricasGlobales} />
+      )}
 
-      {/* RENDERIZADO DE LA VISTA ACTIVA */}
-      {vistaActual === "centro-control" && (
+      {/* RENDERIZADO CONDICIONAL CON PROTECCIÓN DE PRIVILEGIOS */}
+      {vistaActual === "centro-control" && GestorAutenticacion.tienePermiso(usuarioActual, "centro-control") && (
         <CentroControlView
           lotes={lotes}
           rankingDSS={rankingDSS}
@@ -145,28 +188,28 @@ export default function App() {
         />
       )}
 
-      {vistaActual === "catastro" && (
+      {vistaActual === "catastro" && GestorAutenticacion.tienePermiso(usuarioActual, "catastro") && (
         <CatastroView
           lotes={lotes}
           onActualizarLote={handleActualizarLote}
         />
       )}
 
-      {vistaActual === "auditoria" && (
+      {vistaActual === "auditoria" && GestorAutenticacion.tienePermiso(usuarioActual, "auditoria") && (
         <AuditoriaParadasView
           paradas={paradas}
           onRegistrarParada={handleRegistrarParada}
         />
       )}
 
-      {vistaActual === "frente" && (
+      {vistaActual === "frente" && GestorAutenticacion.tienePermiso(usuarioActual, "frente") && (
         <CosechadorFrenteView
           lotes={lotes}
           onMarcarCosechado={handleMarcarCosechado}
         />
       )}
 
-      {vistaActual === "pluviometro" && (
+      {vistaActual === "pluviometro" && GestorAutenticacion.tienePermiso(usuarioActual, "pluviometro") && (
         <PluviometroView
           lecturas={lecturasPluv}
           onRegistrarLectura={handleRegistrarLectura}
