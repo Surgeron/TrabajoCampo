@@ -1,60 +1,122 @@
 import React, { useState } from "react";
 import { GestorCatastro } from "../services/GestorCatastro";
 
-export default function CatastroView({ lotes, onActualizarLote }) {
+export default function CatastroView({ lotes = [], onActualizarLote }) {
   const [loteEditando, setLoteEditando] = useState(null);
   const [nuevoCamino, setNuevoCamino] = useState("");
   const [nuevoDrenaje, setNuevoDrenaje] = useState("");
   const [nuevoSuelo, setNuevoSuelo] = useState("");
   const [filtroFinca, setFiltroFinca] = useState("TODAS");
+  const [busqueda, setBusqueda] = useState("");
+
+  const lotesSeguros = Array.isArray(lotes) ? lotes : [];
 
   const iniciarEdicion = (lote) => {
     setLoteEditando(lote);
-    setNuevoCamino(lote.camino);
-    setNuevoDrenaje(lote.drenaje);
-    setNuevoSuelo(lote.suelo);
+    setNuevoCamino(lote.camino || "");
+    setNuevoDrenaje(lote.drenaje || "");
+    setNuevoSuelo(lote.suelo || "");
   };
 
   const guardarCambios = () => {
     if (!loteEditando) return;
-    onActualizarLote(loteEditando.id, {
-      camino: nuevoCamino,
-      drenaje: nuevoDrenaje,
-      suelo: nuevoSuelo
-    });
+    if (onActualizarLote) {
+      onActualizarLote(loteEditando.id, {
+        camino: nuevoCamino,
+        drenaje: nuevoDrenaje,
+        suelo: nuevoSuelo
+      });
+    }
     setLoteEditando(null);
   };
 
-  const lotesFiltrados = filtroFinca === "TODAS" 
-    ? lotes 
-    : lotes.filter(l => l.finca.includes(filtroFinca));
+  // Filtrado compuesto: por Finca y por texto de búsqueda
+  const lotesFiltrados = lotesSeguros.filter((l) => {
+    const coincideFinca =
+      filtroFinca === "TODAS" ||
+      (l.finca && l.finca.toLowerCase().includes(filtroFinca.toLowerCase()));
+
+    const query = busqueda.trim().toLowerCase();
+    const coincideTexto =
+      !query ||
+      (l.codigo && l.codigo.toLowerCase().includes(query)) ||
+      (l.finca && l.finca.toLowerCase().includes(query)) ||
+      (l.suelo && l.suelo.toLowerCase().includes(query)) ||
+      (l.camino && l.camino.toLowerCase().includes(query));
+
+    return coincideFinca && coincideTexto;
+  });
+
+  // Métricas rápidas de Catastro
+  const totalHas = lotesSeguros.reduce((acc, l) => acc + (Number(l.has) || 0), 0);
+  const totalToneladas = lotesSeguros.reduce((acc, l) => acc + (Number(l.toneladas) || 0), 0);
+  const totalCriticos = lotesSeguros.filter((l) => (l.ivlEstatico || 0) >= 4.0).length;
+  const totalCosechados = lotesSeguros.filter((l) => l.estado === "COSECHADO").length;
 
   return (
     <div className="view-container" style={{ padding: "0 24px" }}>
+      {/* CABECERA */}
       <div className="section-header-box">
         <div>
-          <h2 style="font-size:18px; font-weight:800; display:flex; align-items:center; gap:8px;">
+          <h2 style={{ fontSize: "18px", fontWeight: 800, display: "flex", alignItems: "center", gap: "8px" }}>
             <span>📋</span> Catastro Cañero — Gestión de Cuadros y Accesos
           </h2>
-          <p style="font-size:13px; color:var(--text-muted); margin-top:2px;">
+          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}>
             Administración de características edáficas y caminos de salida para cada lote de Ingenio La Esperanza.
           </p>
         </div>
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <label style={{ fontSize: "12.5px", color: "#94a3b8", fontWeight: 600 }}>Filtrar por Finca:</label>
-          <select 
-            className="form-control" 
-            style={{ width: "auto" }} 
-            value={filtroFinca} 
+        {/* FILTROS Y BÚSQUEDA */}
+        <div style={{ display: "flex", gap: "10px", alignItems: "center", flexWrap: "wrap" }}>
+          <input
+            type="text"
+            className="form-control"
+            style={{ width: "190px", fontSize: "12.5px" }}
+            placeholder="🔍 Buscar lote o camino..."
+            value={busqueda}
+            onChange={(e) => setBusqueda(e.target.value)}
+          />
+
+          <select
+            className="form-control"
+            style={{ width: "auto", fontSize: "12.5px" }}
+            value={filtroFinca}
             onChange={(e) => setFiltroFinca(e.target.value)}
           >
-            <option value="TODAS">Todas las fincas ({lotes.length})</option>
+            <option value="TODAS">Todas las fincas ({lotesSeguros.length})</option>
             <option value="Esperanza">Finca Central La Esperanza</option>
             <option value="Miraflores">Finca Miraflores</option>
             <option value="Puesto">Finca El Puesto</option>
             <option value="Arrayanal">Finca Arrayanal</option>
           </select>
+        </div>
+      </div>
+
+      {/* STRIP DE MÉTRICAS RESUMEN */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(210px, 1fr))", gap: "12px" }}>
+        <div className="kpi-card" style={{ "--kpi-color": "#38bdf8" }}>
+          <div className="kpi-title">Cuadros en Catastro</div>
+          <div className="kpi-value-row">
+            <span className="kpi-value" style={{ color: "#38bdf8" }}>{lotesSeguros.length}</span>
+            <span className="kpi-sub">lotes registrados</span>
+          </div>
+          <span className="kpi-sub">{totalCosechados} cosechados | {lotesSeguros.length - totalCosechados} activos</span>
+        </div>
+
+        <div className="kpi-card" style={{ "--kpi-color": "#10b981" }}>
+          <div className="kpi-title">Superficie Total</div>
+          <div className="kpi-value-row">
+            <span className="kpi-value" style={{ color: "#34d399" }}>{totalHas.toLocaleString()} ha</span>
+          </div>
+          <span className="kpi-sub">{totalToneladas.toLocaleString()} toneladas estimadas</span>
+        </div>
+
+        <div className="kpi-card" style={{ "--kpi-color": "#f87171" }}>
+          <div className="kpi-title">Vulnerabilidad Crítica (IVL ≥ 4.0)</div>
+          <div className="kpi-value-row">
+            <span className="kpi-value" style={{ color: "#f87171" }}>{totalCriticos} cuadros</span>
+          </div>
+          <span className="kpi-sub">Suelo arcilloso o salida en tierra virgen</span>
         </div>
       </div>
 
@@ -76,49 +138,81 @@ export default function CatastroView({ lotes, onActualizarLote }) {
             </tr>
           </thead>
           <tbody>
-            {lotesFiltrados.map((lote) => (
-              <tr key={lote.id}>
-                <td>
-                  <b style={{ fontFamily: "JetBrains Mono", color: "#38bdf8" }}>{lote.codigo}</b>
-                </td>
-                <td>{lote.finca}</td>
-                <td>{lote.has} ha</td>
-                <td><b>{lote.toneladas.toLocaleString()} t</b></td>
-                <td>{lote.suelo}</td>
-                <td>{lote.drenaje}</td>
-                <td>
-                  <span style={{ 
-                    fontSize: "12px", 
-                    color: lote.camino.includes("tierra") ? "#f87171" : "#34d399",
-                    fontWeight: 600
-                  }}>
-                    {lote.camino}
-                  </span>
-                </td>
-                <td>
-                  <span className={`ivl-pill ${lote.ivlEstatico >= 4.0 ? 'ivl-high' : lote.ivlEstatico >= 2.5 ? 'ivl-mid' : 'ivl-low'}`}>
-                    {lote.ivlEstatico} / 5.0
-                  </span>
-                </td>
-                <td>
-                  <span className={`badge-status ${
-                    lote.estado === 'COSECHADO' ? 'badge-harvested' :
-                    lote.estado === 'EN_COSECHA' ? 'badge-active' : 'badge-safe'
-                  }`}>
-                    {lote.estado}
-                  </span>
-                </td>
-                <td>
-                  <button 
-                    className="btn-action" 
-                    style={{ fontSize: "11.5px", padding: "5px 10px", minHeight: "30px" }}
-                    onClick={() => iniciarEdicion(lote)}
-                  >
-                    ✏️ Editar Accesos
-                  </button>
+            {lotesFiltrados.length === 0 ? (
+              <tr>
+                <td colSpan="10" style={{ textAlign: "center", padding: "32px", color: "#94a3b8" }}>
+                  🔍 No se encontraron cuadros con los filtros seleccionados.
                 </td>
               </tr>
-            ))}
+            ) : (
+              lotesFiltrados.map((lote) => {
+                const caminoStr = String(lote.camino || "").toLowerCase();
+                const esTierra = caminoStr.includes("tierra");
+                const ivl = Number(lote.ivlEstatico) || 1.0;
+
+                return (
+                  <tr key={lote.id}>
+                    <td>
+                      <b style={{ fontFamily: "JetBrains Mono", color: "#38bdf8", fontSize: "14px" }}>
+                        {lote.codigo}
+                      </b>
+                    </td>
+                    <td>{lote.finca}</td>
+                    <td><b>{lote.has} ha</b></td>
+                    <td><b>{Number(lote.toneladas || 0).toLocaleString()} t</b></td>
+                    <td>{lote.suelo}</td>
+                    <td>{lote.drenaje}</td>
+                    <td>
+                      <span
+                        style={{
+                          fontSize: "12px",
+                          color: esTierra ? "#f87171" : "#34d399",
+                          fontWeight: 600,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "4px"
+                        }}
+                      >
+                        {esTierra ? "⚠️ " : "🛣️ "}
+                        {lote.camino}
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`ivl-pill ${
+                          ivl >= 4.0 ? "ivl-high" : ivl >= 2.5 ? "ivl-mid" : "ivl-low"
+                        }`}
+                        title="Índice de Vulnerabilidad de Lote Estático (Pondera suelo, pendiente y camino)"
+                      >
+                        {ivl.toFixed(1)} / 5.0
+                      </span>
+                    </td>
+                    <td>
+                      <span
+                        className={`badge-status ${
+                          lote.estado === "COSECHADO"
+                            ? "badge-harvested"
+                            : lote.estado === "EN_COSECHA"
+                            ? "badge-active"
+                            : "badge-safe"
+                        }`}
+                      >
+                        {lote.estado === "COSECHADO" ? "✔ Cosechado" : lote.estado === "EN_COSECHA" ? "🚜 En Cosecha" : "⏳ Pendiente"}
+                      </span>
+                    </td>
+                    <td>
+                      <button
+                        className="btn-action"
+                        style={{ fontSize: "11.5px", padding: "6px 12px", minHeight: "30px", whiteSpace: "nowrap" }}
+                        onClick={() => iniciarEdicion(lote)}
+                      >
+                        ✏️ Editar Accesos
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
+            )}
           </tbody>
         </table>
       </div>
