@@ -1,0 +1,16 @@
+/* ========================================================
+   AUDITORÍA DE PARADAS DE FÁBRICA - VIEW STYLES
+   ======================================================== */
+
+.auditoria-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 900px) {
+  .auditoria-metrics-grid {
+    grid-template-columns: 1fr;
+  }
+}

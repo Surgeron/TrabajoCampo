@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GestorParadasFabrica } from "../services/GestorParadasFabrica";
+import "./AuditoriaParadasView.css";
 
 export default function AuditoriaParadasView({ paradas, onRegistrarParada }) {
   const [modalNuevo, setModalNuevo] = useState(false);

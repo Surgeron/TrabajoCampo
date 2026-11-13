@@ -1,0 +1,27 @@
+/* ========================================================
+   CATASTRO CAÑERO & ACCESOS - VIEW STYLES
+   ======================================================== */
+
+.catastro-metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+.catastro-filters-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 768px) {
+  .catastro-filters-row {
+    width: 100%;
+  }
+
+  .catastro-filters-row input,
+  .catastro-filters-row select {
+    width: 100% !important;
+  }
+}

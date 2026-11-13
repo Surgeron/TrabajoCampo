@@ -1,0 +1,18 @@
+/* ========================================================
+   CARGA DIARIA DE PLUVIÓMETRO - VIEW STYLES
+   ======================================================== */
+
+.pluviometro-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pluviometro-num-input {
+  font-size: 22px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  width: 160px;
+  padding: 10px 14px;
+  text-align: center;
+}

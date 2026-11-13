@@ -1,4 +1,5 @@
 import React from "react";
+import "./KpiBar.css";
 
 export default function KpiBar({ metricas }) {
   const {

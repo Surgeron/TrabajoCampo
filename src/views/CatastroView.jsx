@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { GestorCatastro } from "../services/GestorCatastro";
+import "./CatastroView.css";
 
 export default function CatastroView({ lotes = [], onActualizarLote }) {
   const [loteEditando, setLoteEditando] = useState(null);

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+import "./CentroControlView.css";
 
 export default function CentroControlView({
   lotes,

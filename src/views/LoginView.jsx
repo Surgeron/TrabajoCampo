@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { USUARIOS_INICIALES } from "../domain/usuarios";
 import { GestorAutenticacion } from "../services/GestorAutenticacion";
+import "./LoginView.css";
 
 export default function LoginView({ onLoginExitoso }) {
   const [username, setUsername] = useState("");

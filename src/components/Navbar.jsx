@@ -1,5 +1,6 @@
 import React from "react";
 import { GestorAutenticacion } from "../services/GestorAutenticacion";
+import "./Navbar.css";
 
 export default function Navbar({
   usuario,

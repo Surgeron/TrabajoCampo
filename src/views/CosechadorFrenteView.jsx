@@ -1,4 +1,5 @@
 import React from "react";
+import "./CosechadorFrenteView.css";
 
 export default function CosechadorFrenteView({ lotes, onMarcarCosechado, onActualizarAvance }) {
   // Lote en corte activo

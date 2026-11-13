@@ -1,0 +1,23 @@
+/* ========================================================
+   DESIGN TOKENS & VARIABLES CSS - PLUVIAZAFRA
+   Ingenio La Esperanza
+   ======================================================== */
+
+:root {
+  --bg-dark: #0b1120;
+  --bg-surface: #0f172a;
+  --bg-card: #1e293b;
+  --bg-card-hover: #273548;
+  --border-color: #334155;
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  
+  --color-red: #ef4444;
+  --color-amber: #f59e0b;
+  --color-emerald: #10b981;
+  --color-blue: #3b82f6;
+  --color-grey: #64748b;
+  
+  --accent: #10b981;
+  --accent-gradient: linear-gradient(135deg, #059669 0%, #10b981 100%);
+}

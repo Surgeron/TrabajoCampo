@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./PluviometroView.css";
 
 export default function PluviometroView({ lecturas, onRegistrarLectura }) {
   const [finca, setFinca] = useState("Finca Miraflores");

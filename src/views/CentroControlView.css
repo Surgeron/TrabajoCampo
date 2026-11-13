@@ -1,0 +1,415 @@
+/* ========================================================
+   CENTRO DE CONTROL GIS & RANKING DSS - VIEW STYLES
+   ======================================================== */
+
+/* SCENARIO STRIP */
+.scenario-strip {
+  background-color: #111a2e;
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  position: relative;
+  z-index: 900;
+}
+
+.scenario-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.scenario-buttons {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scenario-buttons::-webkit-scrollbar {
+  height: 4px;
+}
+.scenario-buttons::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 4px;
+}
+
+.btn-scenario {
+  background-color: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.btn-scenario:hover {
+  background-color: #2e3d54;
+  color: #ffffff;
+}
+
+.btn-scenario.active {
+  background-color: #0369a1;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
+}
+
+.btn-scenario.active.sc-storm {
+  background-color: #991b1b;
+  border-color: #f87171;
+  box-shadow: 0 0 14px rgba(248, 113, 113, 0.4);
+}
+
+.btn-scenario.active.sc-sat {
+  background-color: #7c2d12;
+  border-color: #fb923c;
+  box-shadow: 0 0 14px rgba(251, 146, 60, 0.4);
+}
+
+.btn-scenario.active.sc-rain {
+  background-color: #854d0e;
+  border-color: #facc15;
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.4);
+}
+
+.scenario-info-badge {
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #38bdf8;
+  font-family: 'JetBrains Mono', monospace;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* WORKSPACE GRID */
+.main-workspace {
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* MAP CONTAINER */
+.map-wrapper {
+  position: relative;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  height: 620px;
+}
+
+#map {
+  width: 100%;
+  height: 100%;
+  background-color: #1e293b;
+  z-index: 1;
+}
+
+.map-legend {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  background: rgba(15, 23, 42, 0.92);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 10px 14px;
+  z-index: 500;
+  font-size: 11.5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 14px;
+  height: 14px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* SIDEBAR: RANKING DE COSECHA */
+.sidebar {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  max-height: 620px;
+}
+
+.sidebar-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #162032;
+}
+
+.sidebar-header h2 {
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-tabs {
+  display: flex;
+  padding: 10px 14px;
+  gap: 6px;
+  background: #111a2c;
+  border-bottom: 1px solid var(--border-color);
+  overflow-x: auto;
+}
+
+.filter-tab {
+  background: transparent;
+  border: 1px solid transparent;
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+
+.filter-tab.active {
+  background: var(--bg-card);
+  border-color: var(--border-color);
+  color: #ffffff;
+}
+
+.ranking-list {
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  overflow-y: auto;
+  max-height: calc(620px - 110px);
+}
+
+.lot-card {
+  background-color: #243247;
+  border: 1px solid #334155;
+  border-radius: 10px;
+  padding: 12px 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.lot-card:hover {
+  border-color: #475569;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+}
+
+.lot-card.selected {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+}
+
+.lot-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.lot-code {
+  font-size: 14px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lot-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px 12px;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin: 8px 0;
+}
+
+.lot-detail-item b {
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.lot-recommendation {
+  background: #192334;
+  border-radius: 6px;
+  padding: 8px 12px;
+  font-size: 12px;
+  color: #cbd5e1;
+  border-left: 3.5px solid var(--rec-color, #64748b);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.lot-card-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #334155;
+}
+
+.btn-card-action {
+  flex: 1;
+  background: #1e293b;
+  border: 1px solid #334155;
+  color: #cbd5e1;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 7px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+  min-height: 34px;
+}
+
+.btn-card-action:hover {
+  background: #334155;
+  color: #ffffff;
+}
+
+.btn-card-action.btn-harvest {
+  background: #064e3b;
+  border-color: #059669;
+  color: #6ee7b7;
+}
+
+.btn-card-action.btn-harvest:hover {
+  background: #047857;
+  color: #ffffff;
+}
+
+/* RESPONSIVE */
+@media (max-width: 1100px) {
+  .main-workspace {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .map-wrapper {
+    height: 500px;
+  }
+
+  .sidebar {
+    max-height: none;
+  }
+
+  .ranking-list {
+    max-height: 480px;
+  }
+}
+
+@media (max-width: 768px) {
+  .scenario-strip {
+    padding: 10px 16px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+  }
+
+  .scenario-buttons {
+    width: 100%;
+  }
+
+  .btn-scenario {
+    font-size: 12px;
+    padding: 7px 12px;
+  }
+
+  .scenario-info-badge {
+    font-size: 11.5px;
+    justify-content: center;
+  }
+
+  .main-workspace {
+    padding: 0 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .map-wrapper {
+    height: 380px;
+  }
+
+  .map-legend {
+    display: none;
+  }
+
+  .sidebar {
+    width: 100%;
+  }
+
+  .ranking-list {
+    max-height: none;
+    overflow-y: visible;
+  }
+
+  .lot-details-grid {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .lot-card-actions {
+    flex-direction: column;
+  }
+
+  .btn-card-action {
+    padding: 8px 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .map-wrapper {
+    height: 340px;
+  }
+}
