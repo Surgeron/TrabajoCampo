@@ -10,6 +10,12 @@ export class GestorAutenticacion {
    * Catálogo de todas las vistas del sistema con sus metadatos de presentación
    */
   static VISTAS_SISTEMA = {
+    "resumen": {
+      id: "resumen",
+      titulo: "Resumen General",
+      icono: "📊",
+      descripcion: "Tablero ejecutivo con KPIs globales de campaña y estado de zafra"
+    },
     "centro-control": {
       id: "centro-control",
       titulo: "Centro de Control GIS",

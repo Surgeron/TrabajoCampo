@@ -19,8 +19,8 @@ import { GestorAutenticacion } from "./services/GestorAutenticacion";
 
 // Componentes y Vistas (Capa Boundary / UI)
 import Navbar from "./components/Navbar";
-import KpiBar from "./components/KpiBar";
 import LoginView from "./views/LoginView";
+import ResumenGeneralView from "./views/ResumenGeneralView";
 import CentroControlView from "./views/CentroControlView";
 import CatastroView from "./views/CatastroView";
 import AuditoriaParadasView from "./views/AuditoriaParadasView";
@@ -30,7 +30,7 @@ import PluviometroView from "./views/PluviometroView";
 export default function App() {
   // Estado de Sesión y Autenticación (Principio de Mínimo Privilegio)
   const [usuarioActual, setUsuarioActual] = useState(null);
-  const [vistaActual, setVistaActual] = useState("centro-control");
+  const [vistaActual, setVistaActual] = useState("resumen");
 
   // Estado de Dominio
   const [lotes, setLotes] = useState(LOTES_INICIALES);
@@ -72,7 +72,7 @@ export default function App() {
   // 2. Controladores de Sesión
   const handleLogin = (usuario) => {
     setUsuarioActual(usuario);
-    setVistaActual(usuario.vistaPorDefecto || "centro-control");
+    setVistaActual(usuario.vistaPorDefecto || "resumen");
     showToast(`Sesión iniciada: ${usuario.nombre} (${usuario.cargo})`);
   };
 
@@ -165,12 +165,21 @@ export default function App() {
         onResetDemo={handleResetDemo}
       />
 
-      {/* KPI GLOBAL STRIP - Solo para perfiles con alcance global/estratégico */}
-      {usuarioActual.rol !== "COSECHADOR_CAMPO" && (
-        <KpiBar metricas={metricasGlobales} />
+      {/* 1. VISTA DE RESUMEN EJECUTIVO (KPIS EN PANTALLA COMPLETA) */}
+      {vistaActual === "resumen" && GestorAutenticacion.tienePermiso(usuarioActual, "resumen") && (
+        <ResumenGeneralView
+          metricas={metricasGlobales}
+          escenarioActual={escenarioActual}
+          configEscenarios={configEscenarios}
+          onCambiarVista={(v) => {
+            setVistaActual(v);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          usuario={usuarioActual}
+        />
       )}
 
-      {/* RENDERIZADO CONDICIONAL CON PROTECCIÓN DE PRIVILEGIOS */}
+      {/* 2. CENTRO DE CONTROL GIS (MAPA SATELITAL Y RANKING DESACOPLADO) */}
       {vistaActual === "centro-control" && GestorAutenticacion.tienePermiso(usuarioActual, "centro-control") && (
         <CentroControlView
           lotes={lotes}
@@ -185,9 +194,14 @@ export default function App() {
           onMarcarCosechado={handleMarcarCosechado}
           onReabrirLote={handleReabrirLote}
           onAsignarFrente={handleAsignarFrente}
+          onIrAResumen={() => {
+            setVistaActual("resumen");
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
         />
       )}
 
+      {/* 3. CATASTRO DE LOTES */}
       {vistaActual === "catastro" && GestorAutenticacion.tienePermiso(usuarioActual, "catastro") && (
         <CatastroView
           lotes={lotes}
@@ -195,6 +209,7 @@ export default function App() {
         />
       )}
 
+      {/* 4. AUDITORÍA DE PARADAS */}
       {vistaActual === "auditoria" && GestorAutenticacion.tienePermiso(usuarioActual, "auditoria") && (
         <AuditoriaParadasView
           paradas={paradas}
@@ -202,6 +217,7 @@ export default function App() {
         />
       )}
 
+      {/* 5. MODO CAMPO (COSECHADOR) */}
       {vistaActual === "frente" && GestorAutenticacion.tienePermiso(usuarioActual, "frente") && (
         <CosechadorFrenteView
           lotes={lotes}
@@ -209,6 +225,7 @@ export default function App() {
         />
       )}
 
+      {/* 6. CARGA DE PLUVIÓMETRO */}
       {vistaActual === "pluviometro" && GestorAutenticacion.tienePermiso(usuarioActual, "pluviometro") && (
         <PluviometroView
           lecturas={lecturasPluv}

@@ -9,8 +9,8 @@ export const ROLES = {
     nombre: "Jefe de Cosecha & Planificador Agrícola",
     descripcion: "Gestión agronómica estratégica, simulación de lluvias DSS, catastro de lotes y balance de zafra.",
     nivelPrivilegio: "ESTRATEGICO",
-    vistasPermitidas: ["centro-control", "catastro", "auditoria"],
-    vistaPorDefecto: "centro-control"
+    vistasPermitidas: ["resumen", "centro-control", "catastro", "auditoria"],
+    vistaPorDefecto: "resumen"
   },
   COSECHADOR_CAMPO: {
     id: "COSECHADOR_CAMPO",
@@ -25,8 +25,8 @@ export const ROLES = {
     nombre: "Auditor de Fábrica & Molienda Industrial",
     descripcion: "Supervisión de abastecimiento de caña en canchón, horas de molienda y costos de paradas.",
     nivelPrivilegio: "AUDITORIA_INDUSTRIAL",
-    vistasPermitidas: ["auditoria", "centro-control"],
-    vistaPorDefecto: "auditoria"
+    vistasPermitidas: ["resumen", "centro-control", "auditoria"],
+    vistaPorDefecto: "resumen"
   }
 };
 

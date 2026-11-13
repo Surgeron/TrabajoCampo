@@ -13,7 +13,8 @@ export default function CentroControlView({
   onCambiarFiltro,
   onMarcarCosechado,
   onReabrirLote,
-  onAsignarFrente
+  onAsignarFrente,
+  onIrAResumen
 }) {
   const mapInstanceRef = useRef(null);
   const polygonLayersRef = useRef({});
@@ -172,25 +173,38 @@ export default function CentroControlView({
 
       {/* SELECTOR DE MODO DE VISUALIZACIÓN DESACOPLADO */}
       <div className="subview-mode-bar">
-        <div className="subview-toggle-group">
-          <button
-            className={`btn-subview ${modoVisual === "mapa" ? "active" : ""}`}
-            onClick={() => setModoVisual("mapa")}
-          >
-            <span>🗺️</span> Solo Mapa Satelital
-          </button>
-          <button
-            className={`btn-subview ${modoVisual === "stats" ? "active" : ""}`}
-            onClick={() => setModoVisual("stats")}
-          >
-            <span>📊</span> Solo Estadísticas & Ranking
-          </button>
-          <button
-            className={`btn-subview ${modoVisual === "dividido" ? "active" : ""}`}
-            onClick={() => setModoVisual("dividido")}
-          >
-            <span>🔲</span> Vista Dividida (Ambos)
-          </button>
+        <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
+          {onIrAResumen && (
+            <button
+              className="btn-action"
+              style={{ fontSize: "12px", minHeight: "32px", padding: "6px 12px", background: "#111a2e" }}
+              onClick={onIrAResumen}
+              title="Volver al panel general de KPIs en pantalla completa"
+            >
+              <span>⬅️</span> Panel Resumen
+            </button>
+          )}
+
+          <div className="subview-toggle-group">
+            <button
+              className={`btn-subview ${modoVisual === "mapa" ? "active" : ""}`}
+              onClick={() => setModoVisual("mapa")}
+            >
+              <span>🗺️</span> Solo Mapa Satelital
+            </button>
+            <button
+              className={`btn-subview ${modoVisual === "stats" ? "active" : ""}`}
+              onClick={() => setModoVisual("stats")}
+            >
+              <span>📊</span> Solo Estadísticas & Ranking
+            </button>
+            <button
+              className={`btn-subview ${modoVisual === "dividido" ? "active" : ""}`}
+              onClick={() => setModoVisual("dividido")}
+            >
+              <span>🔲</span> Vista Dividida (Ambos)
+            </button>
+          </div>
         </div>
 
         <div className="subview-hint">

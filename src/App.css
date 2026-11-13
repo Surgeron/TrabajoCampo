@@ -15,6 +15,7 @@
 
 /* 4. Módulos de Vistas Boundary */
 @import "./views/LoginView.css";
+@import "./views/ResumenGeneralView.css";
 @import "./views/CentroControlView.css";
 @import "./views/CatastroView.css";
 @import "./views/AuditoriaParadasView.css";

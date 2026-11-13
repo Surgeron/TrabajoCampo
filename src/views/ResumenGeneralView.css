@@ -1,0 +1,311 @@
+/* ========================================================
+   RESUMEN GENERAL (KPIS PANTALLA COMPLETA) - VIEW STYLES
+   Ingenio La Esperanza — PluviaZafra
+   ======================================================== */
+
+.resumen-page-container {
+  min-height: calc(100vh - 75px);
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 28px;
+  background: radial-gradient(circle at 50% 0%, #1e293b 0%, #0b1120 75%);
+  animation: fadeIn 0.35s ease;
+}
+
+/* CABECERA */
+.resumen-header-box {
+  background: rgba(15, 23, 42, 0.8);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+  padding: 20px 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  backdrop-filter: blur(8px);
+}
+
+.resumen-badge-client {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  margin-bottom: 6px;
+}
+
+.resumen-title {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #f8fafc;
+}
+
+.resumen-subtitle {
+  font-size: 13.5px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+.resumen-weather-chip {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.weather-chip-icon {
+  font-size: 26px;
+}
+
+.weather-chip-title {
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #94a3b8;
+  font-weight: 700;
+}
+
+.weather-chip-val {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #38bdf8;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* GRID PRINCIPAL DE KPIS EN TODA LA PANTALLA */
+.resumen-kpis-fullscreen-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+}
+
+.kpi-hero-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 18px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+  transition: transform 0.2s ease, border-color 0.2s ease;
+  min-height: 180px;
+}
+
+.kpi-hero-card:hover {
+  transform: translateY(-3px);
+  border-color: #475569;
+}
+
+.kpi-hero-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 100%;
+  background: var(--hero-color, #38bdf8);
+}
+
+.kpi-hero-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.kpi-hero-title {
+  font-size: 11.5px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  color: #94a3b8;
+}
+
+.kpi-hero-icon {
+  font-size: 20px;
+}
+
+.kpi-hero-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 6px 0;
+}
+
+.kpi-hero-value {
+  font-size: 36px;
+  font-weight: 900;
+  font-family: 'JetBrains Mono', monospace;
+  color: #ffffff;
+  letter-spacing: -1px;
+  line-height: 1;
+}
+
+.kpi-hero-sub {
+  font-size: 13.5px;
+  color: #cbd5e1;
+}
+
+.kpi-hero-progress-bg {
+  width: 100%;
+  height: 9px;
+  background: #334155;
+  border-radius: 999px;
+  margin: 10px 0 6px 0;
+  overflow: hidden;
+}
+
+.kpi-hero-progress-fill {
+  height: 100%;
+  background: var(--accent-gradient);
+  border-radius: 999px;
+  transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.kpi-hero-footnote {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ========================================================
+   BOTÓN PROMINENTE CTA: IR AL MAPA Y ESTADÍSTICAS
+   ======================================================== */
+.resumen-cta-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  padding: 10px 0 20px 0;
+}
+
+.btn-cta-mapa {
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 50%, #0f766e 100%);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  color: #ffffff;
+  padding: 18px 36px;
+  border-radius: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  box-shadow: 0 10px 30px rgba(2, 132, 199, 0.4);
+  transition: all 0.25s ease;
+  width: 100%;
+  max-width: 720px;
+}
+
+.btn-cta-mapa:hover {
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 14px 40px rgba(2, 132, 199, 0.55);
+  border-color: #38bdf8;
+}
+
+.cta-icon {
+  font-size: 32px;
+  background: rgba(255, 255, 255, 0.15);
+  width: 54px;
+  height: 54px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.cta-text {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  flex: 1;
+}
+
+.cta-main-title {
+  font-size: 18px;
+  font-weight: 800;
+  letter-spacing: -0.3px;
+}
+
+.cta-sub-title {
+  font-size: 12.5px;
+  color: #e0f2fe;
+  margin-top: 2px;
+  opacity: 0.9;
+}
+
+.cta-arrow {
+  font-size: 26px;
+  font-weight: 800;
+  transition: transform 0.2s ease;
+}
+
+.btn-cta-mapa:hover .cta-arrow {
+  transform: translateX(6px);
+}
+
+.resumen-secondary-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* ========================================================
+   RESPONSIVE DESIGN
+   ======================================================== */
+@media (max-width: 1200px) {
+  .resumen-kpis-fullscreen-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .resumen-page-container {
+    padding: 16px;
+    gap: 18px;
+  }
+
+  .resumen-kpis-fullscreen-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .resumen-title {
+    font-size: 19px;
+  }
+
+  .btn-cta-mapa {
+    padding: 14px 20px;
+    gap: 14px;
+  }
+
+  .cta-icon {
+    width: 44px;
+    height: 44px;
+    font-size: 24px;
+  }
+
+  .cta-main-title {
+    font-size: 15px;
+  }
+}
