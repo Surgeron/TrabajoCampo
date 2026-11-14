@@ -1,0 +1,466 @@
+<mxfile host="app.diagrams.net" agent="Antigravity">
+  <diagram id="diagram-clases-completo" name="1. Diagrama de Clases Completo (BCE)">
+    <mxGraphModel dx="3698" dy="1825" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="2160" pageHeight="1150" background="#ffffff" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="main_title" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8fafc;strokeColor=#000000;strokeWidth=1.5;verticalAlign=middle;" value="&lt;div style=&quot;text-align:center; font-family:Arial,sans-serif; color:#000000;&quot;&gt;&lt;span style=&quot;font-size:17px; font-weight:bold; letter-spacing:0.5px;&quot;&gt;PLUVIAZAFRA — DIAGRAMA DE CLASES COMPLETO (ANÁLISIS Y DISEÑO BCE)&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size:12px; color:#222222;&quot;&gt;Ingenio La Esperanza (San Pedro de Jujuy) — Sistema de Decisión (DSS) para Cosecha Cañera por Lluvias&lt;/span&gt;&lt;br&gt;&lt;span style=&quot;font-size:11px; font-style:italic; color:#555555;&quot;&gt;Notación Estándar UML 2.5: Interfaces (I.), Gestores (G.) y Clases de Entidad con Cardinalidades y Agregación / Composición&lt;/span&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="55" width="2020" x="60" y="20" as="geometry" />
+        </mxCell>
+        <mxCell id="I_InicioSesion" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. InicioSesion&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IngresarCredenciales(): RetornoCredenciales&lt;br&gt;+ SeleccionarRol(): RetornoRol&lt;br&gt;+ ConfirmarInicioSesion(): RetornoSesionValida&lt;br&gt;+ SolicitarCierreSesion(): RetornoConfirmacion&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="270" x="130" y="95" as="geometry" />
+        </mxCell>
+        <mxCell id="I_CentroControlGIS" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. CentroControlGIS&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ SeleccionarEscenarioLluvia(): RetornoEscenario&lt;br&gt;+ SeleccionarCuadroEnMapa(): RetornoFichaCuadro&lt;br&gt;+ SolicitarRecalculoPrioridad(): RetornoRankingActualizado&lt;br&gt;+ SeleccionarAsignarCuadrilla(): RetornoDatosAsignacion&lt;br&gt;+ ConfirmarReplanificacion(): RetornoConfirmacionPlan&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="135" width="300" x="2500" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="I_Catastro" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. Catastro&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IngresarDatosLote(): RetornoDatosLote&lt;br&gt;+ ModificarSueloYDrenaje(): RetornoEstadoActualizado&lt;br&gt;+ ModificarCaminoSalida(): RetornoCaminoActualizado&lt;br&gt;+ ConfirmarActualizacionCatastro(): RetornoConfirmacion&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="290" x="710" y="600" as="geometry" />
+        </mxCell>
+        <mxCell id="I_CosechadorFrente" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. CosechadorFrente&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IngresarAvanceCorte(): RetornoToneladasCortadas&lt;br&gt;+ ReportarEstadoTransitabilidad(): RetornoAlertaCamino&lt;br&gt;+ ConfirmarFinalizacionLote(): RetornoFinLote&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="105" width="280" x="1110" y="100" as="geometry" />
+        </mxCell>
+        <mxCell id="I_Pluviometro" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. Pluviometro&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IngresarLecturaLluvia(): RetornoMilimetros&lt;br&gt;+ ConfirmarLecturaManual(): RetornoComprobanteLectura&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="95" width="270" x="1780" y="540" as="geometry" />
+        </mxCell>
+        <mxCell id="G_TransaccionAcceso" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. TransaccionAcceso&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ VerificarCredenciales(): RetornoValidacion&lt;br&gt;+ AplicarMinimoPrivilegio(): RetornoPermisosUsuario&lt;br&gt;+ RegistrarLogAcceso(): RetornoConfirmacion&lt;br&gt;+ CerrarSesion(): void&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="270" x="160" y="260" as="geometry" />
+        </mxCell>
+        <mxCell id="G_PriorizacionDSS" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. PriorizacionDSS&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ SolicitarPronosticoVigente(): RetornoDatosPronostico&lt;br&gt;+ CalcularIndiceVulnerabilidadIVL(): RetornoIVL&lt;br&gt;+ ProcesarRankingCosecha(): RetornoListaPriorizada&lt;br&gt;+ SimularTormenta(): RetornoMatrizRiesgo&lt;br&gt;+ GenerarAlertaCorteInminente(): RetornoAlertaDSS&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="135" width="300" x="1980" y="1220" as="geometry" />
+        </mxCell>
+        <mxCell id="G_Catastro" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. Catastro&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ BuscarLotes(): RetornoColeccionLotes&lt;br&gt;+ VerificarDatosCatastrales(): RetornoVerificacion&lt;br&gt;+ ActualizarPropiedadesAgrologicas(): RetornoConfirmacion&lt;br&gt;+ RecalcularCapacidadEvacuacion(): RetornoIndiceDrenaje&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="290" x="490" y="1035" as="geometry" />
+        </mxCell>
+        <mxCell id="G_OperacionesCosecha" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. OperacionesCosecha&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ BuscarCuadrillasDisponibles(): RetornoCuadrillas&lt;br&gt;+ AsignarLoteACuadrilla(): RetornoConfirmacionAsignacion&lt;br&gt;+ RegistrarToneladasCosechadas(): RetornoAvanceProduccion&lt;br&gt;+ ActualizarEstadoLote(): RetornoEstadoLote&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="290" x="1420" y="235" as="geometry" />
+        </mxCell>
+        <mxCell id="G_Meteorologico" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. Meteorologico&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ ProcesarLecturaPluviometrica(): RetornoRegistroLluvia&lt;br&gt;+ SincronizarPronosticoClimatico(): RetornoPronosticoActualizado&lt;br&gt;+ EvaluarRiesgoPrecipitacion(): RetornoNivelRiesgo&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="280" x="1980" y="780" as="geometry" />
+        </mxCell>
+        <mxCell id="I_ServicioMeteorologico" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. ServicioMeteorologico&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ SolicitarPronosticoHorario(): RetornoPronosticoOpenMeteo&lt;br&gt;+ NotificarAlertaTormenta(): RetornoAlertaClimatica&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="95" width="280" x="2490" y="1080" as="geometry" />
+        </mxCell>
+        <mxCell id="Usuario" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;Usuario&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdUsuario: int&lt;br&gt;+ Nombre: string&lt;br&gt;+ Legajo: string&lt;br&gt;+ Clave: string&lt;br&gt;+ Rol: string&lt;br&gt;+ VistasPermitidas: string&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ ValidarClave(): boolean&lt;br&gt;+ ObtenerPermisos(): string&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="155" width="240" x="10" y="460" as="geometry" />
+        </mxCell>
+        <mxCell id="ResultadoDSS" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;ResultadoDSS&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdResultadoDSS: int&lt;br&gt;+ FechaCalculo: date&lt;br&gt;+ EscenarioSimulado: string&lt;br&gt;+ RankingOrden: int&lt;br&gt;+ IndiceVulnerabilidadIVL: float&lt;br&gt;+ HorasVentanaUtil: float&lt;br&gt;+ NivelRiesgo: string&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ EvaluarUrgencia(): string&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="165" width="280" x="1580" y="1240" as="geometry" />
+        </mxCell>
+        <mxCell id="Lote" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;Lote&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdLote: int&lt;br&gt;+ CodigoCuadro: string&lt;br&gt;+ SuperficieHa: float&lt;br&gt;+ ToneladasEstimadas: float&lt;br&gt;+ RendimientoTonHa: float&lt;br&gt;+ VariedadCana: string&lt;br&gt;+ EstadoCosecha: string&lt;br&gt;+ NivelPrioridadDSS: int&lt;br&gt;+ ScoreVulnerabilidad: float&lt;br&gt;+ DatosSuelo: Suelo&lt;br&gt;+ DatosCamino: CaminoAcceso&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ ActualizarEstado(): void&lt;br&gt;+ CalcularRendimiento(): float&lt;br&gt;+ AsignarPrioridad(): void&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="245" width="290" x="1060" y="980" as="geometry" />
+        </mxCell>
+        <mxCell id="CuadrillaCosecha" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;CuadrillaCosecha&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdCuadrilla: int&lt;br&gt;+ NombreFrente: string&lt;br&gt;+ CantidadCosechadoras: int&lt;br&gt;+ CantidadTractores: int&lt;br&gt;+ CapacidadCorteTonDia: float&lt;br&gt;+ EstadoOperativo: string&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ AsignarLote(): void&lt;br&gt;+ LiberarCuadrilla(): void&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="155" width="260" x="1180" y="530" as="geometry" />
+        </mxCell>
+        <mxCell id="LecturaPluviometro" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;LecturaPluviometro&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdLectura: int&lt;br&gt;+ FechaRegistro: date&lt;br&gt;+ MilimetrosCaidos: float&lt;br&gt;+ Observaciones: string&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ RegistrarMilimetros(): void&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="130" width="230" x="1460" y="795" as="geometry" />
+        </mxCell>
+        <mxCell id="PronosticoClima" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;PronosticoClima&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdPronostico: int&lt;br&gt;+ FechaHora: date&lt;br&gt;+ PrecipitacionEstimadaMm: float&lt;br&gt;+ ProbabilidadLluvia: float&lt;br&gt;+ OrigenDatos: string&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ EsLluviaCritica(): boolean&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="140" width="250" x="2270" y="517.5" as="geometry" />
+        </mxCell>
+        <mxCell id="I_ResumenEjecutivo" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. ResumenEjecutivo&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ CargarKpisZafra(): RetornoMetricasZafra&lt;br&gt;+ SeleccionarIrAMapaYDSS(): RetornoNavegacion&lt;br&gt;+ ExportarReporteGerencial(): RetornoArchivoReporte&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="105" width="260" x="310" y="480" as="geometry" />
+        </mxCell>
+        <mxCell id="ParadaFabrica" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;ParadaFabrica&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdParada: int&lt;br&gt;+ FechaInicio: date&lt;br&gt;+ FechaFin: date&lt;br&gt;+ HorasDetenidas: float&lt;br&gt;+ MotivoParada: string&lt;br&gt;+ CostoParadaHora: float&lt;br&gt;+ CostoTotalPerdida: float&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ CalcularCostoTotal(): float&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="165" width="250" x="600" y="1520" as="geometry" />
+        </mxCell>
+        <mxCell id="Suelo" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;Suelo&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdSuelo: int&lt;br&gt;+ TipoTextura: string&lt;br&gt;+ CapacidadDrenaje: string&lt;br&gt;+ InfiltracionMmHora: float&lt;br&gt;+ PendientePorcentaje: float&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ CalcularCoeficienteRetencion(): float&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="140" width="240" x="1010" y="1710" as="geometry" />
+        </mxCell>
+        <mxCell id="CaminoAcceso" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;CaminoAcceso&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; border-bottom:1px solid #000000; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IdCamino: int&lt;br&gt;+ NombreRuta: string&lt;br&gt;+ TipoCalzada: string&lt;br&gt;+ EstadoTransitabilidad: string&lt;br&gt;+ DistanciaIngenioKm: float&lt;br&gt;+ EsBajoInundable: boolean&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ EvaluarTransitoConLluvia(): string&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="150" width="250" x="1310" y="1700" as="geometry" />
+        </mxCell>
+        <mxCell id="I_AuditoriaParadas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;I. AuditoriaParadas&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IngresarRegistroParada(): RetornoParada&lt;br&gt;+ CalcularCostoMonetario(): RetornoCostoEstimado&lt;br&gt;+ ConfirmarAuditoriaMolienda(): RetornoConfirmacion&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="105" width="260" x="290" y="1877.5" as="geometry" />
+        </mxCell>
+        <mxCell id="G_AuditoriaParadas" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. AuditoriaParadas&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ BuscarParadasPeriodo(): RetornoParadas&lt;br&gt;+ RegistrarParadaPorFaltaCana(): RetornoRegistroParada&lt;br&gt;+ CalcularPerdidaEconomicaTotal(): RetornoCalculoFinanciero&lt;br&gt;+ GenerarBalanceImpactoZafra(): RetornoInformeFinanciero&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="290" x="650" y="1872.5" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ini_gacc" edge="1" parent="1" source="I_InicioSesion" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="G_TransaccionAcceso">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_ini_gacc_lbl_src" connectable="0" parent="e_ini_gacc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_ini_gacc_lbl_dst" connectable="0" parent="e_ini_gacc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gacc_usr" edge="1" parent="1" source="G_TransaccionAcceso" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" target="Usuario">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gacc_usr_lbl_src" connectable="0" parent="e_gacc_usr" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gacc_usr_lbl_dst" connectable="0" parent="e_gacc_usr" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.767" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_res_gacc" edge="1" parent="1" source="I_ResumenEjecutivo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="G_TransaccionAcceso">
+          <mxGeometry relative="1" x="0.2884" as="geometry" />
+        </mxCell>
+        <mxCell id="e_res_gacc_lbl_src" connectable="0" parent="e_res_gacc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.68" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_res_gacc_lbl_dst" connectable="0" parent="e_res_gacc" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gis_gdss" edge="1" parent="1" source="I_CentroControlGIS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="G_PriorizacionDSS">
+          <mxGeometry relative="1" x="0.2303" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gis_gdss_lbl_src" connectable="0" parent="e_gis_gdss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.6541" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gis_gdss_lbl_dst" connectable="0" parent="e_gis_gdss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_rdss" edge="1" parent="1" source="G_PriorizacionDSS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=1;entryY=0.5;entryDx=0;entryDy=0;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" target="ResultadoDSS">
+          <mxGeometry relative="1" x="0.2491" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gdss_rdss_lbl_src" connectable="0" parent="e_gdss_rdss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.6912" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_rdss_lbl_dst" connectable="0" parent="e_gdss_rdss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7221" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_lote" edge="1" parent="1" source="G_PriorizacionDSS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" target="Lote">
+          <mxGeometry relative="1" x="0.1677" as="geometry">
+            <Array as="points">
+              <mxPoint x="1940" y="1287.5" />
+              <mxPoint x="1940" y="1041.3" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_lote_lbl_src" connectable="0" parent="e_gdss_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.6622" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_lote_lbl_dst" connectable="0" parent="e_gdss_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7506" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_gmet" edge="1" parent="1" source="G_PriorizacionDSS" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" target="G_Meteorologico">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gdss_gmet_lbl_src" connectable="0" parent="e_gdss_gmet" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gdss_gmet_lbl_dst" connectable="0" parent="e_gdss_gmet" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.6776" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lote_rdss" edge="1" parent="1" source="Lote" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;startArrow=diamond;startFill=1;endArrow=none;exitX=1;exitY=0.75;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="ResultadoDSS">
+          <mxGeometry relative="1" x="-0.349" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lote_rdss_lbl_src" connectable="0" parent="e_lote_rdss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7128" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lote_rdss_lbl_dst" connectable="0" parent="e_lote_rdss" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1...N" vertex="1">
+          <mxGeometry relative="1" x="0.5687" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_cat_gcat" edge="1" parent="1" source="I_Catastro" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="G_Catastro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cat_gcat_lbl_src" connectable="0" parent="e_cat_gcat" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_cat_gcat_lbl_dst" connectable="0" parent="e_cat_gcat" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gcat_lote" edge="1" parent="1" source="G_Catastro" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=0;entryY=0.25;entryDx=0;entryDy=0;" target="Lote">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gcat_lote_lbl_src" connectable="0" parent="e_gcat_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.5773" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gcat_lote_lbl_dst" connectable="0" parent="e_gcat_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lote_suelo" edge="1" parent="1" source="Lote" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;startArrow=diamond;startFill=1;endArrow=none;exitX=0.25;exitY=1;exitDx=0;exitDy=0;" target="Suelo">
+          <mxGeometry relative="1" x="0.2101" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lote_suelo_lbl_src" connectable="0" parent="e_lote_suelo" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lote_suelo_lbl_dst" connectable="0" parent="e_lote_suelo" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.8051" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lote_cam" edge="1" parent="1" source="Lote" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;startArrow=diamond;startFill=0;endArrow=none;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" target="CaminoAcceso">
+          <mxGeometry relative="1" x="-0.0753" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lote_cam_lbl_src" connectable="0" parent="e_lote_cam" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lote_cam_lbl_dst" connectable="0" parent="e_lote_cam" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.7343" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_frente_gope" edge="1" parent="1" source="I_CosechadorFrente" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="G_OperacionesCosecha">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_frente_gope_lbl_src" connectable="0" parent="e_frente_gope" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_frente_gope_lbl_dst" connectable="0" parent="e_frente_gope" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gope_cuad" edge="1" parent="1" source="G_OperacionesCosecha" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="CuadrillaCosecha">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gope_cuad_lbl_src" connectable="0" parent="e_gope_cuad" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gope_cuad_lbl_dst" connectable="0" parent="e_gope_cuad" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gope_lote" edge="1" parent="1" source="G_OperacionesCosecha" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=0.25;entryY=0;entryDx=0;entryDy=0;" target="Lote">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gope_lote_lbl_src" connectable="0" parent="e_gope_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.7682" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gope_lote_lbl_dst" connectable="0" parent="e_gope_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_cuad_lote" edge="1" parent="1" source="CuadrillaCosecha" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="Lote">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_cuad_lote_lbl_src" connectable="0" parent="e_cuad_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_cuad_lote_lbl_dst" connectable="0" parent="e_cuad_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="0...1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_pluv_gmet" edge="1" parent="1" source="I_Pluviometro" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="G_Meteorologico">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_pluv_gmet_lbl_src" connectable="0" parent="e_pluv_gmet" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_pluv_gmet_lbl_dst" connectable="0" parent="e_pluv_gmet" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gmet_serv" edge="1" parent="1" source="G_Meteorologico" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="I_ServicioMeteorologico">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gmet_serv_lbl_src" connectable="0" parent="e_gmet_serv" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gmet_serv_lbl_dst" connectable="0" parent="e_gmet_serv" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gmet_lec" edge="1" parent="1" source="G_Meteorologico" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;exitX=0;exitY=0.75;exitDx=0;exitDy=0;" target="LecturaPluviometro">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gmet_lec_lbl_src" connectable="0" parent="e_gmet_lec" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gmet_lec_lbl_dst" connectable="0" parent="e_gmet_lec" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.7237" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gmet_pron" edge="1" parent="1" source="G_Meteorologico" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;exitX=0.75;exitY=0;exitDx=0;exitDy=0;" target="PronosticoClima">
+          <mxGeometry relative="1" x="-0.3067" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gmet_pron_lbl_src" connectable="0" parent="e_gmet_pron" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gmet_pron_lbl_dst" connectable="0" parent="e_gmet_pron" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.6711" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lec_lote" edge="1" parent="1" source="LecturaPluviometro" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;startArrow=diamond;startFill=0;endArrow=none;entryX=0.75;entryY=0;entryDx=0;entryDy=0;" target="Lote">
+          <mxGeometry relative="1" x="0.157" as="geometry" />
+        </mxCell>
+        <mxCell id="e_lec_lote_lbl_src" connectable="0" parent="e_lec_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1...N" vertex="1">
+          <mxGeometry relative="1" x="-0.7091" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_lec_lote_lbl_dst" connectable="0" parent="e_lec_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_aud_gaud" edge="1" parent="1" source="I_AuditoriaParadas" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" target="G_AuditoriaParadas">
+          <mxGeometry relative="1" x="0.24" as="geometry" />
+        </mxCell>
+        <mxCell id="e_aud_gaud_lbl_src" connectable="0" parent="e_aud_gaud" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.0133" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_aud_gaud_lbl_dst" connectable="0" parent="e_aud_gaud" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gaud_par" edge="1" parent="1" source="G_AuditoriaParadas" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=0.75;entryY=1;entryDx=0;entryDy=0;" target="ParadaFabrica">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gaud_par_lbl_src" connectable="0" parent="e_gaud_par" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.6866" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gaud_par_lbl_dst" connectable="0" parent="e_gaud_par" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_par_lote" edge="1" parent="1" source="ParadaFabrica" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;startArrow=diamond;startFill=0;endArrow=none;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="Lote">
+          <mxGeometry relative="1" x="0.2052" as="geometry" />
+        </mxCell>
+        <mxCell id="e_par_lote_lbl_src" connectable="0" parent="e_par_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="-0.6987" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_par_lote_lbl_dst" connectable="0" parent="e_par_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="0...1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      
+        <!-- ======================================================== -->
+        <!-- GESTOR COORDINADOR DE ZAFRA (MEDIADOR CENTRAL)           -->
+        <!-- ======================================================== -->
+        <mxCell id="G_CoordinadorZafra" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#000000;strokeWidth=1.5;verticalAlign=top;align=left;spacing=0;" value="&lt;table border=&quot;0&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;width:100%; border-collapse:collapse; font-family:Arial,sans-serif; color:#000000; background-color:#ffffff;&quot;&gt;&lt;tr&gt;&lt;td style=&quot;text-align:center; font-weight:bold; font-size:12px; border-bottom:1.5px solid #000000; padding:6px 4px; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;G. CoordinadorZafra&lt;/td&gt;&lt;/tr&gt;&lt;tr&gt;&lt;td style=&quot;font-size:10px; text-align:left; padding:5px 6px; line-height:1.4; font-family:Arial,sans-serif; background-color:#ffffff; color:#000000;&quot;&gt;+ IniciarTurnoZafra(): RetornoSesionActiva&lt;br&gt;+ DespacharOrdenCosecha(): RetornoConfirmacion&lt;br&gt;+ ConsultarTableroZafra(): RetornoKpisGenerales&lt;br&gt;+ CoordinarOperacionesLluvia(): RetornoEstadoGeneral&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;" vertex="1">
+          <mxGeometry height="115" width="290" x="710" y="250" as="geometry" />
+        </mxCell>
+
+        <!-- 1. Enlace G. TransaccionAcceso (1) -> G. CoordinadorZafra (1) -->
+        <mxCell id="e_gacc_gcoord" edge="1" parent="1" source="G_TransaccionAcceso" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="G_CoordinadorZafra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gacc_gcoord_lbl_src" connectable="0" parent="e_gacc_gcoord" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gacc_gcoord_lbl_dst" connectable="0" parent="e_gacc_gcoord" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 2. Enlace G. CoordinadorZafra (1) -> Lote (N) -->
+        <mxCell id="e_gcoord_lote" edge="1" parent="1" source="G_CoordinadorZafra" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="Lote">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gcoord_lote_lbl_src" connectable="0" parent="e_gcoord_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gcoord_lote_lbl_dst" connectable="0" parent="e_gcoord_lote" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="N" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 3. Enlace G. CoordinadorZafra (1) -> G. OperacionesCosecha (1) -->
+        <mxCell id="e_gcoord_gope" edge="1" parent="1" source="G_CoordinadorZafra" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;" target="G_OperacionesCosecha">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_gcoord_gope_lbl_src" connectable="0" parent="e_gcoord_gope" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_gcoord_gope_lbl_dst" connectable="0" parent="e_gcoord_gope" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+
+        <!-- 4. Enlace I. ResumenEjecutivo (1) -> G. CoordinadorZafra (1) -->
+        <mxCell id="e_res_gcoord" edge="1" parent="1" source="I_ResumenEjecutivo" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;strokeColor=#000000;strokeWidth=1.5;endArrow=none;startArrow=none;entryX=0;entryY=0.75;entryDx=0;entryDy=0;" target="G_CoordinadorZafra">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_res_gcoord_lbl_src" connectable="0" parent="e_res_gcoord" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="-0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e_res_gcoord_lbl_dst" connectable="0" parent="e_res_gcoord" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontSize=11;fontColor=#000000;fontFamily=Arial;" value="1" vertex="1">
+          <mxGeometry relative="1" x="0.75" y="10" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+</root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
