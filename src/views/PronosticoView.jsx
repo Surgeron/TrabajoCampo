@@ -6,7 +6,15 @@ import {
 } from "../services/gestores";
 
 // <<interfaz>> InterfazPronostico (CU09)
-export default function PronosticoView({ onToast, onDatosCambiados, versionDatos }) {
+export default function PronosticoView({
+  onToast,
+  onDatosCambiados,
+  versionDatos,
+  intervaloAutoSyncMinutos = 30,
+  onCambiarIntervaloAutoSync,
+  ultimaAutoSync = null,
+  sincronizandoAuto = false
+}) {
   const [cargando, setCargando] = useState(false);
 
   const config = useMemo(() => GestorConfiguracion.obtenerVigente(), [versionDatos]);
@@ -70,6 +78,54 @@ export default function PronosticoView({ onToast, onDatosCambiados, versionDatos
           >
             {cargando ? "⏳ Consultando..." : "📡 Actualizar desde Open-Meteo"}
           </button>
+        </div>
+
+        {/* Barra de auto-actualización periódica */}
+        <div
+          style={{
+            gridColumn: "1 / -1",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "12px",
+            marginTop: "12px",
+            paddingTop: "12px",
+            borderTop: "1px solid var(--border-color)",
+            flexWrap: "wrap",
+            fontSize: "13px"
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
+            <span>⏱️ <b>Auto-actualización automática:</b></span>
+            <select
+              className="form-control"
+              style={{ width: "auto", padding: "4px 10px", fontSize: "12px", height: "32px", borderRadius: "6px" }}
+              value={intervaloAutoSyncMinutos}
+              onChange={(e) => onCambiarIntervaloAutoSync?.(Number(e.target.value))}
+            >
+              <option value={10}>Cada 10 minutos</option>
+              <option value={15}>Cada 15 minutos</option>
+              <option value={30}>Cada 30 minutos (recomendado)</option>
+              <option value={60}>Cada 1 hora</option>
+              <option value={0}>Desactivada (solo manual)</option>
+            </select>
+            {intervaloAutoSyncMinutos > 0 ? (
+              <span className="badge-status badge-safe" style={{ fontSize: "11px", padding: "4px 8px" }}>
+                {sincronizandoAuto ? "⏳ Sincronizando en vivo..." : `🟢 Activa (cada ${intervaloAutoSyncMinutos} min)`}
+              </span>
+            ) : (
+              <span className="badge-status badge-incompleto" style={{ fontSize: "11px", padding: "4px 8px" }}>
+                ⏸️ Desactivada
+              </span>
+            )}
+          </div>
+
+          <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>
+            {ultimaAutoSync
+              ? `Última sincronización: ${new Date(ultimaAutoSync).toLocaleTimeString("es-AR", { hour: "2-digit", minute: "2-digit", second: "2-digit" })}`
+              : "Esperando primer ciclo de sincronización"}
+          </div>
         </div>
       </div>
 

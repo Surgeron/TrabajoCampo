@@ -1453,6 +1453,21 @@ export class GestorPronostico {
       return null;
     }
   }
+
+  // Sincronización automática de todas las zonas (por intervalo o al iniciar la app)
+  static async sincronizarTodas(forzarRed = false) {
+    const zonas = GestorZonas.listarZonas();
+    const resultados = [];
+    for (const z of zonas) {
+      try {
+        const p = await this.consultar(z, forzarRed);
+        if (p) resultados.push(p);
+      } catch (err) {
+        console.warn(`[GestorPronostico] Error al sincronizar zona ${z.codigo}:`, err);
+      }
+    }
+    return resultados;
+  }
 }
 
 // ==========================================

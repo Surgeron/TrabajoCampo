@@ -3,6 +3,7 @@ import { DatasheetStore } from "./domain/datasheets.js";
 import { ROL_META } from "./domain/enums.js";
 import {
   GestorParadas,
+  GestorPronostico,
   GestorRanking,
   GestorSesion,
   GestorZonas
@@ -26,6 +27,11 @@ export default function App() {
   const [toast, setToast] = useState(null);
   const [zonaPreseleccionada, setZonaPreseleccionada] = useState(null);
   const [lotePreseleccionado, setLotePreseleccionado] = useState(null);
+
+  // Auto-actualización periódica de pronóstico Open-Meteo
+  const [intervaloAutoSyncMinutos, setIntervaloAutoSyncMinutos] = useState(30);
+  const [ultimaAutoSync, setUltimaAutoSync] = useState(null);
+  const [sincronizandoAuto, setSincronizandoAuto] = useState(false);
 
   // Suscripción reactiva al DatasheetStore
   useEffect(() => {
@@ -57,6 +63,35 @@ export default function App() {
       setVistaActual(GestorSesion.obtenerVistaPorDefecto(usuario));
     }
   }, [usuario, vistaActual]);
+
+  // Sincronización automática de pronóstico: al montar la app y periódicamente
+  useEffect(() => {
+    // Al iniciar: si la última consulta tiene más de 30 minutos, se actualiza automáticamente
+    GestorPronostico.sincronizarTodas(false).then((res) => {
+      if (res && res.length > 0) {
+        setUltimaAutoSync(new Date());
+      }
+    });
+  }, []);
+
+  useEffect(() => {
+    if (!intervaloAutoSyncMinutos || intervaloAutoSyncMinutos <= 0) return undefined;
+    const ms = intervaloAutoSyncMinutos * 60 * 1000;
+    const timer = setInterval(async () => {
+      setSincronizandoAuto(true);
+      try {
+        await GestorPronostico.sincronizarTodas(true);
+        setUltimaAutoSync(new Date());
+        mostrarToast("Pronóstico meteorológico actualizado en segundo plano desde Open-Meteo.", "info");
+      } catch (err) {
+        console.warn("[AutoSync] Error al actualizar pronóstico:", err);
+      } finally {
+        setSincronizandoAuto(false);
+      }
+    }, ms);
+
+    return () => clearInterval(timer);
+  }, [intervaloAutoSyncMinutos, mostrarToast]);
 
   // Ranking oficial vigente (genera uno inicial si la hoja está vacía)
   const rankingOficial = useMemo(() => {
@@ -189,6 +224,10 @@ export default function App() {
             onToast={mostrarToast}
             onDatosCambiados={notificarCambioDatos}
             versionDatos={versionDatos}
+            intervaloAutoSyncMinutos={intervaloAutoSyncMinutos}
+            onCambiarIntervaloAutoSync={setIntervaloAutoSyncMinutos}
+            ultimaAutoSync={ultimaAutoSync}
+            sincronizandoAuto={sincronizandoAuto}
           />
         )}
 
