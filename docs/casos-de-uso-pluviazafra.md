@@ -2,14 +2,14 @@
 
 Proyecto: Ingenio La Esperanza (nombre provisorio PluviaZafra). Equipo: Carpincho Software.
 
-Los puntos entre corchetes están pendientes de confirmar en la entrevista.
+Las especificaciones detalladas (formato Cockburn) están en [especificaciones-casos-de-uso.md](especificaciones-casos-de-uso.md). Los casos agrupados por usuario están en [casos-de-uso-por-usuario.md](casos-de-uso-por-usuario.md). Los puntos entre corchetes están pendientes de confirmar en la entrevista.
 
 ## Actores
 
 - **Jefe de cosecha** (planificador): consulta el ranking y decide el orden de cosecha. Actor principal. [confirmar el cargo real en el ingenio]
 - **Operador de campo**: carga lecturas de pluviómetro y reporta anegamientos.
 - **Supervisor de fábrica**: registra las paradas con causa y duración.
-- **Administrador**: gestiona usuarios, lotes y parámetros del índice.
+- **Administrador**: gestiona usuarios, lotes, zonas y parámetros del modelo.
 - **Open-Meteo** (actor secundario, sistema externo): provee el pronóstico.
 
 Firebase Auth no es actor, es infraestructura. El inicio de sesión se modela como un único caso de uso, sin `include` desde todos los demás.
@@ -20,11 +20,11 @@ Firebase Auth no es actor, es infraestructura. El inicio de sesión se modela co
 |---|---|---|
 | CU01 | Iniciar sesión | Todos los humanos |
 | CU02 | Gestionar usuarios y roles | Administrador |
-| CU03 | Gestionar lotes (alta, modificación, baja, ubicación en el mapa) | Administrador |
-| CU04 | Registrar atributos de vulnerabilidad del lote (suelo, drenaje, camino de acceso) | Administrador |
-| CU05 | Registrar anegamiento histórico | Jefe de cosecha, Operador |
-| CU06 | Configurar pesos y umbrales de lluvia | Administrador |
-| CU07 | Gestionar pluviómetros | Administrador |
+| CU03 | Gestionar lotes (polígono, datos y estado) | Administrador |
+| CU04 | Registrar atributos de vulnerabilidad del lote | Administrador |
+| CU05 | Registrar anegamiento | Operador de campo, Jefe de cosecha |
+| CU06 | Configurar parámetros del sistema | Administrador |
+| CU07 | Gestionar zonas y pluviómetros | Administrador |
 | CU08 | Registrar lectura de pluviómetro | Operador de campo |
 | CU09 | Consultar pronóstico | Jefe de cosecha, Open-Meteo |
 | CU10 | Calcular índice de vulnerabilidad | (interno) |
@@ -36,10 +36,10 @@ Firebase Auth no es actor, es infraestructura. El inicio de sesión se modela co
 
 ## Relaciones
 
-- CU11 `<<include>>` CU10 y CU09 (la lluvia acumulada sale de las lecturas de CU08).
+- CU11 `<<include>>` CU10 y CU09. La lluvia acumulada sale de las lecturas de CU08.
 - CU12 `<<include>>` CU11.
-- CU15 `<<extend>>` CU11, con punto de extensión "lluvia acumulada + pronóstico superan el umbral del lote".
-- CU05 `<<extend>>` CU08, con la condición "el operador observa un lote intransitable".
+- CU15 `<<extend>>` CU11, con punto de extensión "lote con semáforo rojo".
+- CU05 `<<extend>>` CU08, con la condición "el operador observa un lote intransitable". CU05 también puede ejecutarse solo.
 - El Administrador hereda del Jefe de cosecha. [válido si en la entrevista confirman que no hay separación estricta]
 
 Regla práctica: `include` es obligatorio y lo invoca el caso base; `extend` es opcional y el caso base no lo conoce.
@@ -62,8 +62,8 @@ rectangle PluviaZafra {
   usecase "CU03 Gestionar lotes" as CU03
   usecase "CU04 Registrar atributos de vulnerabilidad" as CU04
   usecase "CU05 Registrar anegamiento" as CU05
-  usecase "CU06 Configurar pesos y umbrales" as CU06
-  usecase "CU07 Gestionar pluviómetros" as CU07
+  usecase "CU06 Configurar parámetros" as CU06
+  usecase "CU07 Gestionar zonas y pluviómetros" as CU07
   usecase "CU08 Registrar lectura de pluviómetro" as CU08
   usecase "CU09 Consultar pronóstico" as CU09
   usecase "CU10 Calcular índice de vulnerabilidad" as CU10
@@ -99,27 +99,15 @@ note right of CU01 : Aplica a todos los actores humanos
 @enduml
 ```
 
-## Especificación: CU11 Generar ranking de prioridad de cosecha
+## Cambios respecto de la primera versión
 
-- **Actor principal:** Jefe de cosecha.
-- **Actor secundario:** Open-Meteo.
-- **Precondición:** sesión iniciada, hay lotes con atributos cargados.
-- **Flujo principal:**
-  1. El jefe solicita el ranking.
-  2. El sistema obtiene el pronóstico de lluvia de cada lote (CU09).
-  3. El sistema suma la lluvia caída según las lecturas del pluviómetro asociado.
-  4. El sistema calcula el índice de cada lote (CU10).
-  5. El sistema combina índice, pronóstico y lluvia acumulada y ordena los lotes.
-  6. El sistema muestra el ranking.
-- **Flujos alternativos:**
-  - 2a. Open-Meteo no responde: se usa el último pronóstico guardado y se avisa que está desactualizado.
-  - 3a. Un lote no tiene lecturas recientes: se calcula solo con el pronóstico y se marca el dato como faltante.
-- **Postcondición:** el ranking queda guardado con fecha y hora.
-- **Regla de negocio:** a mayor vulnerabilidad y mayor lluvia prevista, mayor prioridad de cosecha. [fórmula y pesos a definir con la entrevista]
+- CU06 pasó de "pesos y umbrales" a "parámetros del sistema" (incluye semáforo, lluvia crítica y ventanas).
+- CU07 pasó de "pluviómetros" a "zonas y pluviómetros", porque cada zona tiene un pluviómetro.
+- CU03 incluye polígono dibujado y estados (semáforo y operativos).
+- CU15 se dispara con lotes en rojo.
 
 ## Pendientes
 
-- Especificar el resto de los casos de uso (CU01 a CU15, salvo CU11).
-- Confirmar en la entrevista: quién decide hoy el orden de cosecha, quién carga los pluviómetros y con qué frecuencia, cuántas personas registran paradas.
-- Decidir si se agrega CU16 "Registrar stock de patio" (hoy fuera del alcance, pero la hipótesis del problema depende de ese dato).
-- Confirmar con la consigna de la cátedra si piden diagramas de actividad o secuencia y el formato de especificación (por ejemplo Cockburn).
+- Decidir si entra CU16 "Registrar stock de patio" (hoy fuera del alcance, pero la hipótesis del problema depende de ese dato).
+- Confirmar con la consigna de la cátedra qué otros diagramas piden y el formato de especificación.
+- Confirmar en la entrevista los roles reales y si el Administrador hereda del Jefe de cosecha.
