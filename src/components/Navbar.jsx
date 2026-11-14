@@ -1,15 +1,19 @@
 import React from "react";
-import { GestorAutenticacion } from "../services/GestorAutenticacion";
+import { GestorSesion } from "../services/gestores";
+import { ROL_META } from "../domain/enums";
 import "./Navbar.css";
 
 export default function Navbar({
   usuario,
   vistaActual,
+  paradaAbierta,
   onCambiarVista,
   onCerrarSesion,
-  onResetDemo
+  onResetDatasheets,
+  onExportarDatasheets
 }) {
-  const vistasPermitidas = GestorAutenticacion.obtenerVistasPermitidas(usuario);
+  const vistasPermitidas = GestorSesion.obtenerVistasPermitidas(usuario);
+  const rolInfo = ROL_META[usuario?.rol];
 
   return (
     <header className="topbar">
@@ -19,15 +23,15 @@ export default function Navbar({
           <h1>
             PluviaZafra <span className="badge-client">Ingenio La Esperanza</span>
           </h1>
-          <p>Sistema DSS de Apoyo a la Priorización de Cosecha por Lluvia</p>
+          <p>Priorización de Cosecha por Vulnerabilidad a la Lluvia (Datasheets)</p>
         </div>
       </div>
 
-      {/* NAVEGACIÓN BASADA EN EL PRINCIPIO DE MÍNIMO PRIVILEGIO (PoLP) */}
+      {/* NAVEGACIÓN BASADA EN ROLES (PoLP) */}
       <nav className="nav-role-group">
         <div className="role-subgroup">
           <span className="role-label">
-            {usuario?.avatar} Módulos autorizados:
+            {rolInfo?.avatar || "👤"} Módulos:
           </span>
           {vistasPermitidas.map((v) => (
             <button
@@ -42,33 +46,57 @@ export default function Navbar({
         </div>
       </nav>
 
-      {/* INFORMACIÓN DEL USUARIO LOGUEADO Y ACCIONES DE SESIÓN */}
+      {/* BARRA DE SESIÓN Y ACCIONES */}
       <div className="user-session-bar">
+        {paradaAbierta && (
+          <button
+            className="badge-status badge-urgent"
+            style={{ cursor: "pointer", padding: "6px 10px" }}
+            onClick={() => {
+              if (GestorSesion.tienePermisoVista(usuario, "paradas")) {
+                onCambiarVista("paradas");
+              }
+            }}
+            title="Parada de fábrica abierta actualmente (CU13)"
+          >
+            🚨 PARADA ABIERTA ({paradaAbierta.id})
+          </button>
+        )}
+
         {usuario && (
           <div className="user-profile-badge">
-            <span className="user-avatar-circle">{usuario.avatar}</span>
+            <span className="user-avatar-circle">{rolInfo?.avatar || "👤"}</span>
             <div className="user-meta">
               <span className="user-name">{usuario.nombre}</span>
-              <span className="user-role-tag">{usuario.cargo || usuario.rol}</span>
+              <span className="user-role-tag">{rolInfo?.nombre || usuario.rol}</span>
             </div>
           </div>
         )}
 
-        <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "6px", alignItems: "center" }}>
           <button
             className="btn-action"
-            style={{ minHeight: "34px", padding: "6px 12px", fontSize: "12px" }}
-            onClick={onResetDemo}
-            title="Restablecer datos de simulación"
+            style={{ minHeight: "34px", padding: "6px 10px", fontSize: "12px" }}
+            onClick={onExportarDatasheets}
+            title="Descargar respaldo JSON completo de los datasheets"
+          >
+            📦 JSON
+          </button>
+
+          <button
+            className="btn-action"
+            style={{ minHeight: "34px", padding: "6px 10px", fontSize: "12px" }}
+            onClick={onResetDatasheets}
+            title="Restablecer datasheets a los datos iniciales de ejemplo"
           >
             🔄 Reset
           </button>
 
           <button
             className="btn-action btn-logout"
-            style={{ minHeight: "34px", padding: "6px 12px", fontSize: "12px" }}
+            style={{ minHeight: "34px", padding: "6px 10px", fontSize: "12px" }}
             onClick={onCerrarSesion}
-            title="Cerrar sesión actual para probar otro perfil"
+            title="Cerrar sesión"
           >
             🚪 Salir
           </button>

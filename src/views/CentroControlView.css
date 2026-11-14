@@ -565,7 +565,10 @@
   }
 
   .map-legend {
-    display: none;
+    font-size: 10px;
+    padding: 6px 10px;
+    bottom: 8px;
+    left: 8px;
   }
 
   .stats-controls-row {

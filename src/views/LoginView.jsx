@@ -1,114 +1,141 @@
 import React, { useState } from "react";
-import { USUARIOS_INICIALES } from "../domain/usuarios";
-import { GestorAutenticacion } from "../services/GestorAutenticacion";
+import { GestorSesion, GestorUsuarios } from "../services/gestores";
+import { ROL_META } from "../domain/enums";
 import "./LoginView.css";
 
+// <<interfaz>> InterfazLogin (CU01)
 export default function LoginView({ onLoginExitoso }) {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [clave, setClave] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  const handleLoginSubmit = (e) => {
+  const usuarios = GestorUsuarios.listarUsuarios();
+  const usuariosActivos = usuarios.filter((u) => u.habilitado);
+
+  const enviarCredenciales = (e) => {
     e.preventDefault();
     setErrorMsg("");
-
-    const res = GestorAutenticacion.iniciarSesion(username, password);
+    const res = GestorSesion.iniciarSesion(correo, clave);
     if (res.exito) {
       onLoginExitoso(res.usuario);
     } else {
-      setErrorMsg(res.mensaje);
+      mostrarError(res.error);
     }
   };
 
+  const mostrarError = (mensaje) => {
+    setErrorMsg(mensaje);
+  };
+
   const handleAccesoRapido = (idUsuario) => {
-    const res = GestorAutenticacion.iniciarSesionPorId(idUsuario);
+    setErrorMsg("");
+    const res = GestorSesion.iniciarSesionPorId(idUsuario);
     if (res.exito) {
       onLoginExitoso(res.usuario);
+    } else {
+      mostrarError(res.error);
     }
   };
 
   return (
     <div className="login-page-container">
       <div className="login-card-wrapper">
-        {/* CABECERA BRANDING */}
+        {/* CABECERA */}
         <div className="login-brand-header">
           <div className="login-brand-icon">🌱</div>
           <div>
-            <h1 className="login-title">PluviaZafra <span className="badge-client">Ingenio La Esperanza</span></h1>
-            <p className="login-subtitle">Sistema DSS de Priorización de Cosecha por Vulnerabilidad Hídrica</p>
+            <h1 className="login-title">
+              PluviaZafra <span className="badge-client">Ingenio La Esperanza</span>
+            </h1>
+            <p className="login-subtitle">
+              Sistema de Priorización de Cosecha según Vulnerabilidad a la Lluvia (Modelo BCE + Datasheets)
+            </p>
           </div>
         </div>
 
-        {/* BANNER PRINCIPIO DE MÍNIMO PRIVILEGIO */}
+        {/* BANNER DE ROLES Y ARQUITECTURA */}
         <div className="polp-banner">
           <div className="polp-badge">
             <span>🛡️</span>
-            <b>Principio de Mínimo Privilegio (PoLP)</b>
+            <b>Control de Acceso por Rol (CU01 — Principio de Mínimo Privilegio)</b>
           </div>
           <p>
-            Cada usuario visualiza y opera únicamente los módulos indispensables para su función de trabajo, garantizando el desacoplamiento de interfaces y la seguridad de la información.
+            Cada actor accede únicamente a las interfaces y casos de uso definidos en su perfil. El{" "}
+            <b>Administrador</b> hereda las facultades del <b>Jefe de cosecha</b>.
           </p>
         </div>
 
-        {/* ACCESO RÁPIDO PARA PRESENTACIÓN / EVALUACIÓN ACADÉMICA */}
+        {/* ACCESO RÁPIDO POR ACTOR UML */}
         <div className="quick-access-section">
           <h2 className="quick-access-title">
-            <span>⚡</span> Seleccioná un Perfil para Iniciar Sesión (Acceso Rápido)
+            <span>⚡</span> Seleccioná un Actor para Iniciar Sesión (Acceso Rápido)
           </h2>
           <p className="quick-access-desc">
-            Probá el sistema desde la perspectiva de cada rol del Ingenio:
+            Probá el sistema con los cuatro roles del diagrama de casos de uso:
           </p>
 
           <div className="quick-access-grid">
-            {USUARIOS_INICIALES.map((usr) => (
-              <div
-                key={usr.id}
-                className="quick-user-card"
-                onClick={() => handleAccesoRapido(usr.id)}
-                role="button"
-                tabIndex={0}
-              >
-                <div className="quick-card-top">
-                  <span className="quick-card-avatar">{usr.avatar}</span>
-                  <div className="quick-card-info">
-                    <h4>{usr.nombre}</h4>
-                    <span className="quick-card-cargo">{usr.cargo}</span>
+            {usuariosActivos.map((usr) => {
+              const rolInfo = ROL_META[usr.rol];
+              const vistas = GestorSesion.obtenerVistasPermitidas(usr);
+              const cus = GestorSesion.PERMISOS_CU_POR_ROL[usr.rol] || [];
+              return (
+                <div
+                  key={usr.id}
+                  className="quick-user-card"
+                  onClick={() => handleAccesoRapido(usr.id)}
+                  role="button"
+                  tabIndex={0}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") handleAccesoRapido(usr.id);
+                  }}
+                >
+                  <div>
+                    <div className="quick-card-top">
+                      <span className="quick-card-avatar">{rolInfo?.avatar || "👤"}</span>
+                      <div className="quick-card-info">
+                        <h4>{usr.nombre}</h4>
+                        <span className="quick-card-cargo">{rolInfo?.nombre || usr.rol}</span>
+                      </div>
+                    </div>
+
+                    <div className="quick-card-body">
+                      <div className="quick-permisos-title">
+                        Interfaces Habilitadas ({cus.length} CU):
+                      </div>
+                      <ul className="quick-permisos-list">
+                        {vistas.map((v) => (
+                          <li key={v.id}>
+                            <span className="check-icon">✔</span> {v.icono} {v.titulo}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+
+                  <div className="quick-card-footer">
+                    <button
+                      type="button"
+                      className="btn-action btn-primary"
+                      style={{ width: "100%", justifyContent: "center" }}
+                    >
+                      Ingresar como {rolInfo?.nombre} &rarr;
+                    </button>
                   </div>
                 </div>
-
-                <div className="quick-card-body">
-                  <div className="quick-permisos-title">Vistas y Permisos Habilitados:</div>
-                  <ul className="quick-permisos-list">
-                    {usr.vistasPermitidas.map((vId) => {
-                      const vInfo = GestorAutenticacion.VISTAS_SISTEMA[vId];
-                      return (
-                        <li key={vId}>
-                          <span className="check-icon">✔</span> {vInfo ? `${vInfo.icono} ${vInfo.titulo}` : vId}
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </div>
-
-                <div className="quick-card-footer">
-                  <button className="btn-action btn-primary" style={{ width: "100%", justifyContent: "center" }}>
-                    Ingresar como {usr.rol.replace("_", " ")} &rarr;
-                  </button>
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
 
-        {/* SEPARADOR */}
         <div className="login-divider">
-          <span>O ingresá manualmente con tus credenciales</span>
+          <span>O ingresá manualmente con correo y contraseña (CU01)</span>
         </div>
 
-        {/* FORMULARIO MANUAL CLÁSICO */}
-        <form onSubmit={handleLoginSubmit} className="login-form">
+        {/* FORMULARIO MANUAL (mostrarFormulario) */}
+        <form onSubmit={enviarCredenciales} className="login-form">
           {errorMsg && (
-            <div className="login-error-alert">
+            <div className="login-error-alert" role="alert">
               <span>⚠️</span>
               <span>{errorMsg}</span>
             </div>
@@ -116,13 +143,13 @@ export default function LoginView({ onLoginExitoso }) {
 
           <div className="login-form-grid">
             <div className="form-group">
-              <label>Usuario / Legajo:</label>
+              <label>Correo electrónico:</label>
               <input
-                type="text"
+                type="email"
                 className="form-control"
-                placeholder="ej. jefe.cosecha, cosechador.frente1"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
+                placeholder="ej. jefe@laesperanza.com.ar"
+                value={correo}
+                onChange={(e) => setCorreo(e.target.value)}
                 required
               />
             </div>
@@ -133,16 +160,26 @@ export default function LoginView({ onLoginExitoso }) {
                 type="password"
                 className="form-control"
                 placeholder="Ingresá 123"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={clave}
+                onChange={(e) => setClave(e.target.value)}
                 required
               />
             </div>
           </div>
 
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "10px", flexWrap: "wrap", gap: "10px" }}>
-            <span style={{ fontSize: "12px", color: "#64748b" }}>
-              💡 Contraseña por defecto para todos los usuarios de muestra: <b>123</b>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginTop: "12px",
+              flexWrap: "wrap",
+              gap: "10px"
+            }}
+          >
+            <span style={{ fontSize: "12px", color: "#94a3b8" }}>
+              💡 Clave por defecto: <b>123</b> | Usuario deshabilitado de prueba:{" "}
+              <code>inactivo@laesperanza.com.ar</code>
             </span>
             <button
               type="submit"
@@ -155,7 +192,9 @@ export default function LoginView({ onLoginExitoso }) {
         </form>
 
         <div className="login-footer">
-          <p>© 2026 Ingenio La Esperanza S.A. — San Pedro de Jujuy | PluviaZafra DSS Core v2.4</p>
+          <p>
+            Ingenio La Esperanza S.A. — PluviaZafra | Persistencia en Datasheets sin SQL
+          </p>
         </div>
       </div>
     </div>

@@ -1,244 +1,268 @@
-import React, { useState, useEffect } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { DatasheetStore } from "./domain/datasheets.js";
+import { ROL_META } from "./domain/enums.js";
+import {
+  GestorParadas,
+  GestorRanking,
+  GestorSesion,
+  GestorZonas
+} from "./services/gestores.js";
+import Navbar from "./components/Navbar.jsx";
+import LoginView from "./views/LoginView.jsx";
+import CentroControlView from "./views/CentroControlView.jsx";
+import PronosticoView from "./views/PronosticoView.jsx";
+import PluviometroView from "./views/PluviometroView.jsx";
+import AnegamientoView from "./views/AnegamientoView.jsx";
+import ParadasView from "./views/ParadasView.jsx";
+import AdministracionView from "./views/AdministracionView.jsx";
 import "./App.css";
 
-// Dominio y Datos Iniciales
-import {
-  LOTES_INICIALES,
-  PARADAS_INICIALES,
-  LECTURAS_PLUV_INICIALES,
-  CONFIG_ESCENARIOS
-} from "./domain/mockData";
-
-// Gestores (Capa de Control / Servicios - BCE Pattern)
-import { GestorPriorizacionDSS } from "./services/GestorPriorizacionDSS";
-import { GestorCatastro } from "./services/GestorCatastro";
-import { GestorMeteorologico } from "./services/GestorMeteorologico";
-import { GestorOperacionesCosecha } from "./services/GestorOperacionesCosecha";
-import { GestorParadasFabrica } from "./services/GestorParadasFabrica";
-import { GestorAutenticacion } from "./services/GestorAutenticacion";
-
-// Componentes y Vistas (Capa Boundary / UI)
-import Navbar from "./components/Navbar";
-import LoginView from "./views/LoginView";
-import ResumenGeneralView from "./views/ResumenGeneralView";
-import CentroControlView from "./views/CentroControlView";
-import CatastroView from "./views/CatastroView";
-import AuditoriaParadasView from "./views/AuditoriaParadasView";
-import CosechadorFrenteView from "./views/CosechadorFrenteView";
-import PluviometroView from "./views/PluviometroView";
-
 export default function App() {
-  // Estado de Sesión y Autenticación (Principio de Mínimo Privilegio)
-  const [usuarioActual, setUsuarioActual] = useState(null);
-  const [vistaActual, setVistaActual] = useState("resumen");
+  const [usuario, setUsuario] = useState(() => GestorSesion.obtenerUsuarioActual());
+  const [vistaActual, setVistaActual] = useState(() =>
+    usuario ? GestorSesion.obtenerVistaPorDefecto(usuario) : "centro-control"
+  );
+  const [versionDatos, setVersionDatos] = useState(0);
+  const [toast, setToast] = useState(null);
+  const [zonaPreseleccionada, setZonaPreseleccionada] = useState(null);
+  const [lotePreseleccionado, setLotePreseleccionado] = useState(null);
 
-  // Estado de Dominio
-  const [lotes, setLotes] = useState(LOTES_INICIALES);
-  const [paradas, setParadas] = useState(PARADAS_INICIALES);
-  const [lecturasPluv, setLecturasPluv] = useState(LECTURAS_PLUV_INICIALES);
-  const [escenarioActual, setEscenarioActual] = useState("live");
-  const [configEscenarios, setConfigEscenarios] = useState(CONFIG_ESCENARIOS);
-  const [filtroActivo, setFiltroActivo] = useState("todos");
-  const [loteSeleccionadoId, setLoteSeleccionadoId] = useState(null);
-  const [toast, setToast] = useState({ visible: false, text: "" });
-
-  const showToast = (text) => {
-    setToast({ visible: true, text });
-    setTimeout(() => {
-      setToast({ visible: false, text: "" });
-    }, 3500);
-  };
-
-  // Sincronizar clima en vivo con Open-Meteo al cargar
+  // Suscripción reactiva al DatasheetStore
   useEffect(() => {
-    GestorMeteorologico.consultarPronosticoLive().then((res) => {
-      setConfigEscenarios((prev) => ({
-        ...prev,
-        live: {
-          ...prev.live,
-          lluviaPrevistaMm: res.lluviaPrevistaMm,
-          probabilidadPct: res.probabilidadPct,
-          badge: res.badge
-        }
-      }));
+    const desuscribir = DatasheetStore.subscribe(() => {
+      setVersionDatos((v) => v + 1);
     });
+    return desuscribir;
   }, []);
 
-  // 1. Evaluación DSS en tiempo real usando el Gestor
-  const cfgClima = configEscenarios[escenarioActual];
-  const rankingDSS = GestorPriorizacionDSS.generarRanking(lotes, cfgClima, filtroActivo);
-  const metricasGlobales = GestorOperacionesCosecha.calcularMetricas(lotes, rankingDSS);
+  // Auto-ocultar notificaciones toast
+  useEffect(() => {
+    if (!toast) return undefined;
+    const timer = setTimeout(() => setToast(null), 4200);
+    return () => clearTimeout(timer);
+  }, [toast]);
 
-  // 2. Controladores de Sesión
-  const handleLogin = (usuario) => {
-    setUsuarioActual(usuario);
-    setVistaActual(usuario.vistaPorDefecto || "resumen");
-    showToast(`Sesión iniciada: ${usuario.nombre} (${usuario.cargo})`);
-  };
+  const mostrarToast = useCallback((mensaje, tipo = "info") => {
+    setToast({ mensaje, tipo, id: Date.now() });
+  }, []);
 
-  const handleLogout = () => {
-    setUsuarioActual(null);
-    showToast("Sesión cerrada correctamente. Volviendo al inicio.");
-  };
+  const notificarCambioDatos = useCallback(() => {
+    setVersionDatos((v) => v + 1);
+  }, []);
 
-  // 3. Controladores de Acciones invocando Gestores
-  const handleCambiarEscenario = (nuevoEscenario) => {
-    setEscenarioActual(nuevoEscenario);
-    showToast(`Escenario activado: ${configEscenarios[nuevoEscenario].nombre}`);
-  };
-
-  const handleMarcarCosechado = (idLote) => {
-    setLotes((prev) => GestorOperacionesCosecha.marcarCosechado(prev, idLote));
-    showToast(`Lote ${idLote} marcado como COSECHADO. El avance de Zafra subió.`);
-  };
-
-  const handleReabrirLote = (idLote) => {
-    setLotes((prev) => GestorOperacionesCosecha.reabrirLote(prev, idLote));
-    showToast(`Lote ${idLote} reabierto a PENDIENTE.`);
-  };
-
-  const handleAsignarFrente = (idLote) => {
-    setLotes((prev) => GestorOperacionesCosecha.asignarFrente(prev, idLote, "Frente N° 1"));
-    showToast(`Cuadrilla asignada al Lote ${idLote}. Estado pasado a EN COSECHA.`);
-  };
-
-  const handleActualizarLote = (idLote, nuevosDatos) => {
-    setLotes((prev) => GestorCatastro.actualizarLote(prev, idLote, nuevosDatos));
-    showToast(`Condiciones del Lote ${idLote} actualizadas. IVL recalculado.`);
-  };
-
-  const handleRegistrarLectura = (nuevaLectura) => {
-    setLecturasPluv((prev) => GestorMeteorologico.registrarLectura(prev, nuevaLectura));
-    showToast(`Lectura guardada: ${nuevaLectura.mm} mm en ${nuevaLectura.finca}.`);
-    if (nuevaLectura.mm >= 35) {
-      setEscenarioActual("sat");
+  // Asegurar que la vista actual esté permitida para el rol logueado
+  useEffect(() => {
+    if (!usuario) return;
+    if (!GestorSesion.tienePermisoVista(usuario, vistaActual)) {
+      setVistaActual(GestorSesion.obtenerVistaPorDefecto(usuario));
     }
+  }, [usuario, vistaActual]);
+
+  // Ranking oficial vigente (genera uno inicial si la hoja está vacía)
+  const rankingOficial = useMemo(() => {
+    void versionDatos;
+    const existente = GestorRanking.obtenerUltimoRanking();
+    if (existente) return existente;
+    return GestorRanking.generarRanking(usuario);
+  }, [versionDatos, usuario]);
+
+  const paradaAbierta = useMemo(() => {
+    void versionDatos;
+    return GestorParadas.obtenerAbierta();
+  }, [versionDatos]);
+
+  const handleLoginExitoso = (u) => {
+    setUsuario(u);
+    setVistaActual(GestorSesion.obtenerVistaPorDefecto(u));
+    const rolNombre = ROL_META[u?.rol]?.nombre || u?.rol;
+    mostrarToast(`Bienvenido, ${u.nombre} (${rolNombre}).`, "success");
   };
 
-  const handleRegistrarParada = (nuevaParada) => {
-    setParadas((prev) => GestorParadasFabrica.registrarParada(prev, nuevaParada));
-    showToast(`Parada registrada: ${nuevaParada.duracionHoras} hs.`);
+  const handleCerrarSesion = () => {
+    GestorSesion.cerrarSesion();
+    setUsuario(null);
+    setZonaPreseleccionada(null);
+    setLotePreseleccionado(null);
+    mostrarToast("Sesión cerrada.", "info");
   };
 
-  const handleResetDemo = () => {
-    setLotes(LOTES_INICIALES);
-    setParadas(PARADAS_INICIALES);
-    setLecturasPluv(LECTURAS_PLUV_INICIALES);
-    setEscenarioActual("live");
-    setLoteSeleccionadoId(null);
-    if (usuarioActual) {
-      setVistaActual(usuarioActual.vistaPorDefecto);
+  const handleCambiarVista = (idVista) => {
+    if (!usuario || !GestorSesion.tienePermisoVista(usuario, idVista)) {
+      mostrarToast("Tu rol no tiene acceso a ese módulo.", "error");
+      return;
     }
-    showToast("Demostración restablecida a valores iniciales.");
+    if (idVista !== "anegamiento") {
+      setZonaPreseleccionada(null);
+      setLotePreseleccionado(null);
+    }
+    setVistaActual(idVista);
   };
 
-  // SI NO HAY SESIÓN ACTIVA: Renderizar LoginView (PoLP Gate)
-  if (!usuarioActual) {
+  const handleGenerarRanking = () => {
+    const nuevo = GestorRanking.generarRanking(usuario);
+    setVersionDatos((v) => v + 1);
+    return nuevo;
+  };
+
+  const handleIrAAnegamiento = (codigoZonaOLote) => {
+    if (!GestorSesion.tienePermisoVista(usuario, "anegamiento")) {
+      mostrarToast("Tu rol no tiene permiso para registrar anegamientos.", "error");
+      return;
+    }
+    if (codigoZonaOLote) {
+      const esZona =
+        String(codigoZonaOLote).startsWith("ZN-") ||
+        Boolean(GestorZonas.obtenerPorCodigo(codigoZonaOLote));
+      if (esZona) {
+        setZonaPreseleccionada(codigoZonaOLote);
+        setLotePreseleccionado(null);
+      } else {
+        setLotePreseleccionado(codigoZonaOLote);
+        setZonaPreseleccionada(null);
+      }
+    } else {
+      setZonaPreseleccionada(null);
+      setLotePreseleccionado(null);
+    }
+    setVistaActual("anegamiento");
+  };
+
+  const handleExportarDatasheets = () => {
+    const json = DatasheetStore.exportJSON();
+    const blob = new Blob([json], { type: "application/json;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute(
+      "download",
+      `pluviazafra-datasheets-${new Date().toISOString().slice(0, 10)}.json`
+    );
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+    mostrarToast("Respaldo JSON de los datasheets descargado.", "info");
+  };
+
+  const handleResetDatasheets = () => {
+    DatasheetStore.reset();
+    GestorRanking.generarRanking(usuario);
+    setVersionDatos((v) => v + 1);
+    mostrarToast("Datasheets restablecidos a los datos iniciales de calibración.", "info");
+  };
+
+  if (!usuario) {
     return (
-      <div className="app-container">
-        <LoginView onLoginExitoso={handleLogin} />
-        {toast.visible && (
-          <div className="toast">
-            <span>✅</span> <span>{toast.text}</span>
-          </div>
-        )}
-      </div>
+      <>
+        <LoginView onLoginExitoso={handleLoginExitoso} />
+        {toast && <ToastBanner toast={toast} onClose={() => setToast(null)} />}
+      </>
     );
   }
 
-  // SESIÓN ACTIVA: Renderizar solo los módulos autorizados para el rol
   return (
-    <div className="app-container">
-      {/* NAVEGACIÓN BASADA EN EL PRINCIPIO DE MÍNIMO PRIVILEGIO (PoLP) */}
+    <div className="app-shell">
       <Navbar
-        usuario={usuarioActual}
+        usuario={usuario}
         vistaActual={vistaActual}
-        onCambiarVista={(v) => {
-          if (GestorAutenticacion.tienePermiso(usuarioActual, v)) {
-            setVistaActual(v);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          } else {
-            showToast("Acceso denegado según Principio de Mínimo Privilegio.");
-          }
-        }}
-        onCerrarSesion={handleLogout}
-        onResetDemo={handleResetDemo}
+        paradaAbierta={paradaAbierta}
+        onCambiarVista={handleCambiarVista}
+        onCerrarSesion={handleCerrarSesion}
+        onResetDatasheets={handleResetDatasheets}
+        onExportarDatasheets={handleExportarDatasheets}
       />
 
-      {/* 1. VISTA DE RESUMEN EJECUTIVO (KPIS EN PANTALLA COMPLETA) */}
-      {vistaActual === "resumen" && GestorAutenticacion.tienePermiso(usuarioActual, "resumen") && (
-        <ResumenGeneralView
-          metricas={metricasGlobales}
-          escenarioActual={escenarioActual}
-          configEscenarios={configEscenarios}
-          onCambiarVista={(v) => {
-            setVistaActual(v);
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-          usuario={usuarioActual}
-        />
-      )}
+      <main className="main-content">
+        {vistaActual === "centro-control" && (
+          <CentroControlView
+            usuario={usuario}
+            rankingOficial={rankingOficial}
+            onGenerarRanking={handleGenerarRanking}
+            onIrAAnegamiento={handleIrAAnegamiento}
+            onToast={mostrarToast}
+            versionDatos={versionDatos}
+          />
+        )}
 
-      {/* 2. CENTRO DE CONTROL GIS (MAPA SATELITAL Y RANKING DESACOPLADO) */}
-      {vistaActual === "centro-control" && GestorAutenticacion.tienePermiso(usuarioActual, "centro-control") && (
-        <CentroControlView
-          lotes={lotes}
-          rankingDSS={rankingDSS}
-          escenarioActual={escenarioActual}
-          configEscenarios={configEscenarios}
-          onCambiarEscenario={handleCambiarEscenario}
-          loteSeleccionadoId={loteSeleccionadoId}
-          onSeleccionarLote={setLoteSeleccionadoId}
-          filtroActivo={filtroActivo}
-          onCambiarFiltro={setFiltroActivo}
-          onMarcarCosechado={handleMarcarCosechado}
-          onReabrirLote={handleReabrirLote}
-          onAsignarFrente={handleAsignarFrente}
-          onIrAResumen={() => {
-            setVistaActual("resumen");
-            window.scrollTo({ top: 0, behavior: "smooth" });
-          }}
-        />
-      )}
+        {vistaActual === "pronostico" && (
+          <PronosticoView
+            onToast={mostrarToast}
+            onDatosCambiados={notificarCambioDatos}
+            versionDatos={versionDatos}
+          />
+        )}
 
-      {/* 3. CATASTRO DE LOTES */}
-      {vistaActual === "catastro" && GestorAutenticacion.tienePermiso(usuarioActual, "catastro") && (
-        <CatastroView
-          lotes={lotes}
-          onActualizarLote={handleActualizarLote}
-        />
-      )}
+        {vistaActual === "pluviometro" && (
+          <PluviometroView
+            usuario={usuario}
+            onDatosCambiados={notificarCambioDatos}
+            onMarcarAnegamiento={handleIrAAnegamiento}
+            onToast={mostrarToast}
+            versionDatos={versionDatos}
+          />
+        )}
 
-      {/* 4. AUDITORÍA DE PARADAS */}
-      {vistaActual === "auditoria" && GestorAutenticacion.tienePermiso(usuarioActual, "auditoria") && (
-        <AuditoriaParadasView
-          paradas={paradas}
-          onRegistrarParada={handleRegistrarParada}
-        />
-      )}
+        {vistaActual === "anegamiento" && (
+          <AnegamientoView
+            usuario={usuario}
+            zonaPreseleccionada={zonaPreseleccionada}
+            lotePreseleccionado={lotePreseleccionado}
+            onDatosCambiados={notificarCambioDatos}
+            onRecalcularRanking={handleGenerarRanking}
+            onToast={mostrarToast}
+            versionDatos={versionDatos}
+          />
+        )}
 
-      {/* 5. MODO CAMPO (COSECHADOR) */}
-      {vistaActual === "frente" && GestorAutenticacion.tienePermiso(usuarioActual, "frente") && (
-        <CosechadorFrenteView
-          lotes={lotes}
-          onMarcarCosechado={handleMarcarCosechado}
-        />
-      )}
+        {vistaActual === "paradas" && (
+          <ParadasView
+            usuario={usuario}
+            onDatosCambiados={notificarCambioDatos}
+            onToast={mostrarToast}
+            versionDatos={versionDatos}
+          />
+        )}
 
-      {/* 6. CARGA DE PLUVIÓMETRO */}
-      {vistaActual === "pluviometro" && GestorAutenticacion.tienePermiso(usuarioActual, "pluviometro") && (
-        <PluviometroView
-          lecturas={lecturasPluv}
-          onRegistrarLectura={handleRegistrarLectura}
-        />
-      )}
+        {vistaActual === "administracion" && (
+          <AdministracionView
+            usuario={usuario}
+            onDatosCambiados={notificarCambioDatos}
+            onToast={mostrarToast}
+            versionDatos={versionDatos}
+          />
+        )}
+      </main>
 
-      {/* TOAST ALERT */}
-      {toast.visible && (
-        <div className="toast">
-          <span>✅</span> <span>{toast.text}</span>
-        </div>
-      )}
+      {toast && <ToastBanner toast={toast} onClose={() => setToast(null)} />}
+    </div>
+  );
+}
+
+function ToastBanner({ toast, onClose }) {
+  const estilosPorTipo = {
+    success: { background: "#064e3b", borderColor: "#059669", color: "#ecfdf5" },
+    warning: { background: "#78350f", borderColor: "#d97706", color: "#fef3c7" },
+    error: { background: "#7f1d1d", borderColor: "#ef4444", color: "#fee2e2" },
+    info: { background: "#1e3a8a", borderColor: "#3b82f6", color: "#eff6ff" }
+  };
+  const estilo = estilosPorTipo[toast.tipo] || estilosPorTipo.info;
+
+  return (
+    <div
+      className="toast"
+      style={{
+        ...estilo,
+        zIndex: 3000,
+        display: "flex",
+        alignItems: "center",
+        gap: "12px",
+        cursor: "pointer"
+      }}
+      onClick={onClose}
+      role="status"
+    >
+      <span>{toast.mensaje}</span>
+      <span style={{ opacity: 0.75, fontSize: "0.85rem" }}>✕</span>
     </div>
   );
 }
