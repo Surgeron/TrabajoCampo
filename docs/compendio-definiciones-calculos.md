@@ -1,10 +1,8 @@
 # PluviaZafra: Compendio de definiciones y cálculos
 
-Referencia única de los términos y las fórmulas usados en el modelado. Sirve para redactar el informe con un lenguaje consistente.
+Referencia única de los términos, parámetros, fórmulas y reglas de negocio del sistema. Sirve para redactar el informe con un lenguaje consistente.
 
 Los valores marcados como **provisorio** salen de [pendientes-entrevista.md](pendientes-entrevista.md) y se confirman con el ingenio.
-
-Documentos de origen: [formulacion-proyecto-pluviazafra.md](formulacion-proyecto-pluviazafra.md), [casos-de-uso-pluviazafra.md](casos-de-uso-pluviazafra.md), [especificaciones-casos-de-uso.md](especificaciones-casos-de-uso.md), [casos-de-uso-por-usuario.md](casos-de-uso-por-usuario.md), [diagramas-clases-por-usuario.md](diagramas-clases-por-usuario.md) y [diagrama-clases-completo.md](diagrama-clases-completo.md).
 
 ---
 
@@ -49,7 +47,7 @@ Documentos de origen: [formulacion-proyecto-pluviazafra.md](formulacion-proyecto
 | **Pronóstico desactualizado** | Pronóstico guardado que se usa porque Open-Meteo no respondió. Se muestra con su fecha y hora de consulta. |
 | **Open-Meteo** | Servicio externo gratuito de datos meteorológicos del que se obtiene el pronóstico. |
 
-### Índice, riesgo y ranking
+### Índice, riesgo, ranking y simulación
 
 | Término | Definición |
 |---|---|
@@ -91,87 +89,33 @@ Documentos de origen: [formulacion-proyecto-pluviazafra.md](formulacion-proyecto
 
 | Rol | Qué hace |
 |---|---|
-| **Jefe de cosecha** | Decide el orden de cosecha. Consulta ranking, mapa, pronóstico e historial de paradas, y puede registrar anegamientos. |
+| **Jefe de cosecha** | Decide el orden de cosecha. Consulta ranking, mapa, simulador, pronóstico e historial de paradas, y puede registrar anegamientos. |
 | **Operador de campo** | Carga lecturas de pluviómetro y anegamientos. |
 | **Supervisor de fábrica** | Registra y consulta paradas de fábrica. |
 | **Administrador** | Gestiona usuarios, lotes, atributos, zonas y parámetros. Hereda lo del Jefe de cosecha. |
 
 ---
 
-## Parte 2. Glosario del modelado UML
-
-### Casos de uso
-
-| Término | Definición |
-|---|---|
-| **Actor** | Rol externo que interactúa con el sistema. Puede ser una persona o un sistema. |
-| **Actor secundario** | Sistema externo al que el caso de uso recurre (en este proyecto, Open-Meteo). |
-| **Caso de uso** | Objetivo que un actor logra con el sistema, descrito como una secuencia de interacciones. |
-| **Generalización de actores** | Un actor hereda los casos de uso de otro. El Administrador hereda del Jefe de cosecha. |
-| **`<<include>>`** | El caso base siempre invoca al caso incluido. Es obligatorio y reutilizable. Ejemplo: Generar ranking incluye Calcular índice. |
-| **`<<extend>>`** | El caso extensor se agrega al caso base solo si se cumple una condición. El caso base no lo conoce. Ejemplo: Alertar lote en riesgo extiende Generar ranking. |
-| **Punto de extensión** | Condición o lugar del caso base donde se activa la extensión. |
-| **Formato Cockburn** | Plantilla de especificación con objetivo, alcance, nivel, actor, interesados, precondición, garantías, disparador, escenario principal y extensiones. |
-| **Precondición** | Lo que debe cumplirse antes de empezar el caso de uso. |
-| **Garantía mínima** | Lo que el sistema asegura incluso si el caso falla. |
-| **Garantía de éxito** | Lo que el sistema asegura cuando el caso termina bien. |
-| **Disparador** | Evento que inicia el caso de uso. |
-| **Escenario principal** | Camino normal, sin errores ni desvíos. |
-| **Extensión (en Cockburn)** | Desvío del escenario principal, numerado según el paso donde ocurre (por ejemplo, 4a). No confundir con `<<extend>>`. |
-| **Nivel de objetivo** | Objetivo de usuario (algo que el actor quiere lograr) o subfunción (parte de otro caso, sin valor propio para el usuario). |
-
-### Diagrama de clases
-
-| Término | Definición |
-|---|---|
-| **Clase de objeto o entidad** | Clase que representa un dato del dominio que se guarda (Lote, Lectura, Parada). Estereotipo `<<entidad>>`. |
-| **Interfaz** | Clase que representa una pantalla o componente con el que interactúa el usuario. Muestra y recibe datos, sin reglas de negocio. Estereotipo `<<interfaz>>`. |
-| **Gestor** | Clase que coordina un caso de uso: valida, aplica reglas de negocio y persiste las entidades. Estereotipo `<<gestor>>`. |
-| **Sistema externo** | Servicio fuera de PluviaZafra que se consume a través de una clase. Estereotipo `<<externo>>`. |
-| **Estereotipo** | Etiqueta entre `<< >>` que clasifica un elemento. |
-| **Atributo** | Dato que guarda una clase. Visibilidad: `-` privado, `+` público. |
-| **Atributo derivado (`/`)** | Atributo que se calcula a partir de otros y no se guarda. Ejemplos: `/semaforo`, `/duracionHoras`. |
-| **Método** | Operación que ofrece una clase. |
-| **Enumerado** | Tipo con un conjunto cerrado de valores (Rol, EstadoLote, Semaforo, etc.). |
-| **Asociación** | Relación entre dos clases (línea continua). Se acompaña de un nombre y multiplicidades. |
-| **Multiplicidad** | Cuántos objetos participan de cada lado: `1`, `0..1`, `0..*`, `1..*`. |
-| **Composición (rombo lleno)** | Relación de todo y parte donde la parte no existe sin el todo. Ejemplo: Ranking y sus ItemRanking. |
-| **Dependencia (flecha punteada)** | Una clase usa a otra. Ejemplo: una interfaz usa a un gestor. |
-| **Gestiona (flecha continua del gestor a la entidad)** | El gestor crea, modifica, consulta o elimina esa entidad. |
-| **Herencia o generalización** | Una clase o actor hereda de otro. |
-
-### Convención de capas del proyecto
-
-```
-Actor  ->  Interfaz  ..usa..>  Gestor  --gestiona-->  Entidad
-                                  |
-                                  ..usa..>  Otro gestor / Sistema externo
-```
-
-La interfaz nunca accede directo a las entidades. Toda regla de negocio vive en un gestor.
-
----
-
-## Parte 3. Glosario técnico
+## Parte 2. Glosario técnico
 
 | Término | Definición |
 |---|---|
 | **React con Vite** | Biblioteca de interfaces y herramienta de compilación del frontend. |
-| **Firebase Auth** | Servicio de autenticación (correo y contraseña). Es infraestructura, no un actor. |
-| **Firestore** | Base de datos de documentos de Firebase. Guarda las entidades. |
-| **FastAPI** | Framework de Python para el backend. Aloja los cálculos pesados (ranking, índice, pronóstico). |
+| **Firebase Auth** | Servicio de autenticación (correo y contraseña). |
+| **Firestore** | Base de datos de documentos de Firebase donde se guardan los datos del sistema. |
+| **FastAPI** | Framework de Python para el backend. Aloja los cálculos del ranking, el índice y la consulta del pronóstico. |
 | **Render** | Plataforma donde se despliega el backend. |
 | **GitHub Pages y Vercel** | Plataformas donde se publica el frontend. |
-| **Leaflet** | Biblioteca de mapas web. Muestra los lotes, los polígonos y los colores. |
+| **Leaflet** | Biblioteca de mapas web que muestra los lotes, sus polígonos y sus colores de estado. |
 | **CORS** | Mecanismo que define qué orígenes pueden llamar al backend. Se configura con la variable `ALLOWED_ORIGIN`. |
-| **Polígono** | Lista ordenada de coordenadas (latitud y longitud) que delimita un lote. |
-| **CSV** | Formato de archivo de texto con valores separados por comas, usado para exportar. |
+| **Polígono** | Lista ordenada de coordenadas (latitud y longitud) que delimita un lote en el mapa. |
+| **CSV** | Formato de archivo de texto con valores separados por comas, usado para exportar datos. |
 
 ---
 
-## Parte 4. Parámetros configurables
+## Parte 3. Parámetros configurables
 
-Todos se editan en CU06 y se guardan en la entidad `Configuracion`, con versión, fecha, hora y usuario.
+Todos se editan en CU06 y se guardan en `Configuracion`, con versión, fecha, hora y usuario.
 
 | Parámetro | Valor inicial | Estado |
 |---|---|---|
@@ -194,7 +138,7 @@ Todos se editan en CU06 y se guardan en la entidad `Configuracion`, con versión
 | Horizonte de pronóstico | 48 h | Configurable (24, 48, 72) |
 | Inicio de la zafra vigente | Sin definir | A confirmar |
 
-Parámetros que no están en `Configuracion` (valores fijos o técnicos, a confirmar):
+Parámetros fijos o técnicos fuera de `Configuracion` (a confirmar):
 
 | Parámetro | Valor | Dónde se usa |
 |---|---|---|
@@ -204,24 +148,24 @@ Parámetros que no están en `Configuracion` (valores fijos o técnicos, a confi
 
 ---
 
-## Parte 5. Cálculos
+## Parte 4. Cálculos
 
-### 5.1 Lluvia acumulada de una zona (CU08, CU11)
+### 4.1 Lluvia acumulada de una zona (CU08, CU11)
 
 $$A = \sum_{l \in L} mm_l, \qquad L = \{\text{lecturas de la zona con } ahora - V \le fechaHora_l \le ahora\}$$
 
 - `V`: ventana de lluvia acumulada en horas.
-- Si la zona no tiene lecturas en la ventana, `A` no se calcula como 0. Se marca "sin lecturas recientes" y el cálculo sigue solo con el pronóstico.
+- Si la zona no tiene lecturas en la ventana, se marca "sin lecturas recientes" y el cálculo sigue solo con el pronóstico.
 
-### 5.2 Lluvia prevista de una zona (CU09, CU11)
+### 4.2 Lluvia prevista de una zona (CU09, CU11)
 
 $$P = \sum_{h=1}^{H} mm\_previstos_h$$
 
 - `H`: horizonte de pronóstico en horas.
-- Los valores horarios o diarios los entrega Open-Meteo según las coordenadas de la zona.
+- Los valores los entrega Open-Meteo según las coordenadas de la zona.
 - Si Open-Meteo falla se usa el último pronóstico guardado, marcado como desactualizado. Si no hay ninguno, se calcula solo con `A`.
 
-### 5.3 Puntaje de un factor del índice (CU10)
+### 4.3 Puntaje de un factor del índice (CU10)
 
 **Factores cualitativos** (suelo, drenaje, camino): se convierten con la tabla de puntajes de la configuración.
 
@@ -245,7 +189,7 @@ $$puntaje = \min\left(\frac{eventos}{tope},\ 1\right) \times 100$$
 - Eventos de la última zafra: anegamientos con fecha de inicio igual o posterior a `inicioZafra`.
 - Si el lote no tiene eventos, el puntaje es 0 (dato válido, no falta de dato).
 
-### 5.4 Índice de vulnerabilidad (CU10)
+### 4.4 Índice de vulnerabilidad (CU10)
 
 $$I = w_s \cdot p_s + w_d \cdot p_d + w_c \cdot p_c + w_h \cdot p_h + w_z \cdot p_z, \qquad \sum w = 1$$
 
@@ -258,7 +202,7 @@ $$I = w_s \cdot p_s + w_d \cdot p_d + w_c \cdot p_c + w_h \cdot p_h + w_z \cdot 
 | z | Historial última zafra | 0,20 |
 
 - Resultado de 0 a 100. A mayor valor, mayor vulnerabilidad.
-- Si los pesos no suman 1, CU06 no permite guardarlos. Como respaldo, el gestor normaliza dividiendo cada peso por la suma.
+- Si los pesos no suman 1, CU06 no permite guardarlos. Como respaldo, el sistema normaliza dividiendo cada peso por la suma.
 - Si al lote le falta algún atributo cualitativo, no se calcula: queda "incompleto".
 
 **Categoría de vulnerabilidad** (intervalos semiabiertos):
@@ -269,24 +213,22 @@ $$I = w_s \cdot p_s + w_d \cdot p_d + w_c \cdot p_c + w_h \cdot p_h + w_z \cdot 
 | Media | $34 \le I < 67$ |
 | Alta | $I \ge 67$ |
 
-> [!NOTE]
-> En los documentos anteriores aparece como "baja 0 a 33, media 34 a 66, alta 67 a 100". Es lo mismo pensado para números enteros. Con decimales (por ejemplo 33,5) conviene usar los intervalos de esta tabla, sin huecos.
-
-### 5.5 Factor de lluvia (CU11)
+### 4.5 Factor de lluvia (CU11, CU16)
 
 $$f = \min\left(\frac{A + P}{LC},\ 1\right)$$
 
 - `LC`: lluvia crítica en mm.
 - `f = 0` si no hay lluvia caída ni prevista. `f = 1` si se alcanza o supera la lluvia crítica.
+- En el simulador de precipitaciones (CU16), $A$ y $P$ toman los milímetros ingresados por el usuario para probar el escenario.
 
-### 5.6 Puntaje de riesgo (CU11)
+### 4.6 Puntaje de riesgo (CU11, CU16)
 
 $$R = I \times f$$
 
 - Resultado de 0 a 100.
 - El índice marca la sensibilidad del lote y el factor marca cuánto llueve. Los dos hacen falta: un lote muy vulnerable sin lluvia no es urgente, y mucha lluvia sobre un lote poco vulnerable tampoco.
 
-### 5.7 Semáforo (CU11)
+### 4.7 Semáforo (CU11, CU16)
 
 | Color | Condición | Estado |
 |---|---|---|
@@ -294,7 +236,7 @@ $$R = I \times f$$
 | Amarillo | $34 \le R < 67$ | Atención |
 | Verde | $R < 34$ | Puede esperar |
 
-### 5.8 Orden del ranking (CU11)
+### 4.8 Orden del ranking (CU11, CU16)
 
 Se ordena por estos criterios, en este orden:
 
@@ -304,25 +246,24 @@ Se ordena por estos criterios, en este orden:
 
 Si no llueve ni se pronostica lluvia ($f = 0$), todos los lotes quedan en verde con $R = 0$ y el orden lo da el índice.
 
-### 5.9 Toneladas en riesgo (CU15)
+### 4.9 Toneladas en riesgo (CU15)
 
 $$T_{riesgo} = \sum_{l \in \text{lotes en rojo}} toneladas_l$$
 
-### 5.10 Duración de una parada (CU13, CU14)
+### 4.10 Duración de una parada (CU13, CU14)
 
 $$D = \frac{fechaFin - fechaInicio}{1\ hora}$$
 
 - Se calcula al cerrar la parada. Mientras está abierta, no tiene duración final.
-- No se guarda como dato: es un atributo derivado.
 
-### 5.11 Totales de paradas (CU14)
+### 4.11 Totales de paradas (CU14)
 
 - **Cantidad de paradas** del período filtrado.
 - **Horas totales** = suma de las duraciones.
 - **Horas por causa** = suma de las duraciones de las paradas de esa causa.
 - **Porcentaje por causa** = horas de la causa dividido por las horas totales, por 100.
 
-### 5.12 Área del polígono y control contra las hectáreas (CU03)
+### 4.12 Área del polígono y control contra las hectáreas (CU03)
 
 Para un polígono de vértices (latitud, longitud):
 
@@ -340,7 +281,7 @@ $$A_{m^2} = \frac{1}{2}\left|\sum_{i=1}^{n} (x_i\, y_{i+1} - x_{i+1}\, y_i)\righ
 
 **Control:** si $\dfrac{|A_{ha} - hectáreas|}{hectáreas} > 10\,\%$, el sistema avisa. Para lotes de decenas de hectáreas la proyección plana es suficientemente precisa.
 
-### 5.13 Validación de lectura (CU08)
+### 4.13 Validación de lectura (CU08)
 
 | Regla | Resultado |
 |---|---|
@@ -351,7 +292,7 @@ $$A_{m^2} = \frac{1}{2}\left|\sum_{i=1}^{n} (x_i\, y_{i+1} - x_{i+1}\, y_i)\righ
 
 ---
 
-## Parte 6. Ejemplo completo
+## Parte 5. Ejemplo completo
 
 **Datos de partida.** Zona Norte, con configuración inicial. Hoy se consulta el ranking.
 
@@ -396,7 +337,7 @@ $$A_{m^2} = \frac{1}{2}\left|\sum_{i=1}^{n} (x_i\, y_{i+1} - x_{i+1}\, y_i)\righ
 
 *Lectura del resultado:* el lote A es el que más se anega y llueve casi lo suficiente para dejarlo inutilizable, así que se cosecha primero. El lote C, aunque tiene más caña (2.500 t), casi no se anega, así que puede esperar.
 
-**Mismo ejemplo sin lluvia ni pronóstico:** $f = 0$, $R = 0$ para todos, todos en verde. El orden queda A, B, C por índice (93, 62, 8,5).
+**Mismo ejemplo sin lluvia ni pronóstico (o simulando 0 mm en CU16):** $f = 0$, $R = 0$ para todos, todos en verde. El orden queda A, B, C por índice (93, 62, 8,5).
 
 **Mismo ejemplo con lluvia muy fuerte (A + P = 90 mm):** $f = \min(90/60, 1) = 1$. Entonces $R$ coincide con $I$: A = 93 (rojo), B = 62 (amarillo), C = 8,5 (verde). La lluvia crítica funciona como tope: más lluvia no sube el puntaje por encima del índice.
 
@@ -416,7 +357,7 @@ Lote cargado con 48 ha. El polígono dibujado mide 53 ha. Diferencia: $|53 - 48|
 
 ---
 
-## Parte 7. Reglas de negocio resumidas
+## Parte 6. Reglas de negocio resumidas
 
 | Código | Regla |
 |---|---|
@@ -439,7 +380,7 @@ Lote cargado con 48 ha. El polígono dibujado mide 53 ha. Diferencia: $|53 - 48|
 
 ---
 
-## Parte 8. Siglas y abreviaturas
+## Parte 7. Siglas y abreviaturas
 
 | Sigla | Significado |
 |---|---|
