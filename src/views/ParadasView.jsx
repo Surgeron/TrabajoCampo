@@ -103,22 +103,22 @@ export function InterfazParada({ usuario, onDatosCambiados, onToast, versionDato
 
   return (
     <div
-      className="section-header-box"
+      className="panel-card"
       style={{
-        marginBottom: "20px",
-        border: paradaAbierta ? "1px solid rgba(239,68,68,0.6)" : "1px solid var(--border-color)",
-        background: paradaAbierta ? "rgba(239,68,68,0.06)" : "var(--bg-card)"
+        padding: "18px",
+        borderColor: paradaAbierta ? "rgba(220, 38, 38, 0.65)" : "var(--border-color)",
+        background: paradaAbierta ? "rgba(127, 29, 29, 0.14)" : "var(--bg-card)"
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px", flexWrap: "wrap", marginBottom: "14px" }}>
         <div>
           <h2 style={{ margin: "0 0 4px 0", fontSize: "1.15rem" }}>
-            {paradaAbierta ? "🔴 Parada de Fábrica en Curso (RN12)" : "🟢 Registrar Apertura de Parada (CU13)"}
+            {paradaAbierta ? "🔴 Parada de Fábrica en Curso" : "🟢 Registrar Apertura de Parada"}
           </h2>
-          <p className="subtitle" style={{ margin: 0 }}>
+          <p className="subtitle" style={{ margin: 0, color: "var(--text-secondary)", fontSize: "13px" }}>
             {paradaAbierta
-              ? "Mientras exista una parada abierta no puede abrirse otra. Registrá el horario de finalización para reanudar la molienda."
-              : "Seleccioná la causa del catálogo cerrado. Admite registro retroactivo si la parada comenzó antes."}
+              ? "Ya existe una parada abierta. Registrá el horario de reanudación para cerrarla."
+              : "Seleccioná el motivo correspondiente. Si ocurrió antes, podés ingresar la hora real de inicio."}
           </p>
         </div>
         <span className={`badge-status ${paradaAbierta ? "badge-urgent" : "badge-safe"}`}>
@@ -127,17 +127,7 @@ export function InterfazParada({ usuario, onDatosCambiados, onToast, versionDato
       </div>
 
       {errorForm && (
-        <div
-          style={{
-            marginBottom: "14px",
-            padding: "10px 12px",
-            borderRadius: "8px",
-            background: "rgba(239, 68, 68, 0.14)",
-            border: "1px solid rgba(239, 68, 68, 0.4)",
-            color: "#fca5a5",
-            fontSize: "0.88rem"
-          }}
-        >
+        <div className="login-error-alert" style={{ marginBottom: "14px" }}>
           ⚠️ {errorForm}
         </div>
       )}
@@ -145,14 +135,12 @@ export function InterfazParada({ usuario, onDatosCambiados, onToast, versionDato
       {paradaAbierta ? (
         <form onSubmit={handleCerrarParada}>
           <div
+            className="inset-box"
             style={{
               display: "grid",
               gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
               gap: "12px",
               padding: "12px",
-              borderRadius: "8px",
-              background: "rgba(15,23,42,0.55)",
-              border: "1px solid rgba(255,255,255,0.08)",
               marginBottom: "14px"
             }}
           >
@@ -199,7 +187,7 @@ export function InterfazParada({ usuario, onDatosCambiados, onToast, versionDato
             >
               Usar hora actual
             </button>
-            <button type="submit" className="btn-primary">
+            <button type="submit" className="btn-action btn-primary">
               ✓ Cerrar Parada y Calcular Duración
             </button>
           </div>
@@ -268,7 +256,7 @@ export function InterfazParada({ usuario, onDatosCambiados, onToast, versionDato
 
           <div className="form-group" style={{ marginTop: "12px", marginBottom: "14px" }}>
             <label>
-              Detalle u observación {causa === CausaParada.OTRA ? "* (obligatorio para causa Otra - RN13)" : "(opcional)"}
+              Detalle u observación {causa === CausaParada.OTRA ? "* (obligatorio para este motivo)" : "(opcional)"}
             </label>
             <textarea
               className="form-control"
@@ -292,7 +280,7 @@ export function InterfazParada({ usuario, onDatosCambiados, onToast, versionDato
             >
               Restablecer hora actual
             </button>
-            <button type="submit" className="btn-primary">
+            <button type="submit" className="btn-action btn-primary">
               🚨 Registrar Apertura de Parada
             </button>
           </div>
@@ -479,7 +467,7 @@ export function InterfazHistorialParadas({
       </div>
 
       {/* Totales por causa */}
-      <div className="section-header-box" style={{ marginBottom: "18px" }}>
+      <div className="panel-card" style={{ padding: "18px", marginBottom: "18px" }}>
         <h3 style={{ margin: "0 0 10px 0", fontSize: "1rem" }}>📊 Distribución por Causa</h3>
         <div className="table-responsive-wrapper">
           <table className="custom-table">
@@ -500,21 +488,14 @@ export function InterfazHistorialParadas({
                   <td>{item.horas} h</td>
                   <td>{item.porcentaje}%</td>
                   <td>
-                    <div
-                      style={{
-                        height: "8px",
-                        borderRadius: "4px",
-                        background: "rgba(255,255,255,0.08)",
-                        overflow: "hidden"
-                      }}
-                    >
+                    <div className="progress-track">
                       <div
+                        className="progress-fill"
                         style={{
-                          height: "100%",
                           width: `${Math.min(100, item.porcentaje)}%`,
                           background: item.causa === CausaParada.LLUVIA || item.causa === CausaParada.FALTA_CANA_EN_PATIO
-                            ? "#ef4444"
-                            : "#38bdf8"
+                            ? "var(--color-red)"
+                            : "var(--bordo-bright)"
                         }}
                       />
                     </div>
@@ -650,8 +631,8 @@ export function InterfazHistorialParadas({
               )}
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
-              <button type="button" className="btn-primary" onClick={() => setParadaDetalle(null)}>
+            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "8px" }}>
+              <button type="button" className="btn-action btn-primary" onClick={() => setParadaDetalle(null)}>
                 Cerrar
               </button>
             </div>
@@ -659,76 +640,87 @@ export function InterfazHistorialParadas({
         </div>
       )}
 
-      {/* Modal de corrección (CU13 extensión) */}
+      {/* Modal de corrección */}
       {paradaEditar && (
         <div className="modal-overlay" onClick={() => setParadaEditar(null)}>
-          <div className="modal-card" style={{ padding: "20px", overflowY: "auto" }} onClick={(e) => e.stopPropagation()}>
-            <h3 style={{ margin: "0 0 12px 0" }}>✏️ Corregir Parada {paradaEditar.id}</h3>
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-header">
+              <h3>✏️ Corregir Parada {paradaEditar.id}</h3>
+              <button
+                type="button"
+                onClick={() => setParadaEditar(null)}
+                style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "20px", cursor: "pointer" }}
+              >
+                &times;
+              </button>
+            </div>
             <form onSubmit={guardarEdicion}>
-              <div className="form-group">
-                <label>Causa *</label>
-                <select
-                  className="form-control"
-                  value={editForm.causa}
-                  onChange={(e) => setEditForm((f) => ({ ...f, causa: e.target.value }))}
-                >
-                  {Object.values(CausaParada).map((c) => (
-                    <option key={c} value={c}>
-                      {CAUSA_PARADA_LABELS[c]}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <div className="form-group">
-                <label>Inicio *</label>
-                <input
-                  type="datetime-local"
-                  className="form-control"
-                  value={editForm.fechaInicio}
-                  max={toLocalDateTimeInput()}
-                  onChange={(e) => setEditForm((f) => ({ ...f, fechaInicio: e.target.value }))}
-                  required
-                />
-              </div>
-              {paradaEditar.estado === EstadoParada.CERRADA && (
+              <div className="modal-body">
                 <div className="form-group">
-                  <label>Fin *</label>
+                  <label>Causa *</label>
+                  <select
+                    className="form-control"
+                    value={editForm.causa}
+                    onChange={(e) => setEditForm((f) => ({ ...f, causa: e.target.value }))}
+                  >
+                    {Object.values(CausaParada).map((c) => (
+                      <option key={c} value={c}>
+                        {CAUSA_PARADA_LABELS[c]}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+                <div className="form-group">
+                  <label>Inicio *</label>
                   <input
                     type="datetime-local"
                     className="form-control"
-                    value={editForm.fechaFin}
+                    value={editForm.fechaInicio}
                     max={toLocalDateTimeInput()}
-                    onChange={(e) => setEditForm((f) => ({ ...f, fechaFin: e.target.value }))}
+                    onChange={(e) => setEditForm((f) => ({ ...f, fechaInicio: e.target.value }))}
                     required
                   />
                 </div>
-              )}
-              <div className="form-group">
-                <label>Toneladas en patio</label>
-                <input
-                  type="number"
-                  min="0"
-                  step="0.1"
-                  className="form-control"
-                  value={editForm.toneladasPatio}
-                  onChange={(e) => setEditForm((f) => ({ ...f, toneladasPatio: e.target.value }))}
-                />
+                {paradaEditar.estado === EstadoParada.CERRADA && (
+                  <div className="form-group">
+                    <label>Fin *</label>
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      value={editForm.fechaFin}
+                      max={toLocalDateTimeInput()}
+                      onChange={(e) => setEditForm((f) => ({ ...f, fechaFin: e.target.value }))}
+                      required
+                    />
+                  </div>
+                )}
+                <div className="form-group">
+                  <label>Toneladas en patio</label>
+                  <input
+                    type="number"
+                    min="0"
+                    step="0.1"
+                    className="form-control"
+                    value={editForm.toneladasPatio}
+                    onChange={(e) => setEditForm((f) => ({ ...f, toneladasPatio: e.target.value }))}
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Detalle {editForm.causa === CausaParada.OTRA ? "* (obligatorio)" : ""}</label>
+                  <textarea
+                    className="form-control"
+                    rows={2}
+                    value={editForm.detalle}
+                    onChange={(e) => setEditForm((f) => ({ ...f, detalle: e.target.value }))}
+                    required={editForm.causa === CausaParada.OTRA}
+                  />
+                </div>
               </div>
-              <div className="form-group">
-                <label>Detalle {editForm.causa === CausaParada.OTRA ? "* (RN13)" : ""}</label>
-                <textarea
-                  className="form-control"
-                  rows={2}
-                  value={editForm.detalle}
-                  onChange={(e) => setEditForm((f) => ({ ...f, detalle: e.target.value }))}
-                  required={editForm.causa === CausaParada.OTRA}
-                />
-              </div>
-              <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px", marginTop: "12px" }}>
+              <div className="modal-footer">
                 <button type="button" className="btn-action" onClick={() => setParadaEditar(null)}>
                   Cancelar
                 </button>
-                <button type="submit" className="btn-primary">
+                <button type="submit" className="btn-action btn-primary">
                   Guardar Corrección
                 </button>
               </div>
@@ -752,14 +744,19 @@ export default function ParadasView({
   const puedeRegistrar = GestorSesion.puedeEjecutar(usuario, "CU13");
 
   return (
-    <div className="view-container">
-      <div className="section-header-box" style={{ marginBottom: "18px" }}>
-        <h1 style={{ margin: "0 0 4px 0" }}>🏭 Paradas de Fábrica</h1>
-        <p className="subtitle" style={{ margin: 0 }}>
-          {puedeRegistrar
-            ? "CU13 & CU14 — Apertura, cierre, corrección y análisis histórico de paradas de molienda."
-            : "CU14 — Consulta cronológica, distribución por causa y exportación CSV de paradas de molienda."}
-        </p>
+    <div
+      className="view-container"
+      style={{ padding: "18px 24px", maxWidth: "1200px", margin: "0 auto", width: "100%" }}
+    >
+      <div className="section-header-box">
+        <div>
+          <h2 style={{ margin: "0 0 4px 0", fontSize: "20px", fontWeight: 800 }}>🏭 Paradas de Fábrica</h2>
+          <p className="subtitle" style={{ margin: 0, fontSize: "13px", color: "var(--text-secondary)" }}>
+            {puedeRegistrar
+              ? "Registro de apertura y cierre, corrección de eventos y análisis histórico de paradas de molienda."
+              : "Consulta cronológica, distribución por causa y exportación a planilla de paradas de molienda."}
+          </p>
+        </div>
       </div>
 
       {puedeRegistrar && (

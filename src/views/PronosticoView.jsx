@@ -56,10 +56,10 @@ export default function PronosticoView({
       <div className="section-header-box">
         <div>
           <h2 style={{ fontSize: "18px", fontWeight: 800, display: "flex", alignItems: "center", gap: "8px" }}>
-            <span>🌦️</span> Consulta de Pronóstico por Zona (CU09 — Open-Meteo)
+            <span>🌦️</span> Pronóstico Meteorológico por Zona
           </h2>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}>
-            Horizonte de pronóstico vigente: <b>{config.horizontePronosticoHoras} horas</b> · Caché de consultas: 30 minutos.
+          <p style={{ fontSize: "13px", color: "var(--text-secondary)", marginTop: "2px" }}>
+            Horizonte de análisis: <b>{config.horizontePronosticoHoras} horas</b> · Fuente meteorológica: Open-Meteo.
           </p>
         </div>
 
@@ -69,14 +69,14 @@ export default function PronosticoView({
             disabled={cargando}
             onClick={() => solicitarPronostico(false)}
           >
-            {cargando ? "⏳ Consultando..." : "🔄 Consultar (usar caché < 30 min)"}
+            {cargando ? "⏳ Consultando..." : "🔄 Consultar (usar datos recientes)"}
           </button>
           <button
             className="btn-action btn-primary"
             disabled={cargando}
             onClick={() => solicitarPronostico(true)}
           >
-            {cargando ? "⏳ Consultando..." : "📡 Actualizar desde Open-Meteo"}
+            {cargando ? "⏳ Consultando..." : "📡 Actualizar ahora"}
           </button>
         </div>
 
@@ -146,10 +146,9 @@ export default function PronosticoView({
           return (
             <div
               key={z.codigo}
+              className="panel-card"
               style={{
-                background: "var(--bg-card)",
-                border: `1px solid ${p?.desactualizado ? "#f59e0b" : "var(--border-color)"}`,
-                borderRadius: "12px",
+                borderColor: p?.desactualizado ? "var(--color-warning)" : "var(--border-color)",
                 padding: "16px",
                 display: "flex",
                 flexDirection: "column",
@@ -158,12 +157,12 @@ export default function PronosticoView({
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
-                  <span style={{ fontSize: "11px", fontFamily: "JetBrains Mono", color: "#38bdf8" }}>
+                  <span style={{ fontSize: "11px", fontFamily: "JetBrains Mono", color: "var(--bordo-light)", fontWeight: 700 }}>
                     {z.codigo}
                   </span>
                   <h3 style={{ fontSize: "16px", fontWeight: 700 }}>{z.nombre}</h3>
                   <span style={{ fontSize: "11.5px", color: "var(--text-muted)" }}>
-                    Ref: {z.latitud.toFixed(4)}, {z.longitud.toFixed(4)}
+                    Ubicación: {z.latitud.toFixed(4)}, {z.longitud.toFixed(4)}
                   </span>
                 </div>
 
@@ -183,17 +182,16 @@ export default function PronosticoView({
               {p ? (
                 <>
                   <div
+                    className="inset-box"
                     style={{
-                      background: "#0f172a",
-                      borderRadius: "8px",
                       padding: "12px",
                       display: "flex",
                       justifyContent: "space-between",
                       alignItems: "center"
                     }}
                   >
-                    <span style={{ fontSize: "12.5px", color: "#cbd5e1" }}>
-                      Lluvia prevista total ({p.horizonteHoras} h):
+                    <span style={{ fontSize: "12.5px", color: "var(--text-secondary)" }}>
+                      Lluvia prevista ({p.horizonteHoras} h):
                     </span>
                     <b
                       style={{
@@ -207,19 +205,18 @@ export default function PronosticoView({
                   </div>
 
                   <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                    <div style={{ fontSize: "11.5px", fontWeight: 700, color: "#94a3b8", textTransform: "uppercase" }}>
-                      Detalle por día (PronosticoDia):
+                    <div style={{ fontSize: "11.5px", fontWeight: 700, color: "var(--text-muted)", textTransform: "uppercase" }}>
+                      Detalle diario:
                     </div>
                     {p.dias.map((d) => (
                       <div
                         key={d.fecha}
+                        className="inset-box"
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
                           fontSize: "12.5px",
-                          padding: "6px 10px",
-                          background: "#162032",
-                          borderRadius: "6px"
+                          padding: "7px 10px"
                         }}
                       >
                         <span>{d.fecha}</span>
@@ -228,14 +225,14 @@ export default function PronosticoView({
                     ))}
                   </div>
 
-                  <div style={{ fontSize: "11px", color: "#94a3b8" }}>
+                  <div style={{ fontSize: "11px", color: "var(--text-muted)" }}>
                     Última consulta: {new Date(p.fechaConsulta).toLocaleString()}
-                    {p.desactualizado && " · Usando respaldo por error de red (CU09 4a)"}
+                    {p.desactualizado && " · Mostrando último registro guardado por fallo de conexión"}
                   </div>
                 </>
               ) : (
-                <div style={{ fontSize: "13px", color: "#94a3b8", padding: "12px 0" }}>
-                  No hay pronóstico guardado para esta zona (CU09 4b).
+                <div style={{ fontSize: "13px", color: "var(--text-secondary)", padding: "12px 0" }}>
+                  No hay pronóstico disponible todavía para esta zona.
                 </div>
               )}
             </div>

@@ -53,8 +53,11 @@ export default function App() {
   }, []);
 
   const notificarCambioDatos = useCallback(() => {
+    if (usuario) {
+      GestorRanking.generarRanking(usuario);
+    }
     setVersionDatos((v) => v + 1);
-  }, []);
+  }, [usuario]);
 
   // Asegurar que la vista actual esté permitida para el rol logueado
   useEffect(() => {
@@ -170,20 +173,20 @@ export default function App() {
     link.href = url;
     link.setAttribute(
       "download",
-      `pluviazafra-datasheets-${new Date().toISOString().slice(0, 10)}.json`
+      `pluviazafra-respaldo-${new Date().toISOString().slice(0, 10)}.json`
     );
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
-    mostrarToast("Respaldo JSON de los datasheets descargado.", "info");
+    mostrarToast("Copia de respaldo descargada.", "info");
   };
 
   const handleResetDatasheets = () => {
     DatasheetStore.reset();
     GestorRanking.generarRanking(usuario);
     setVersionDatos((v) => v + 1);
-    mostrarToast("Datasheets restablecidos a los datos iniciales de calibración.", "info");
+    mostrarToast("Datos restablecidos a los valores iniciales.", "info");
   };
 
   if (!usuario) {
@@ -279,10 +282,10 @@ export default function App() {
 
 function ToastBanner({ toast, onClose }) {
   const estilosPorTipo = {
-    success: { background: "#064e3b", borderColor: "#059669", color: "#ecfdf5" },
-    warning: { background: "#78350f", borderColor: "#d97706", color: "#fef3c7" },
-    error: { background: "#7f1d1d", borderColor: "#ef4444", color: "#fee2e2" },
-    info: { background: "#1e3a8a", borderColor: "#3b82f6", color: "#eff6ff" }
+    success: { background: "#182921", borderColor: "#16a34a", color: "#dcfce7" },
+    warning: { background: "#2e2214", borderColor: "#d97706", color: "#fef3c7" },
+    error: { background: "#3a1218", borderColor: "#dc2626", color: "#fee2e2" },
+    info: { background: "#2b121a", borderColor: "#9e1c38", color: "#ffe4e6" }
   };
   const estilo = estilosPorTipo[toast.tipo] || estilosPorTipo.info;
 

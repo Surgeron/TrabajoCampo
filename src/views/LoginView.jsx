@@ -48,37 +48,24 @@ export default function LoginView({ onLoginExitoso }) {
               PluviaZafra <span className="badge-client">Ingenio La Esperanza</span>
             </h1>
             <p className="login-subtitle">
-              Sistema de Priorización de Cosecha según Vulnerabilidad a la Lluvia (Modelo BCE + Datasheets)
+              Sistema de Gestión y Priorización de Cosecha por Riesgo Hídrico
             </p>
           </div>
         </div>
 
-        {/* BANNER DE ROLES Y ARQUITECTURA */}
-        <div className="polp-banner">
-          <div className="polp-badge">
-            <span>🛡️</span>
-            <b>Control de Acceso por Rol (CU01 — Principio de Mínimo Privilegio)</b>
-          </div>
-          <p>
-            Cada actor accede únicamente a las interfaces y casos de uso definidos en su perfil. El{" "}
-            <b>Administrador</b> hereda las facultades del <b>Jefe de cosecha</b>.
-          </p>
-        </div>
-
-        {/* ACCESO RÁPIDO POR ACTOR UML */}
+        {/* ACCESO RÁPIDO POR PERFIL */}
         <div className="quick-access-section">
           <h2 className="quick-access-title">
-            <span>⚡</span> Seleccioná un Actor para Iniciar Sesión (Acceso Rápido)
+            <span>⚡</span> Seleccioná un Perfil para Iniciar Sesión (Acceso Rápido)
           </h2>
           <p className="quick-access-desc">
-            Probá el sistema con los cuatro roles del diagrama de casos de uso:
+            Ingresá rápidamente según el rol operativo dentro del ingenio:
           </p>
 
           <div className="quick-access-grid">
             {usuariosActivos.map((usr) => {
               const rolInfo = ROL_META[usr.rol];
               const vistas = GestorSesion.obtenerVistasPermitidas(usr);
-              const cus = GestorSesion.PERMISOS_CU_POR_ROL[usr.rol] || [];
               return (
                 <div
                   key={usr.id}
@@ -101,7 +88,7 @@ export default function LoginView({ onLoginExitoso }) {
 
                     <div className="quick-card-body">
                       <div className="quick-permisos-title">
-                        Interfaces Habilitadas ({cus.length} CU):
+                        Módulos habilitados ({vistas.length}):
                       </div>
                       <ul className="quick-permisos-list">
                         {vistas.map((v) => (
@@ -129,7 +116,7 @@ export default function LoginView({ onLoginExitoso }) {
         </div>
 
         <div className="login-divider">
-          <span>O ingresá manualmente con correo y contraseña (CU01)</span>
+          <span>O ingresá manualmente con correo y contraseña</span>
         </div>
 
         {/* FORMULARIO MANUAL (mostrarFormulario) */}
@@ -192,9 +179,7 @@ export default function LoginView({ onLoginExitoso }) {
         </form>
 
         <div className="login-footer">
-          <p>
-            Ingenio La Esperanza S.A. — PluviaZafra | Persistencia en Datasheets sin SQL
-          </p>
+          <p>Ingenio La Esperanza S.A. — PluviaZafra · San Pedro de Jujuy</p>
         </div>
       </div>
     </div>

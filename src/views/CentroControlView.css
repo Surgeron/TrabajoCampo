@@ -1,118 +1,105 @@
 /* ========================================================
-   CENTRO DE CONTROL GIS & RANKING DSS - VIEW STYLES
+   CENTRO DE CONTROL: MAPA Y PRIORIDADES - GRIS / BORDÓ / ROJO
    ======================================================== */
 
-/* SCENARIO STRIP */
+.centro-control-container {
+  max-width: 100%;
+  padding: 0;
+  gap: 0;
+}
+
+/* BARRA DE ACCIONES SUPERIORES */
 .scenario-strip {
-  background-color: #111a2e;
+  background-color: var(--bg-surface);
   border-bottom: 1px solid var(--border-color);
-  padding: 10px 24px;
+  padding: 12px 24px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  position: relative;
-  z-index: 900;
-}
-
-.scenario-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12.5px;
-  font-weight: 700;
-  color: #94a3b8;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  flex-shrink: 0;
-}
-
-.scenario-buttons {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding-bottom: 2px;
-  -webkit-overflow-scrolling: touch;
-}
-
-.scenario-buttons::-webkit-scrollbar {
-  height: 4px;
-}
-.scenario-buttons::-webkit-scrollbar-thumb {
-  background: #334155;
-  border-radius: 4px;
+  flex-wrap: wrap;
 }
 
 .btn-scenario {
-  background-color: #1e293b;
-  border: 1px solid #334155;
-  color: #cbd5e1;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
   padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 12.5px;
+  border-radius: 9px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
   white-space: nowrap;
   transition: all 0.2s;
-  flex-shrink: 0;
 }
 
 .btn-scenario:hover {
-  background-color: #2e3d54;
+  background-color: var(--bg-card-hover);
+  border-color: var(--border-strong);
   color: #ffffff;
 }
 
+.btn-scenario.active.sc-rain,
 .btn-scenario.active {
-  background-color: #0369a1;
-  border-color: #38bdf8;
+  background: var(--accent-gradient);
+  border-color: var(--bordo-light);
   color: #ffffff;
-  box-shadow: 0 0 14px rgba(56, 189, 248, 0.35);
-}
-
-.btn-scenario.active.sc-storm {
-  background-color: #991b1b;
-  border-color: #f87171;
-  box-shadow: 0 0 14px rgba(248, 113, 113, 0.4);
-}
-
-.btn-scenario.active.sc-sat {
-  background-color: #7c2d12;
-  border-color: #fb923c;
-  box-shadow: 0 0 14px rgba(251, 146, 60, 0.4);
-}
-
-.btn-scenario.active.sc-rain {
-  background-color: #854d0e;
-  border-color: #facc15;
-  box-shadow: 0 0 14px rgba(250, 204, 21, 0.4);
+  box-shadow: 0 4px 14px rgba(158, 28, 56, 0.38);
 }
 
 .scenario-info-badge {
-  font-size: 12px;
+  font-size: 12.5px;
   padding: 6px 12px;
-  border-radius: 8px;
-  background: #1e293b;
-  border: 1px solid #334155;
-  color: #38bdf8;
-  font-family: 'JetBrains Mono', monospace;
-  display: flex;
+  border-radius: 9px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--bordo-light);
+  font-weight: 600;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  flex-shrink: 0;
 }
 
-/* ========================================================
-   SELECTOR DE VISTA DESACOPLADA (MAPA VS STATS VS DIVIDIDO)
-   ======================================================== */
+/* PANEL DE SIMULACIÓN */
+.simulador-panel {
+  margin: 14px 24px 0;
+  background: var(--bg-card);
+  border: 1px solid var(--bordo-bright);
+  border-left: 4px solid var(--red-bright);
+  border-radius: 14px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+}
+
+.simulador-zone-card {
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  padding: 13px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.simulador-zone-card input[type="range"] {
+  accent-color: var(--bordo-bright);
+  width: 100%;
+  cursor: pointer;
+}
+
+/* SELECTOR DE MODO Y FILTROS */
 .subview-mode-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10px 24px;
-  background: #0f172a;
+  padding: 12px 24px;
+  background: var(--bg-dark);
   border-bottom: 1px solid var(--border-color);
   flex-wrap: wrap;
   gap: 12px;
@@ -120,51 +107,44 @@
 
 .subview-toggle-group {
   display: flex;
-  background: #162032;
+  background: var(--bg-card-alt);
   padding: 4px;
   border-radius: 10px;
-  border: 1px solid #334155;
+  border: 1px solid var(--border-color);
   gap: 4px;
 }
 
 .btn-subview {
   background: transparent;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 13px;
   font-weight: 700;
-  padding: 7px 16px;
+  padding: 7px 15px;
   border-radius: 8px;
   cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: all 0.2s;
+  gap: 7px;
+  transition: all 0.18s;
 }
 
 .btn-subview:hover {
-  color: #ffffff;
+  color: var(--text-main);
   background: rgba(255, 255, 255, 0.05);
 }
 
 .btn-subview.active {
-  background: #0284c7;
+  background: var(--accent-gradient);
   color: #ffffff;
-  box-shadow: 0 2px 10px rgba(2, 132, 199, 0.4);
+  box-shadow: 0 2px 10px rgba(158, 28, 56, 0.38);
 }
 
-.subview-hint {
-  font-size: 12.5px;
-  color: #94a3b8;
-}
-
-/* ========================================================
-   WORKSPACES SEGÚN EL MODO ACTIVO
-   ======================================================== */
+/* ÁREA PRINCIPAL: MAPA + RANKING */
 .main-workspace {
-  padding: 0 24px;
+  padding: 16px 24px 0;
   align-items: start;
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .main-workspace.mode-dividido {
@@ -181,13 +161,13 @@
   width: 100%;
 }
 
-/* CONTENEDOR DEL MAPA */
+/* MAPA SATELITAL */
 .map-wrapper {
   position: relative;
   border-radius: 14px;
   overflow: hidden;
   border: 1px solid var(--border-color);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
   height: 620px;
   width: 100%;
 }
@@ -199,7 +179,7 @@
 #map-dss {
   width: 100%;
   height: 100%;
-  background-color: #1e293b;
+  background-color: var(--bg-card);
   z-index: 1;
 }
 
@@ -207,9 +187,9 @@
   position: absolute;
   bottom: 16px;
   left: 16px;
-  background: rgba(15, 23, 42, 0.94);
+  background: rgba(20, 20, 23, 0.94);
   backdrop-filter: blur(8px);
-  border: 1px solid var(--border-color);
+  border: 1px solid var(--border-strong);
   border-radius: 10px;
   padding: 10px 14px;
   z-index: 500;
@@ -217,37 +197,38 @@
   display: flex;
   flex-direction: column;
   gap: 5px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5);
 }
 
 .legend-item {
   display: flex;
   align-items: center;
   gap: 8px;
+  color: var(--text-secondary);
 }
 
 .legend-color {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-/* MINI PANEL FLOTANTE EN MODO SOLO MAPA */
+/* DETALLE FLOTANTE DEL LOTE EN EL MAPA */
 .map-floating-lot-card {
   position: absolute;
   top: 16px;
   right: 16px;
-  width: 340px;
+  width: 350px;
   max-width: calc(100% - 32px);
-  background: rgba(15, 23, 42, 0.96);
+  background: rgba(27, 27, 32, 0.96);
   backdrop-filter: blur(12px);
-  border: 1px solid #38bdf8;
+  border: 1px solid var(--bordo-bright);
   border-radius: 14px;
   padding: 16px;
   z-index: 600;
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
-  animation: fadeIn 0.25s ease;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.65);
+  animation: fadeIn 0.2s ease;
 }
 
 .floating-header {
@@ -260,7 +241,7 @@
 .floating-close-btn {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted);
   font-size: 22px;
   cursor: pointer;
   line-height: 1;
@@ -274,74 +255,54 @@
 .floating-details-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 6px;
+  gap: 6px 10px;
   font-size: 12px;
-  color: #cbd5e1;
-  background: #1e293b;
-  padding: 10px;
-  border-radius: 8px;
+  color: var(--text-secondary);
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  padding: 10px 12px;
+  border-radius: 9px;
   margin: 10px 0;
 }
 
 .floating-recommendation {
-  background: #111a2e;
-  border-left: 3.5px solid var(--rec-color, #64748b);
-  padding: 8px 10px;
-  border-radius: 6px;
-  font-size: 12px;
-  color: #f1f5f9;
-  line-height: 1.4;
+  background: var(--bg-card);
+  border-left: 4px solid var(--rec-color, var(--bordo-bright));
+  padding: 9px 12px;
+  border-radius: 8px;
+  font-size: 12.5px;
+  color: var(--text-main);
+  line-height: 1.45;
   margin-bottom: 12px;
 }
 
 .floating-actions {
   display: flex;
+  flex-direction: column;
   gap: 8px;
 }
 
-/* ========================================================
-   MODO SOLO ESTADÍSTICAS (FULL DASHBOARD ESPACIOSO)
-   ======================================================== */
+/* PANEL DE RANKING */
 .stats-dashboard-container {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 16px;
-  animation: fadeIn 0.3s ease;
-}
-
-.stats-kpi-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 14px;
-}
-
-.stats-controls-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  background: var(--bg-card);
-  padding: 12px 18px;
-  border-radius: 12px;
-  border: 1px solid var(--border-color);
 }
 
 .stats-cards-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
-  gap: 16px;
+  gap: 14px;
 }
 
-/* SIDEBAR EN MODO DIVIDIDO */
 .sidebar {
-  background-color: var(--bg-card);
+  background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: 14px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
   overflow: hidden;
   max-height: 620px;
 }
@@ -352,7 +313,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #162032;
+  background: linear-gradient(180deg, #272227 0%, #1d1a1f 100%);
 }
 
 .sidebar-header h2 {
@@ -361,34 +322,7 @@
   display: flex;
   align-items: center;
   gap: 8px;
-}
-
-.filter-tabs {
-  display: flex;
-  padding: 10px 14px;
-  gap: 6px;
-  background: #111a2c;
-  border-bottom: 1px solid var(--border-color);
-  overflow-x: auto;
-}
-
-.filter-tab {
-  background: transparent;
-  border: 1px solid transparent;
-  color: var(--text-muted);
-  padding: 6px 12px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s;
-}
-
-.filter-tab.active {
-  background: var(--bg-card);
-  border-color: var(--border-color);
-  color: #ffffff;
+  color: var(--text-main);
 }
 
 .ranking-list {
@@ -397,45 +331,52 @@
   flex-direction: column;
   gap: 12px;
   overflow-y: auto;
-  max-height: calc(620px - 110px);
+  max-height: calc(620px - 62px);
 }
 
 .lot-card {
-  background-color: #243247;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  padding: 14px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  padding: 14px 16px;
   cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
+  transition: all 0.18s ease;
 }
 
 .lot-card:hover {
-  border-color: #475569;
+  border-color: var(--border-strong);
+  background-color: var(--bg-card-hover);
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
 }
 
 .lot-card.selected {
-  border-color: #38bdf8;
-  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.4);
+  border-color: var(--bordo-bright);
+  box-shadow: 0 0 0 2px rgba(158, 28, 56, 0.45);
 }
 
 .lot-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 8px;
   margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
 .lot-code {
   font-size: 14px;
   font-weight: 800;
-  font-family: 'JetBrains Mono', monospace;
-  color: #ffffff;
+  color: var(--text-main);
   display: flex;
   align-items: center;
   gap: 8px;
+  flex-wrap: wrap;
+}
+
+.lot-rank-num {
+  color: var(--bordo-light);
+  font-family: 'JetBrains Mono', monospace;
 }
 
 .lot-details-grid {
@@ -448,73 +389,49 @@
 }
 
 .lot-detail-item b {
-  color: #e2e8f0;
+  color: var(--text-main);
   font-weight: 600;
 }
 
 .lot-recommendation {
-  background: #192334;
-  border-radius: 6px;
+  background: var(--bg-card-alt);
+  border-radius: 8px;
   padding: 8px 12px;
-  font-size: 12px;
-  color: #cbd5e1;
-  border-left: 3.5px solid var(--rec-color, #64748b);
+  font-size: 12.5px;
+  color: var(--text-secondary);
+  border-left: 4px solid var(--rec-color, var(--bordo-bright));
   margin-top: 8px;
-  line-height: 1.4;
-}
-
-.lot-card-actions {
-  display: flex;
-  gap: 8px;
-  margin-top: 10px;
-  padding-top: 10px;
-  border-top: 1px solid #334155;
-  flex-wrap: wrap;
+  line-height: 1.45;
 }
 
 .btn-card-action {
-  flex: 1;
-  background: #1e293b;
-  border: 1px solid #334155;
-  color: #cbd5e1;
-  font-size: 12px;
+  width: 100%;
+  background: var(--bg-card-alt);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 12.5px;
   font-weight: 600;
-  padding: 7px 10px;
-  border-radius: 6px;
+  padding: 8px 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.15s;
   text-align: center;
-  min-height: 34px;
-  white-space: nowrap;
 }
 
 .btn-card-action:hover {
-  background: #334155;
+  background: var(--bordo-deep);
+  border-color: var(--bordo-bright);
   color: #ffffff;
 }
 
-.btn-card-action.btn-harvest {
-  background: #064e3b;
-  border-color: #059669;
-  color: #6ee7b7;
-}
-
-.btn-card-action.btn-harvest:hover {
-  background: #047857;
-  color: #ffffff;
-}
-
-/* ========================================================
-   RESPONSIVE DESIGN
-   ======================================================== */
+/* RESPONSIVE */
 @media (max-width: 1100px) {
   .main-workspace.mode-dividido {
     grid-template-columns: 1fr;
-    gap: 20px;
   }
 
   .map-wrapper {
-    height: 500px;
+    height: 480px;
   }
 
   .sidebar {
@@ -527,17 +444,15 @@
 }
 
 @media (max-width: 768px) {
-  .scenario-strip {
-    padding: 10px 16px;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 8px;
+  .scenario-strip,
+  .subview-mode-bar,
+  .main-workspace {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 
-  .subview-mode-bar {
-    padding: 10px 16px;
-    flex-direction: column;
-    align-items: stretch;
+  .simulador-panel {
+    margin: 12px 16px 0;
   }
 
   .subview-toggle-group {
@@ -548,12 +463,8 @@
 
   .btn-subview {
     justify-content: center;
-    font-size: 11px;
-    padding: 7px 4px;
-  }
-
-  .main-workspace {
-    padding: 0 16px;
+    font-size: 11.5px;
+    padding: 7px 6px;
   }
 
   .map-wrapper {
@@ -561,7 +472,7 @@
   }
 
   .map-wrapper.full-width {
-    height: 450px;
+    height: 440px;
   }
 
   .map-legend {
@@ -571,25 +482,8 @@
     left: 8px;
   }
 
-  .stats-controls-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .stats-controls-row input {
-    width: 100% !important;
-  }
-
-  .stats-cards-grid {
-    grid-template-columns: 1fr;
-  }
-
+  .stats-cards-grid,
   .lot-details-grid {
     grid-template-columns: 1fr;
-    gap: 4px;
-  }
-
-  .lot-card-actions {
-    flex-direction: column;
   }
 }

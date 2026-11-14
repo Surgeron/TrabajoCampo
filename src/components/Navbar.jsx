@@ -23,7 +23,7 @@ export default function Navbar({
           <h1>
             PluviaZafra <span className="badge-client">Ingenio La Esperanza</span>
           </h1>
-          <p>Priorización de Cosecha por Vulnerabilidad a la Lluvia (Datasheets)</p>
+          <p>Priorización de Cosecha por Riesgo Hídrico</p>
         </div>
       </div>
 
@@ -57,7 +57,7 @@ export default function Navbar({
                 onCambiarVista("paradas");
               }
             }}
-            title="Parada de fábrica abierta actualmente (CU13)"
+            title="Parada de fábrica abierta actualmente"
           >
             🚨 PARADA ABIERTA ({paradaAbierta.id})
           </button>
@@ -78,18 +78,18 @@ export default function Navbar({
             className="btn-action"
             style={{ minHeight: "34px", padding: "6px 10px", fontSize: "12px" }}
             onClick={onExportarDatasheets}
-            title="Descargar respaldo JSON completo de los datasheets"
+            title="Descargar copia de respaldo en archivo JSON"
           >
-            📦 JSON
+            💾 Copia
           </button>
 
           <button
             className="btn-action"
             style={{ minHeight: "34px", padding: "6px 10px", fontSize: "12px" }}
             onClick={onResetDatasheets}
-            title="Restablecer datasheets a los datos iniciales de ejemplo"
+            title="Restablecer los datos iniciales de ejemplo"
           >
-            🔄 Reset
+            ↺ Datos iniciales
           </button>
 
           <button

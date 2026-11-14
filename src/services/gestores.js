@@ -75,43 +75,43 @@ export class GestorSesion {
   static VISTAS_SISTEMA = Object.freeze({
     "centro-control": {
       id: "centro-control",
-      titulo: "Mapa, Ranking y Simulador",
+      titulo: "Mapa y Prioridades",
       icono: "🗺️",
-      descripcion: "CU11, CU12, CU15, CU16 — Priorización de cosecha, mapa satelital, alertas y simulador"
+      descripcion: "Priorización de cosecha, mapa satelital, alertas y simulador de lluvias"
     },
     "pronostico": {
       id: "pronostico",
       titulo: "Pronóstico",
       icono: "🌦️",
-      descripcion: "CU09 — Lluvia prevista por zona desde Open-Meteo"
+      descripcion: "Lluvia prevista por zona"
     },
     "pluviometro": {
       id: "pluviometro",
-      titulo: "Lectura Pluviómetro",
+      titulo: "Pluviómetros",
       icono: "🌧️",
-      descripcion: "CU08 — Registro manual de milímetros de lluvia por zona"
+      descripcion: "Registro de milímetros de lluvia por zona"
     },
     "anegamiento": {
       id: "anegamiento",
       titulo: "Anegamientos",
       icono: "🌊",
-      descripcion: "CU05 — Apertura y cierre de eventos de lotes intransitables"
+      descripcion: "Registro y cierre de eventos de lotes intransitables"
     },
     "paradas": {
       id: "paradas",
       titulo: "Paradas de Fábrica",
       icono: "🏭",
-      descripcion: "CU13, CU14 — Registro de paradas de molienda e historial"
+      descripcion: "Registro de paradas de molienda e historial"
     },
     "administracion": {
       id: "administracion",
       titulo: "Administración",
       icono: "⚙️",
-      descripcion: "CU02, CU03, CU04, CU06, CU07 — Usuarios, lotes, atributos, zonas y parámetros"
+      descripcion: "Gestión de usuarios, lotes, zonas y parámetros"
     }
   });
 
-  // Matriz de casos de uso por rol según casos-de-uso-por-usuario.md
+  // Matriz de permisos internos por rol
   static PERMISOS_CU_POR_ROL = Object.freeze({
     [Rol.JEFE_COSECHA]: [
       "CU01", "CU05", "CU09", "CU11", "CU12", "CU14", "CU15", "CU16"
@@ -124,7 +124,7 @@ export class GestorSesion {
     ],
     [Rol.ADMINISTRADOR]: [
       "CU01", "CU02", "CU03", "CU04", "CU05", "CU06", "CU07",
-      "CU09", "CU11", "CU12", "CU14", "CU15", "CU16"
+      "CU09", "CU11", "CU12", "CU13", "CU14", "CU15", "CU16"
     ]
   });
 
@@ -302,13 +302,66 @@ export class GestorUsuarios {
       this.esUltimoAdministrador(actual)
     ) {
       throw new Error(
-        "No se puede quitar el rol de Administrador porque es el último administrador activo (RN05)."
+        "No se puede quitar el rol de Administrador porque es el último administrador activo."
       );
     }
 
     DatasheetStore.mutate((ds) => {
       const idx = ds.usuarios.findIndex((x) => x.id === userId);
       if (idx !== -1) ds.usuarios[idx].rol = nuevoRol;
+    });
+
+    return this.obtenerPorId(userId);
+  }
+
+  static modificarUsuario(u, datos) {
+    const userId = resolverIdCodigo(u, "id");
+    const actual = this.obtenerPorId(userId);
+    if (!actual) throw new Error("Usuario no encontrado.");
+
+    const nombre = datos.nombre !== undefined ? String(datos.nombre).trim() : actual.nombre;
+    const correo = datos.correo !== undefined ? String(datos.correo).trim().toLowerCase() : actual.correo;
+    const rol = datos.rol !== undefined ? datos.rol : actual.rol;
+    const clave =
+      datos.clave !== undefined && String(datos.clave).trim() !== ""
+        ? String(datos.clave).trim()
+        : actual.clave;
+
+    if (!nombre || !correo) {
+      throw new Error("Nombre y correo son obligatorios.");
+    }
+    if (!Object.values(Rol).includes(rol)) {
+      throw new Error("Rol inválido.");
+    }
+
+    const correoDuplicado = DatasheetStore.getSheet("usuarios").some(
+      (x) => x.id !== userId && x.correo.toLowerCase() === correo
+    );
+    if (correoDuplicado) {
+      throw new Error(`El correo '${correo}' ya pertenece a otro usuario.`);
+    }
+
+    if (
+      actual.rol === Rol.ADMINISTRADOR &&
+      rol !== Rol.ADMINISTRADOR &&
+      this.esUltimoAdministrador(actual)
+    ) {
+      throw new Error(
+        "No se puede quitar el rol de Administrador porque es el último administrador activo."
+      );
+    }
+
+    DatasheetStore.mutate((ds) => {
+      const idx = ds.usuarios.findIndex((x) => x.id === userId);
+      if (idx !== -1) {
+        ds.usuarios[idx] = {
+          ...ds.usuarios[idx],
+          nombre,
+          correo,
+          rol,
+          clave
+        };
+      }
     });
 
     return this.obtenerPorId(userId);
@@ -321,7 +374,7 @@ export class GestorUsuarios {
 
     if (this.esUltimoAdministrador(actual)) {
       throw new Error(
-        "No se puede deshabilitar al último administrador activo (RN05)."
+        "No se puede deshabilitar al último administrador activo."
       );
     }
 
@@ -405,10 +458,21 @@ export class GestorZonas {
 
   static modificarZona(z, datos) {
     const zonaCodigo = resolverIdCodigo(z, "codigo");
+    const nombre = datos.nombre !== undefined ? String(datos.nombre).trim() : undefined;
+    if (nombre !== undefined && !nombre) {
+      throw new Error("El nombre de la zona es obligatorio.");
+    }
+    if (datos.latitud !== undefined && Number.isNaN(Number(datos.latitud))) {
+      throw new Error("La latitud ingresada no es válida.");
+    }
+    if (datos.longitud !== undefined && Number.isNaN(Number(datos.longitud))) {
+      throw new Error("La longitud ingresada no es válida.");
+    }
+
     DatasheetStore.mutate((ds) => {
       const idx = ds.zonas.findIndex((x) => x.codigo === zonaCodigo);
       if (idx === -1) throw new Error("Zona no encontrada.");
-      if (datos.nombre) ds.zonas[idx].nombre = String(datos.nombre).trim();
+      if (nombre !== undefined) ds.zonas[idx].nombre = nombre;
       if (datos.latitud !== undefined) ds.zonas[idx].latitud = Number(datos.latitud);
       if (datos.longitud !== undefined) ds.zonas[idx].longitud = Number(datos.longitud);
     });
@@ -422,7 +486,7 @@ export class GestorZonas {
     );
     if (lotesAsociados.length > 0) {
       throw new Error(
-        `No se puede dar de baja la zona porque tiene ${lotesAsociados.length} lote(s) asignado(s). Reasignarlos primero (RN03).`
+        `No se puede dar de baja la zona porque tiene ${lotesAsociados.length} lote(s) asignado(s). Reasignarlos primero.`
       );
     }
 
@@ -735,7 +799,7 @@ export class GestorLotes {
       throw new Error("Código, nombre y zona son obligatorios.");
     }
     if (this.existeCodigo(codigo)) {
-      throw new Error(`El código de lote '${codigo}' ya existe (RN01).`);
+      throw new Error(`El código de lote '${codigo}' ya existe.`);
     }
     if (Number.isNaN(hectareas) || hectareas <= 0) {
       throw new Error("Las hectáreas deben ser un número positivo.");
@@ -841,7 +905,7 @@ export class GestorLotes {
         eliminado: false,
         requiereDescanso: true,
         mensaje:
-          "El lote tiene historial asociado (anegamientos, atributos o rankings). Según RN02 debe pasarse a 'En descanso' en lugar de eliminarse."
+          "El lote tiene historial asociado (anegamientos, atributos o rankings). Debe pasarse a 'En descanso' en lugar de eliminarse para conservar el registro histórico."
       };
     }
 
@@ -1054,7 +1118,7 @@ export class GestorAnegamientos {
             estadoNuevo: EstadoLote.ANEGADO,
             fechaHora: new Date().toISOString(),
             usuarioId: usuario?.id || null,
-            motivo: "Anegamiento registrado (CU05)"
+            motivo: "Anegamiento registrado"
           });
         }
       }
@@ -1062,7 +1126,7 @@ export class GestorAnegamientos {
 
     if (creados.length === 0 && omitidos.length > 0) {
       throw new Error(
-        `Los lotes seleccionados (${omitidos.join(", ")}) ya tienen un anegamiento abierto (RN14).`
+        `Los lotes seleccionados (${omitidos.join(", ")}) ya tienen un anegamiento abierto.`
       );
     }
 
@@ -1098,12 +1162,73 @@ export class GestorAnegamientos {
           estadoNuevo: EstadoLote.PENDIENTE,
           fechaHora: new Date().toISOString(),
           usuarioId: usuario?.id || null,
-          motivo: "Cierre de anegamiento (CU05)"
+          motivo: "Cierre de anegamiento"
         });
       }
     });
 
     return { id, loteCodigo: loteCodigoAfectado, fechaFin: fechaFin.toISOString() };
+  }
+
+  static modificar(a, datos, usuario = _usuarioActual) {
+    const id = resolverIdCodigo(a, "id");
+    let actualizado = null;
+
+    DatasheetStore.mutate((ds) => {
+      const idx = ds.anegamientos.findIndex((x) => x.id === id);
+      if (idx === -1) throw new Error("Anegamiento no encontrado.");
+      const actual = ds.anegamientos[idx];
+
+      const fInicio = datos.fechaInicio ? new Date(datos.fechaInicio) : new Date(actual.fechaInicio);
+      if (Number.isNaN(fInicio.getTime()) || fInicio > new Date()) {
+        throw new Error("La fecha de inicio no puede ser futura.");
+      }
+
+      let fFin = actual.fechaFin ? new Date(actual.fechaFin) : null;
+      if (datos.fechaFin !== undefined) {
+        if (datos.fechaFin === null || datos.fechaFin === "") {
+          fFin = null;
+        } else {
+          fFin = new Date(datos.fechaFin);
+          if (Number.isNaN(fFin.getTime()) || fFin > new Date()) {
+            throw new Error("La fecha de fin no puede ser futura.");
+          }
+          if (fFin < fInicio) {
+            throw new Error("La fecha de fin no puede ser anterior al inicio.");
+          }
+        }
+      } else if (fFin && fFin < fInicio) {
+        throw new Error("La fecha de fin no puede ser anterior al inicio.");
+      }
+
+      const observaciones =
+        datos.observaciones !== undefined
+          ? String(datos.observaciones || "").trim()
+          : actual.observaciones;
+
+      ds.anegamientos[idx] = {
+        ...actual,
+        fechaInicio: fInicio.toISOString(),
+        fechaFin: fFin ? fFin.toISOString() : null,
+        observaciones,
+        usuarioId: usuario?.id || actual.usuarioId
+      };
+
+      // Sincronizar estado operativo del lote según si quedó abierto o cerrado
+      const loteIdx = ds.lotes.findIndex((l) => l.codigo === actual.loteCodigo);
+      if (loteIdx !== -1) {
+        if (!fFin) {
+          ds.lotes[loteIdx].estado = EstadoLote.ANEGADO;
+          ds.lotes[loteIdx].semaforo = null;
+        } else if (ds.lotes[loteIdx].estado === EstadoLote.ANEGADO) {
+          ds.lotes[loteIdx].estado = EstadoLote.PENDIENTE;
+        }
+      }
+
+      actualizado = new Anegamiento(ds.anegamientos[idx]);
+    });
+
+    return actualizado;
   }
 }
 
@@ -1354,6 +1479,42 @@ export class GestorLecturas {
       if (idx === -1) throw new Error("Lectura no encontrada.");
       ds.lecturas[idx].milimetros = numMm;
       ds.lecturas[idx].usuarioId = usuario?.id || ds.lecturas[idx].usuarioId;
+      actualizada = new Lectura(ds.lecturas[idx]);
+    });
+
+    const ventana = GestorConfiguracion.obtenerVigente().ventanaLluviaHoras;
+    return {
+      lectura: actualizada,
+      acumulado: this.acumuladoZona(actualizada.zonaCodigo, ventana)
+    };
+  }
+
+  static modificarLectura(l, datos, usuario = _usuarioActual) {
+    const id = resolverIdCodigo(l, "id");
+    let actualizada = null;
+
+    DatasheetStore.mutate((ds) => {
+      const idx = ds.lecturas.findIndex((x) => x.id === id);
+      if (idx === -1) throw new Error("Lectura no encontrada.");
+      const actual = ds.lecturas[idx];
+
+      const numMm =
+        datos.milimetros !== undefined ? Number(datos.milimetros) : Number(actual.milimetros);
+      if (Number.isNaN(numMm) || numMm < 0) {
+        throw new Error("Los milímetros deben ser un número mayor o igual a 0.");
+      }
+
+      const fHora = datos.fechaHora ? new Date(datos.fechaHora) : new Date(actual.fechaHora);
+      if (Number.isNaN(fHora.getTime()) || fHora > new Date()) {
+        throw new Error("La fecha y hora de la lectura no pueden ser futuras.");
+      }
+
+      ds.lecturas[idx] = {
+        ...actual,
+        milimetros: numMm,
+        fechaHora: fHora.toISOString(),
+        usuarioId: usuario?.id || actual.usuarioId
+      };
       actualizada = new Lectura(ds.lecturas[idx]);
     });
 
@@ -1718,7 +1879,7 @@ export class GestorParadas {
 
   static abrirParada(causa, detalle, inicio, toneladas = null, usuario = _usuarioActual) {
     if (this.obtenerAbierta()) {
-      throw new Error("Ya existe una parada abierta. Cerrala antes de abrir otra (RN12).");
+      throw new Error("Ya existe una parada abierta. Cerrala antes de abrir otra.");
     }
 
     if (!Object.values(CausaParada).includes(causa)) {
@@ -1727,12 +1888,12 @@ export class GestorParadas {
 
     const detalleLimpio = String(detalle || "").trim();
     if (causa === CausaParada.OTRA && !detalleLimpio) {
-      throw new Error("Para la causa 'Otra' el detalle es obligatorio (RN13).");
+      throw new Error("Para la causa 'Otra' el detalle es obligatorio.");
     }
 
     const fechaInicio = inicio ? new Date(inicio) : new Date();
     if (Number.isNaN(fechaInicio.getTime()) || fechaInicio > new Date()) {
-      throw new Error("La fecha de inicio de la parada no puede ser futura (RN12).");
+      throw new Error("La fecha de inicio de la parada no puede ser futura.");
     }
 
     let ton = null;
@@ -1787,7 +1948,7 @@ export class GestorParadas {
       if (idx === -1) throw new Error("Parada no encontrada.");
       const actual = ds.paradas[idx];
       if (fechaFin < new Date(actual.fechaInicio)) {
-        throw new Error("El fin de la parada no puede ser anterior al inicio (RN12).");
+        throw new Error("El fin de la parada no puede ser anterior al inicio.");
       }
       ds.paradas[idx].fechaFin = fechaFin.toISOString();
       ds.paradas[idx].estado = EstadoParada.CERRADA;
@@ -1807,7 +1968,7 @@ export class GestorParadas {
       throw new Error("Causa inválida.");
     }
     if (causa === CausaParada.OTRA && !detalle) {
-      throw new Error("Para la causa 'Otra' el detalle es obligatorio (RN13).");
+      throw new Error("Para la causa 'Otra' el detalle es obligatorio.");
     }
 
     let actualizada = null;

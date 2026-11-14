@@ -38,18 +38,12 @@ export function InterfazAlertaRiesgo({
 
   return (
     <div
+      className={`alert-banner ${esSimulacion ? "alert-banner-bordo" : "alert-banner-red"}`}
       style={{
         margin: "12px 24px 0",
-        background: esSimulacion
-          ? "linear-gradient(90deg, rgba(153,27,27,0.92), rgba(124,45,18,0.92))"
-          : "linear-gradient(90deg, rgba(127,29,29,0.95), rgba(153,27,27,0.88))",
-        border: "1px solid #ef4444",
-        borderRadius: "12px",
-        padding: "14px 18px",
-        display: "flex",
         flexDirection: "column",
-        gap: "10px",
-        boxShadow: "0 8px 24px rgba(239, 68, 68, 0.25)"
+        alignItems: "stretch",
+        gap: "10px"
       }}
     >
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: "12px" }}>
@@ -57,7 +51,7 @@ export function InterfazAlertaRiesgo({
           <div style={{ display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
             <span style={{ fontSize: "20px" }}>🚨</span>
             <b style={{ fontSize: "15px", color: "#ffffff" }}>
-              ALERTA DE RIESGO (CU15): {lotesRojos.length} lote(s) en Semáforo ROJO —{" "}
+              ALERTA DE RIESGO: {lotesRojos.length} lote(s) en Semáforo ROJO —{" "}
               {toneladasEnRiesgo.toLocaleString()} t de caña en riesgo
             </b>
             {esSimulacion && (
@@ -91,12 +85,12 @@ export function InterfazAlertaRiesgo({
               minHeight: "30px",
               padding: "4px 10px",
               fontSize: "12px",
-              background: "rgba(15, 23, 42, 0.75)",
+              background: "rgba(20, 20, 23, 0.85)",
               borderColor: "#fca5a5"
             }}
             onClick={() => onAbrirDetalleLote(it.loteCodigo)}
           >
-            🔴 <b>{it.loteCodigo}</b> ({it.toneladas.toLocaleString()} t · Riesgo {it.puntajeRiesgo})
+            🔴 <b>{it.loteCodigo}</b> ({it.toneladas.toLocaleString()} t · Riesgo {it.puntajeRiesgo} pts)
           </button>
         ))}
       </div>
@@ -114,27 +108,16 @@ export function InterfazSimulador({
   onCerrarSimulador
 }) {
   return (
-    <div
-      style={{
-        margin: "12px 24px 0",
-        background: "#162032",
-        border: "2px solid #f59e0b",
-        borderRadius: "12px",
-        padding: "16px 20px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "14px"
-      }}
-    >
+    <div className="simulador-panel" style={{ margin: "12px 24px 0" }}>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "10px" }}>
         <div style={{ display: "flex", alignItems: "center", gap: "10px", flexWrap: "wrap" }}>
           <span style={{ fontSize: "20px" }}>🧪</span>
           <div>
             <b style={{ fontSize: "15px", color: "#fbbf24" }}>
-              Simulador Interactivo de Precipitaciones (CU16)
+              Simulador Interactivo de Precipitaciones
             </b>
             <p style={{ fontSize: "12px", color: "#fde68a" }}>
-              Modo simulación: los cambios no se guardan ni alteran el ranking oficial ni las lecturas reales (esSimulacion = true).
+              Modo prueba: los cambios son temporales y no modifican el ranking oficial ni los registros de lluvia reales.
             </p>
           </div>
         </div>
@@ -189,28 +172,17 @@ export function InterfazSimulador({
           const vals = lluviasPorZona[z.codigo] || { lluviaAcumulada: 0, lluviaPrevista: 0 };
           const total = Number(vals.lluviaAcumulada || 0) + Number(vals.lluviaPrevista || 0);
           return (
-            <div
-              key={z.codigo}
-              style={{
-                background: "#0f172a",
-                border: "1px solid #334155",
-                borderRadius: "10px",
-                padding: "12px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px"
-              }}
-            >
+            <div key={z.codigo} className="simulador-zone-card">
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <b style={{ fontSize: "13px", color: "#f8fafc" }}>{z.nombre}</b>
-                <span style={{ fontSize: "11.5px", fontFamily: "JetBrains Mono", color: "#38bdf8" }}>
+                <b style={{ fontSize: "13px", color: "var(--text-primary)" }}>{z.nombre}</b>
+                <span style={{ fontSize: "11.5px", fontFamily: "JetBrains Mono", color: "var(--bordo-light)", fontWeight: 700 }}>
                   Total: {total} mm
                 </span>
               </div>
 
-              <label style={{ fontSize: "11.5px", color: "#cbd5e1", display: "flex", flexDirection: "column", gap: "4px" }}>
+              <label style={{ fontSize: "11.5px", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "4px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span>Lluvia acumulada (A):</span>
+                  <span>Lluvia acumulada reciente:</span>
                   <b>{vals.lluviaAcumulada} mm</b>
                 </div>
                 <input
@@ -225,9 +197,9 @@ export function InterfazSimulador({
                 />
               </label>
 
-              <label style={{ fontSize: "11.5px", color: "#cbd5e1", display: "flex", flexDirection: "column", gap: "4px" }}>
+              <label style={{ fontSize: "11.5px", color: "var(--text-secondary)", display: "flex", flexDirection: "column", gap: "4px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
-                  <span>Lluvia prevista (P):</span>
+                  <span>Lluvia pronosticada:</span>
                   <b>{vals.lluviaPrevista} mm</b>
                 </div>
                 <input
@@ -268,9 +240,19 @@ export default function CentroControlView({
   const [filtroEstado, setFiltroEstado] = useState("TODOS"); // TODOS | ROJO | AMARILLO | VERDE | OPERATIVOS
   const [alertaOcultaParaId, setAlertaOcultaParaId] = useState(null);
 
-  // Estado del Simulador (CU16) - efímero, no persiste
+  // Estado del Simulador - temporal, no persiste
   const [simuladorActivo, setSimuladorActivo] = useState(false);
   const [lluviasSimuladas, setLuviasSimuladas] = useState({});
+
+  const cambiarEstadoRapido = (codigoLote, nuevoEstado) => {
+    try {
+      GestorLotes.cambiarEstado(codigoLote, nuevoEstado, usuario);
+      onToast?.(`Estado del lote ${codigoLote} actualizado.`, "success");
+      onGenerarRanking?.(usuario);
+    } catch (err) {
+      onToast?.(err.message, "error");
+    }
+  };
 
   const configVigente = useMemo(() => GestorConfiguracion.obtenerVigente(), [versionDatos]);
   const zonas = useMemo(() => GestorZonas.listarZonas(), [versionDatos]);
@@ -572,24 +554,14 @@ export default function CentroControlView({
 
   return (
     <div className="view-container">
-      {/* AVISO PARADA DE FÁBRICA ABIERTA (CU12 1a / CU13) */}
+      {/* AVISO PARADA DE FÁBRICA ABIERTA */}
       {paradaAbierta && (
         <div
-          style={{
-            margin: "12px 24px 0",
-            background: "rgba(239, 68, 68, 0.16)",
-            border: "1px solid #ef4444",
-            borderRadius: "10px",
-            padding: "10px 16px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            gap: "12px",
-            flexWrap: "wrap"
-          }}
+          className="alert-banner alert-banner-red"
+          style={{ margin: "12px 24px 0" }}
         >
           <span style={{ fontSize: "13px", color: "#fecaca" }}>
-            🏭 <b>ATENCIÓN — PARADA DE FÁBRICA EN CURSO ({paradaAbierta.id}):</b> Causa:{" "}
+            🏭 <b>ATENCIÓN — PARADA DE FÁBRICA EN CURSO:</b> Causa:{" "}
             <b>{CAUSA_PARADA_LABELS[paradaAbierta.causa]}</b> · Iniciada:{" "}
             {new Date(paradaAbierta.fechaInicio).toLocaleString()}
           </span>
@@ -604,28 +576,27 @@ export default function CentroControlView({
             className="btn-action btn-primary"
             disabled={simuladorActivo}
             onClick={() => onGenerarRanking(usuario)}
-            title="Ejecutar CU11 con lecturas reales y pronóstico vigente"
+            title="Actualizar ranking oficial con las lluvias y pronósticos vigentes"
           >
-            🔄 Recalcular Ranking Oficial (CU11)
+            🔄 Recalcular Ranking Oficial
           </button>
 
           <button
             className={`btn-scenario ${simuladorActivo ? "active sc-rain" : ""}`}
             onClick={() => (simuladorActivo ? restablecerDatosReales() : abrirSimulador())}
           >
-            🧪 {simuladorActivo ? "Simulador Activo (CU16)" : "Simular Precipitaciones (CU16)"}
+            🧪 {simuladorActivo ? "Simulador Activo" : "Simular Precipitaciones"}
           </button>
         </div>
 
         <div className="scenario-info-badge">
           <span>
-            {simuladorActivo ? "🧪 SIMULACIÓN (No persistida)" : "📊 Ranking Oficial"} · Config v
-            {rankingActivo?.configuracionVersion} · Lluvia crítica: {configVigente.lluviaCriticaMm} mm
+            {simuladorActivo ? "🧪 Escenario Simulado (No guardado)" : "📊 Ranking Oficial"} · Referencia de lluvia crítica:{" "}
+            {configVigente.lluviaCriticaMm} mm
           </span>
         </div>
       </div>
 
-      {/* <<interfaz>> InterfazSimulador (CU16) */}
       {simuladorActivo && (
         <InterfazSimulador
           zonas={zonas}
@@ -637,7 +608,6 @@ export default function CentroControlView({
         />
       )}
 
-      {/* <<interfaz>> InterfazAlertaRiesgo (CU15) */}
       {mostrarBannerAlerta && (
         <InterfazAlertaRiesgo
           lotesRojos={infoRojo.items}
@@ -738,13 +708,13 @@ export default function CentroControlView({
               Semáforo (Pendientes)
             </div>
             <div className="legend-item">
-              <div className="legend-color" style={{ background: "#ef4444" }}></div> Rojo: Urgente (R ≥ {configVigente.umbralSemaforoRojo})
+              <div className="legend-color" style={{ background: "#dc2626" }}></div> Rojo: Urgente ({configVigente.umbralSemaforoRojo}+ pts)
             </div>
             <div className="legend-item">
-              <div className="legend-color" style={{ background: "#f59e0b" }}></div> Amarillo: Atención ({configVigente.umbralSemaforoAmarillo}–{configVigente.umbralSemaforoRojo - 1})
+              <div className="legend-color" style={{ background: "#d97706" }}></div> Amarillo: Atención ({configVigente.umbralSemaforoAmarillo}–{configVigente.umbralSemaforoRojo - 1} pts)
             </div>
             <div className="legend-item">
-              <div className="legend-color" style={{ background: "#10b981" }}></div> Verde: Puede esperar (&lt; {configVigente.umbralSemaforoAmarillo})
+              <div className="legend-color" style={{ background: "#16a34a" }}></div> Verde: Puede esperar (&lt; {configVigente.umbralSemaforoAmarillo} pts)
             </div>
             <div style={{ fontWeight: 700, margin: "4px 0 2px", color: "#94a3b8", fontSize: "10.5px", textTransform: "uppercase" }}>
               Operativos / Otros
@@ -834,34 +804,53 @@ export default function CentroControlView({
                   style={{
                     "--rec-color": detalleLote.itemRnk
                       ? SEMAFORO_META[detalleLote.itemRnk.semaforo]?.color
-                      : "#38bdf8"
+                      : "var(--bordo-bright)"
                   }}
                 >
                   <div>
-                    <b>Índice Vulnerabilidad (I):</b> {detalleLote.desglose.indice} (
+                    <b>Vulnerabilidad del terreno:</b> {detalleLote.desglose.indice} pts (
                     {CATEGORIA_LABELS[detalleLote.desglose.categoria]})
                   </div>
                   {detalleLote.itemRnk && (
                     <div style={{ marginTop: "4px" }}>
-                      <b>Lluvia (A + P):</b> {detalleLote.itemRnk.lluviaAcumulada} +{" "}
-                      {detalleLote.itemRnk.lluviaPrevista} mm · <b>f =</b> {detalleLote.itemRnk.factorLluvia}
+                      <b>Lluvia considerada:</b> {detalleLote.itemRnk.lluviaAcumulada} mm acumulados +{" "}
+                      {detalleLote.itemRnk.lluviaPrevista} mm previstos
                       <br />
-                      <b>Puntaje de Riesgo (R):</b>{" "}
+                      <b>Nivel de riesgo actual:</b>{" "}
                       <span style={{ fontFamily: "JetBrains Mono", fontSize: "14px", fontWeight: 800 }}>
-                        {detalleLote.itemRnk.puntajeRiesgo}
+                        {detalleLote.itemRnk.puntajeRiesgo} pts
                       </span>{" "}
-                      (Puesto #{detalleLote.itemRnk.posicion})
+                      (Prioridad #{detalleLote.itemRnk.posicion})
                     </div>
                   )}
-                  <div style={{ fontSize: "11px", color: "#94a3b8", marginTop: "4px" }}>
-                    Último cálculo: {new Date(rankingActivo?.fechaHora || Date.now()).toLocaleString()}
+                  <div style={{ fontSize: "11px", color: "var(--text-secondary)", marginTop: "4px" }}>
+                    Actualizado: {new Date(rankingActivo?.fechaHora || Date.now()).toLocaleString()}
                   </div>
                 </div>
               ) : (
                 <div className="floating-recommendation" style={{ "--rec-color": "#a855f7" }}>
-                  Lote excluido del cálculo: faltan cargar atributos de vulnerabilidad (CU04).
+                  Lote excluido del ranking: faltan cargar sus características agronómicas.
                 </div>
               )}
+
+              <div className="form-group" style={{ marginTop: "8px", marginBottom: 0 }}>
+                <label style={{ fontSize: "11px" }}>Estado operativo del lote</label>
+                <select
+                  className="form-control"
+                  style={{ padding: "6px 10px", fontSize: "12.5px" }}
+                  value={detalleLote.lote.estado}
+                  onChange={(e) => cambiarEstadoRapido(detalleLote.lote.codigo, e.target.value)}
+                >
+                  <option value={EstadoLote.PENDIENTE}>Pendiente</option>
+                  <option value={EstadoLote.EN_COSECHA}>En Cosecha</option>
+                  <option value={EstadoLote.COSECHADO}>Cosechado</option>
+                  {detalleLote.lote.estado === EstadoLote.ANEGADO && (
+                    <option value={EstadoLote.ANEGADO} disabled>
+                      Anegado
+                    </option>
+                  )}
+                </select>
+              </div>
 
               {onIrAAnegamiento && detalleLote.lote.estado !== EstadoLote.ANEGADO && (
                 <div className="floating-actions">
@@ -869,7 +858,7 @@ export default function CentroControlView({
                     className="btn-card-action"
                     onClick={() => onIrAAnegamiento(detalleLote.lote.codigo)}
                   >
-                    🌊 Reportar Anegamiento (CU05)
+                    🌊 Reportar Anegamiento
                   </button>
                 </div>
               )}
@@ -877,12 +866,12 @@ export default function CentroControlView({
           )}
         </div>
 
-        {/* 2. RANKING DE PRIORIDAD (CU11) */}
+        {/* 2. RANKING DE PRIORIDAD */}
         {modoVisual !== "mapa" && (
           <aside className={modoVisual === "dividido" ? "sidebar" : "stats-dashboard-container"}>
             <div className="sidebar-header">
               <h2>
-                <span>📋</span> Ranking de Prioridad de Cosecha (CU11)
+                <span>📋</span> Ranking de Prioridad de Cosecha
               </h2>
               <span className="badge-status badge-safe">
                 {itemsFiltrados.length} elegibles
@@ -891,7 +880,7 @@ export default function CentroControlView({
 
             <div className={modoVisual === "dividido" ? "ranking-list" : "stats-cards-grid"}>
               {itemsFiltrados.length === 0 && filtroEstado !== "OPERATIVOS" && (
-                <div style={{ padding: "20px", textAlign: "center", color: "#94a3b8", fontSize: "13px" }}>
+                <div style={{ padding: "20px", textAlign: "center", color: "var(--text-secondary)", fontSize: "13px" }}>
                   No hay lotes elegibles para el filtro seleccionado.
                 </div>
               )}
@@ -909,9 +898,9 @@ export default function CentroControlView({
                   >
                     <div className="lot-card-header">
                       <div className="lot-code">
-                        <span style={{ color: "#38bdf8" }}>#{it.posicion}</span>
+                        <span className="lot-rank-num">#{it.posicion}</span>
                         <span>{it.loteCodigo}</span>
-                        <span style={{ fontSize: "12px", fontWeight: 500, color: "#94a3b8" }}>
+                        <span style={{ fontSize: "12px", fontWeight: 500, color: "var(--text-secondary)" }}>
                           {it.loteNombre}
                         </span>
                       </div>
@@ -924,15 +913,15 @@ export default function CentroControlView({
                       <div className="lot-detail-item">Zona: <b>{it.zonaNombre}</b></div>
                       <div className="lot-detail-item">Caña: <b>{it.toneladas.toLocaleString()} t ({it.hectareas} ha)</b></div>
                       <div className="lot-detail-item">
-                        Índice (I): <b>{it.indice} ({CATEGORIA_LABELS[it.categoria]})</b>
+                        Vulnerabilidad: <b>{it.indice} pts ({CATEGORIA_LABELS[it.categoria]})</b>
                       </div>
                       <div className="lot-detail-item">
-                        Lluvia (A+P): <b>{it.lluviaAcumulada} + {it.lluviaPrevista} mm</b>
+                        Lluvia: <b>{it.lluviaAcumulada} mm acum. · {it.lluviaPrevista} mm prev.</b>
                       </div>
                     </div>
 
                     <div className="lot-recommendation" style={{ "--rec-color": meta?.color }}>
-                      Puntaje de riesgo <b>R = I × f = {it.indice} × {it.factorLluvia} = {it.puntajeRiesgo}</b>
+                      Nivel de riesgo estimado: <b>{it.puntajeRiesgo} pts</b> — Prioridad #{it.posicion}
                       {sinPoligono && (
                         <div style={{ color: "#fbbf24", marginTop: "2px" }}>
                           ⚠️ Sin polígono en el mapa
@@ -949,7 +938,7 @@ export default function CentroControlView({
                 );
               })}
 
-              {/* LOTES INCOMPLETOS (CU10 2a / CU11 5a) */}
+              {/* LOTES INCOMPLETOS */}
               {lotesIncompletosFiltrados.length > 0 && filtroEstado === "TODOS" && (
                 <div style={{ gridColumn: "1 / -1", marginTop: "8px" }}>
                   <div style={{ fontSize: "11.5px", fontWeight: 700, color: "#d8b4fe", textTransform: "uppercase", marginBottom: "6px" }}>

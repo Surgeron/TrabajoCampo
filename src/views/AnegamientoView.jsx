@@ -8,13 +8,16 @@ import {
 } from "../services/gestores";
 import { EstadoLote, ESTADO_LOTE_META } from "../domain/enums";
 
-function fechaLocalInputAhora() {
-  const ahora = new Date();
-  const offset = ahora.getTimezoneOffset() * 60000;
-  return new Date(ahora.getTime() - offset).toISOString().slice(0, 16);
+function isoALocalInput(isoStr) {
+  const d = isoStr ? new Date(isoStr) : new Date();
+  const offset = d.getTimezoneOffset() * 60000;
+  return new Date(d.getTime() - offset).toISOString().slice(0, 16);
 }
 
-// <<interfaz>> InterfazAnegamiento (CU05)
+function fechaLocalInputAhora() {
+  return isoALocalInput();
+}
+
 export default function AnegamientoView({
   usuario,
   zonaPreseleccionada = null,
@@ -40,9 +43,16 @@ export default function AnegamientoView({
   const [errorMsg, setErrorMsg] = useState("");
   const [modalConfirmarNoPendiente, setModalConfirmarNoPendiente] = useState(false);
 
-  // Estado para cierre de anegamiento (CU05 1a)
+  // Estado para cierre de anegamiento
   const [anegamientoACerrar, setAnegamientoACerrar] = useState(null);
   const [fechaFinCierre, setFechaFinCierre] = useState(fechaLocalInputAhora());
+
+  // Estado para edición de anegamiento
+  const [anegEditar, setAnegEditar] = useState(null);
+  const [editInicio, setEditInicio] = useState("");
+  const [editFin, setEditFin] = useState("");
+  const [editObs, setEditObs] = useState("");
+  const [editErr, setEditErr] = useState("");
 
   useEffect(() => {
     if (zonaPreseleccionada) setFiltroZona(zonaPreseleccionada);
@@ -105,11 +115,11 @@ export default function AnegamientoView({
     }
 
     if (new Date(fechaInicio) > new Date()) {
-      setErrorMsg("La fecha y hora de inicio no puede ser futura (CU05 4a).");
+      setErrorMsg("La fecha y hora de inicio no puede ser futura.");
       return;
     }
 
-    // CU05 2c: Si algún lote seleccionado no está en estado PENDIENTE, pedir confirmación
+    // Si algún lote seleccionado no está en estado PENDIENTE, pedir confirmación
     const hayNoPendientes = lotesSeleccionados.some((cod) => {
       const l = lotes.find((x) => x.codigo === cod);
       return l && l.estado !== EstadoLote.PENDIENTE;
@@ -121,6 +131,36 @@ export default function AnegamientoView({
     }
 
     ejecutarApertura();
+  };
+
+  const abrirEditarAnegamiento = (a) => {
+    setAnegEditar(a);
+    setEditInicio(isoALocalInput(a.fechaInicio));
+    setEditFin(a.fechaFin ? isoALocalInput(a.fechaFin) : "");
+    setEditObs(a.observaciones || "");
+    setEditErr("");
+  };
+
+  const guardarEdicionAnegamiento = (e) => {
+    e.preventDefault();
+    setEditErr("");
+    try {
+      GestorAnegamientos.modificar(
+        anegEditar,
+        {
+          fechaInicio: new Date(editInicio).toISOString(),
+          fechaFin: editFin ? new Date(editFin).toISOString() : null,
+          observaciones: editObs
+        },
+        usuario
+      );
+      setAnegEditar(null);
+      if (onRecalcularRanking) onRecalcularRanking();
+      else if (onDatosCambiados) onDatosCambiados();
+      onToast?.("Registro de anegamiento actualizado.", "success");
+    } catch (err) {
+      setEditErr(err.message);
+    }
   };
 
   const confirmarCierreAnegamiento = () => {
@@ -153,10 +193,10 @@ export default function AnegamientoView({
       <div className="section-header-box">
         <div>
           <h2 style={{ fontSize: "18px", fontWeight: 800, display: "flex", alignItems: "center", gap: "8px" }}>
-            <span>🌊</span> Gestión de Anegamientos (CU05)
+            <span>🌊</span> Gestión de Anegamientos
           </h2>
-          <p style={{ fontSize: "13px", color: "var(--text-muted)", marginTop: "2px" }}>
-            Registrá lotes intransitables por lluvia (pasan a estado Azul / Anegado) y cerrá el evento cuando recuperen acceso.
+          <p style={{ fontSize: "13px", color: "var(--text-secondary)", marginTop: "2px" }}>
+            Registrá lotes intransitables por agua (pasan a estado Anegado) y cerrá el evento cuando recuperen acceso.
           </p>
         </div>
         <span className="badge-status badge-anegado">{abiertos.length} evento(s) abierto(s)</span>
@@ -169,20 +209,19 @@ export default function AnegamientoView({
         </div>
       )}
 
-      {/* PANEL 1: ANEGAMIENTOS ABIERTOS (PARA CERRAR CUANDO SE RECUPERE EL LOTE) */}
+      {/* PANEL 1: ANEGAMIENTOS ABIERTOS */}
       <div
+        className="panel-card"
         style={{
-          background: "var(--bg-card)",
-          border: "1px solid #3b82f6",
-          borderRadius: "12px",
+          borderColor: abiertos.length > 0 ? "var(--color-anegado)" : "var(--border-color)",
           padding: "16px"
         }}
       >
-        <h3 style={{ fontSize: "15px", fontWeight: 700, marginBottom: "10px", color: "#93c5fd" }}>
+        <h3 style={{ fontSize: "15px", fontWeight: 700, marginBottom: "10px", color: abiertos.length > 0 ? "#93c5fd" : "var(--text-primary)" }}>
           🔵 Anegamientos Abiertos Actualmente ({abiertos.length})
         </h3>
         {abiertos.length === 0 ? (
-          <p style={{ fontSize: "13px", color: "#94a3b8" }}>
+          <p style={{ fontSize: "13px", color: "var(--text-muted)" }}>
             No hay lotes con anegamiento abierto en este momento.
           </p>
         ) : (
@@ -190,10 +229,8 @@ export default function AnegamientoView({
             {abiertos.map((a) => (
               <div
                 key={a.id}
+                className="inset-box"
                 style={{
-                  background: "#0f172a",
-                  border: "1px solid #334155",
-                  borderRadius: "10px",
                   padding: "12px",
                   display: "flex",
                   flexDirection: "column",
@@ -201,39 +238,46 @@ export default function AnegamientoView({
                 }}
               >
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                  <b style={{ fontSize: "14px", color: "#60a5fa" }}>{nombreLote(a.loteCodigo)}</b>
+                  <b style={{ fontSize: "14px", color: "#93c5fd" }}>{nombreLote(a.loteCodigo)}</b>
                   <span className="badge-status badge-anegado">Anegado</span>
                 </div>
-                <div style={{ fontSize: "12px", color: "#cbd5e1" }}>
+                <div style={{ fontSize: "12px", color: "var(--text-secondary)" }}>
                   Inicio: <b>{new Date(a.fechaInicio).toLocaleString()}</b>
                 </div>
                 {a.observaciones && (
-                  <div style={{ fontSize: "12px", color: "#94a3b8" }}>"{a.observaciones}"</div>
+                  <div style={{ fontSize: "12px", color: "var(--text-muted)" }}>"{a.observaciones}"</div>
                 )}
-                <button
-                  className="btn-action btn-primary"
-                  style={{ minHeight: "36px", justifyContent: "center", marginTop: "4px" }}
-                  onClick={() => {
-                    setAnegamientoACerrar(a);
-                    setFechaFinCierre(fechaLocalInputAhora());
-                    setErrorMsg("");
-                  }}
-                >
-                  ✅ Cerrar anegamiento (Recuperó acceso)
-                </button>
+                <div style={{ display: "flex", gap: "8px", marginTop: "4px" }}>
+                  <button
+                    className="btn-action btn-primary"
+                    style={{ flex: 1, minHeight: "36px", justifyContent: "center" }}
+                    onClick={() => {
+                      setAnegamientoACerrar(a);
+                      setFechaFinCierre(fechaLocalInputAhora());
+                      setErrorMsg("");
+                    }}
+                  >
+                    ✅ Cerrar anegamiento
+                  </button>
+                  <button
+                    className="btn-action"
+                    style={{ minHeight: "36px", padding: "6px 12px" }}
+                    onClick={() => abrirEditarAnegamiento(a)}
+                  >
+                    ✏️
+                  </button>
+                </div>
               </div>
             ))}
           </div>
         )}
       </div>
 
-      {/* PANEL 2: REGISTRAR NUEVO ANEGAMIENTO (CU05 2a, 2b, 2c) */}
+      {/* PANEL 2: REGISTRAR NUEVO ANEGAMIENTO */}
       <form
         onSubmit={registrarInicio}
+        className="panel-card"
         style={{
-          background: "var(--bg-card)",
-          border: "1px solid var(--border-color)",
-          borderRadius: "12px",
           padding: "16px",
           display: "flex",
           flexDirection: "column",
@@ -273,17 +317,7 @@ export default function AnegamientoView({
             return (
               <label
                 key={l.codigo}
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "10px",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  background: seleccionado ? "rgba(59, 130, 246, 0.16)" : "#0f172a",
-                  border: `1px solid ${seleccionado ? "#3b82f6" : "#334155"}`,
-                  cursor: yaAbierto ? "not-allowed" : "pointer",
-                  opacity: yaAbierto ? 0.55 : 1
-                }}
+                className={`lot-pick-item ${seleccionado ? "selected" : ""} ${yaAbierto ? "disabled" : ""}`}
               >
                 <input
                   type="checkbox"
@@ -293,7 +327,7 @@ export default function AnegamientoView({
                 />
                 <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
                   <b style={{ fontSize: "13px" }}>{l.codigo} — {l.nombre}</b>
-                  <span style={{ fontSize: "11px", color: "#94a3b8" }}>
+                  <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
                     {l.zonaNombre} · {meta?.label} {yaAbierto && "(Ya abierto)"}
                   </span>
                 </div>
@@ -330,9 +364,9 @@ export default function AnegamientoView({
         </button>
       </form>
 
-      {/* PANEL 3: HISTORIAL COMPLETO DE ANEGAMIENTOS (ALIMENTA CU10) */}
+      {/* PANEL 3: HISTORIAL COMPLETO DE ANEGAMIENTOS */}
       <h3 style={{ fontSize: "15px", fontWeight: 700, marginTop: "6px" }}>
-        📚 Historial de Anegamientos ({todos.length}) — Inicio zafra vigente: {config.inicioZafra}
+        📚 Historial de Anegamientos ({todos.length}) — Inicio de zafra: {config.inicioZafra}
       </h3>
       <div className="table-responsive-wrapper">
         <table className="custom-table">
@@ -344,6 +378,7 @@ export default function AnegamientoView({
               <th>Zafra</th>
               <th>Observaciones</th>
               <th>Registrado por</th>
+              <th style={{ width: "90px" }}>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -367,8 +402,18 @@ export default function AnegamientoView({
                       <span className="badge-status badge-harvested">Histórico</span>
                     )}
                   </td>
-                  <td style={{ fontSize: "12px", color: "#cbd5e1" }}>{a.observaciones || "—"}</td>
-                  <td style={{ fontSize: "12px", color: "#94a3b8" }}>{nombreUsuario(a.usuarioId)}</td>
+                  <td style={{ fontSize: "12px", color: "var(--text-secondary)" }}>{a.observaciones || "—"}</td>
+                  <td style={{ fontSize: "12px", color: "var(--text-muted)" }}>{nombreUsuario(a.usuarioId)}</td>
+                  <td>
+                    <button
+                      type="button"
+                      className="btn-action"
+                      style={{ minHeight: "30px", padding: "4px 10px", fontSize: "12px" }}
+                      onClick={() => abrirEditarAnegamiento(a)}
+                    >
+                      ✏️ Editar
+                    </button>
+                  </td>
                 </tr>
               );
             })}
@@ -376,7 +421,85 @@ export default function AnegamientoView({
         </table>
       </div>
 
-      {/* MODAL EXTENSIÓN 2c: LOTE NO PENDIENTE */}
+      {/* MODAL EDITAR ANEGAMIENTO */}
+      {anegEditar && (
+        <div className="modal-overlay">
+          <div className="modal-card">
+            <div className="modal-header">
+              <h3>✏️ Editar Anegamiento — {anegEditar.loteCodigo}</h3>
+              <button
+                type="button"
+                onClick={() => setAnegEditar(null)}
+                style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "20px", cursor: "pointer" }}
+              >
+                &times;
+              </button>
+            </div>
+            <form onSubmit={guardarEdicionAnegamiento}>
+              <div className="modal-body">
+                {editErr && (
+                  <div className="login-error-alert" style={{ marginBottom: 0 }}>
+                    <span>⚠️</span>
+                    <span>{editErr}</span>
+                  </div>
+                )}
+                <div className="form-group">
+                  <label>Fecha y hora de inicio</label>
+                  <input
+                    type="datetime-local"
+                    className="form-control"
+                    value={editInicio}
+                    onChange={(e) => setEditInicio(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="form-group">
+                  <label>Fecha y hora de fin (dejar vacío si sigue abierto)</label>
+                  <div style={{ display: "flex", gap: "8px" }}>
+                    <input
+                      type="datetime-local"
+                      className="form-control"
+                      value={editFin}
+                      onChange={(e) => setEditFin(e.target.value)}
+                    />
+                    {editFin && (
+                      <button
+                        type="button"
+                        className="btn-action"
+                        style={{ padding: "6px 10px" }}
+                        onClick={() => setEditFin("")}
+                        title="Reabrir evento"
+                      >
+                        Reabrir
+                      </button>
+                    )}
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Observaciones</label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    value={editObs}
+                    onChange={(e) => setEditObs(e.target.value)}
+                    placeholder="Detalle del estado del lote o camino"
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button type="button" className="btn-action" onClick={() => setAnegEditar(null)}>
+                  Cancelar
+                </button>
+                <button type="submit" className="btn-action btn-primary">
+                  Guardar Cambios
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* MODAL LOTE NO PENDIENTE */}
       {modalConfirmarNoPendiente && (
         <div className="modal-overlay">
           <div className="modal-card">
@@ -384,7 +507,7 @@ export default function AnegamientoView({
               <h3>⚠️ Confirmar Registro en Lote No Pendiente</h3>
               <button
                 onClick={() => setModalConfirmarNoPendiente(false)}
-                style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "20px", cursor: "pointer" }}
+                style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "20px", cursor: "pointer" }}
               >
                 &times;
               </button>
@@ -392,7 +515,7 @@ export default function AnegamientoView({
             <div className="modal-body">
               <p style={{ fontSize: "13.5px" }}>
                 Alguno de los lotes seleccionados no está en estado <b>Pendiente</b> (por ejemplo, ya cosechado o en descanso).
-                El registro igual impactará en el historial de vulnerabilidad (CU05 2c). ¿Deseás continuar?
+                El registro igualmente quedará asentado en el historial del lote. ¿Deseás continuar?
               </p>
             </div>
             <div className="modal-footer">
@@ -407,7 +530,7 @@ export default function AnegamientoView({
         </div>
       )}
 
-      {/* MODAL CERRAR ANEGAMIENTO (CU05 1a) */}
+      {/* MODAL CERRAR ANEGAMIENTO */}
       {anegamientoACerrar && (
         <div className="modal-overlay">
           <div className="modal-card">
@@ -415,15 +538,15 @@ export default function AnegamientoView({
               <h3>✅ Cerrar Anegamiento — {anegamientoACerrar.loteCodigo}</h3>
               <button
                 onClick={() => setAnegamientoACerrar(null)}
-                style={{ background: "none", border: "none", color: "#94a3b8", fontSize: "20px", cursor: "pointer" }}
+                style={{ background: "none", border: "none", color: "var(--text-muted)", fontSize: "20px", cursor: "pointer" }}
               >
                 &times;
               </button>
             </div>
             <div className="modal-body">
-              <p style={{ fontSize: "13px", color: "#cbd5e1" }}>
+              <p style={{ fontSize: "13px", color: "var(--text-secondary)" }}>
                 Inicio del anegamiento: <b>{new Date(anegamientoACerrar.fechaInicio).toLocaleString()}</b>.
-                Al cerrar, el lote vuelve a estado <b>Pendiente</b> y se recalcula su semáforo.
+                Al cerrar, el lote vuelve a estado <b>Pendiente</b> y se recalcula su prioridad.
               </p>
               <div className="form-group">
                 <label>Fecha y hora de recuperación de acceso:</label>

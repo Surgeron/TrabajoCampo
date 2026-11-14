@@ -67,25 +67,25 @@ export const ROL_META = Object.freeze({
     id: Rol.ADMINISTRADOR,
     nombre: "Administrador",
     avatar: "🛡️",
-    descripcion: "Gestiona usuarios, lotes, atributos, zonas y parámetros. Hereda todo lo del Jefe de cosecha."
+    descripcion: "Gestiona usuarios, lotes, zonas, parámetros y accede a todas las consultas y controles."
   },
   [Rol.JEFE_COSECHA]: {
     id: Rol.JEFE_COSECHA,
     nombre: "Jefe de cosecha",
     avatar: "👨‍💼",
-    descripcion: "Consulta ranking, mapa, simulador, pronóstico e historial de paradas, y puede registrar anegamientos."
+    descripcion: "Consulta prioridades, mapa, simulador de lluvias, pronóstico e historial de paradas."
   },
   [Rol.OPERADOR_CAMPO]: {
     id: Rol.OPERADOR_CAMPO,
     nombre: "Operador de campo",
     avatar: "🚜",
-    descripcion: "Carga lecturas de pluviómetro de su zona y reporta anegamientos."
+    descripcion: "Carga mediciones de pluviómetro y reporta lotes anegados."
   },
   [Rol.SUPERVISOR_FABRICA]: {
     id: Rol.SUPERVISOR_FABRICA,
     nombre: "Supervisor de fábrica",
     avatar: "🏭",
-    descripcion: "Abre, cierra y corrige paradas de fábrica con causa y duración, y consulta el historial."
+    descripcion: "Registra, cierra y corrige paradas de fábrica y consulta su historial."
   }
 });
 
@@ -93,23 +93,23 @@ export const SEMAFORO_META = Object.freeze({
   [Semaforo.ROJO]: {
     id: Semaforo.ROJO,
     label: "Urgente",
-    color: "#ef4444",
+    color: "#dc2626",
     badgeClass: "badge-urgent",
-    significado: "Si llueve como se espera, el lote quedaría inutilizable. Hay que cosecharlo primero."
+    significado: "Riesgo alto ante lluvias previstas. Conviene cosecharlo primero."
   },
   [Semaforo.AMARILLO]: {
     id: Semaforo.AMARILLO,
     label: "Atención",
-    color: "#f59e0b",
+    color: "#d97706",
     badgeClass: "badge-warning",
     significado: "Riesgo moderado. Conviene cosecharlo si hay margen."
   },
   [Semaforo.VERDE]: {
     id: Semaforo.VERDE,
     label: "Puede esperar",
-    color: "#10b981",
+    color: "#16a34a",
     badgeClass: "badge-safe",
-    significado: "Riesgo bajo. Se puede dejar para después."
+    significado: "Riesgo bajo. Puede cosecharse después."
   }
 });
 
