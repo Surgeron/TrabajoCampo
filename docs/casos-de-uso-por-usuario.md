@@ -15,6 +15,7 @@ Es quien decide el orden de cosecha. Usa el sistema sobre todo para mirar y deci
 | CU09 Consultar pronóstico | Ver la lluvia prevista por zona. |
 | CU05 Registrar anegamiento | Informar un lote intransitable o su recuperación. |
 | CU14 Consultar historial de paradas | Evaluar cuánto afectó la lluvia a la fábrica. |
+| CU16 Simular precipitaciones | Probar escenarios de lluvia y ver en vivo cómo cambian el mapa y el ranking sin alterar datos reales. |
 
 ## Operador de campo
 
@@ -38,7 +39,7 @@ Se ocupa de lo que pasa en la planta.
 
 ## Administrador
 
-Configura y mantiene el sistema. Hereda todo lo del Jefe de cosecha (CU09, CU05, CU11, CU12, CU14 y CU15). [a confirmar con el ingenio]
+Configura y mantiene el sistema. Hereda todo lo del Jefe de cosecha (CU09, CU05, CU11, CU12, CU14, CU15 y CU16). [a confirmar con el ingenio]
 
 | Caso de uso | Para qué lo usa |
 |---|---|
@@ -59,7 +60,7 @@ Configura y mantiene el sistema. Hereda todo lo del Jefe de cosecha (CU09, CU05,
 
 | Caso de uso | Quién lo dispara |
 |---|---|
-| CU10 Calcular índice de vulnerabilidad | CU11 lo incluye. No tiene actor humano. |
+| CU10 Calcular índice de vulnerabilidad | CU11 y CU16 lo incluyen. No tiene actor humano. |
 
 ## Resumen cruzado
 
@@ -80,6 +81,7 @@ Configura y mantiene el sistema. Hereda todo lo del Jefe de cosecha (CU09, CU05,
 | CU13 Registrar parada | | | x | |
 | CU14 Historial de paradas | x | | x | x |
 | CU15 Alerta de lote en riesgo | x | | | x |
+| CU16 Simular precipitaciones | x | | | x |
 
 La columna Admin incluye lo heredado del Jefe de cosecha.
 

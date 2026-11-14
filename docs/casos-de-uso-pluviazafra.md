@@ -33,11 +33,13 @@ Firebase Auth no es actor, es infraestructura. El inicio de sesión se modela co
 | CU13 | Registrar parada de fábrica | Supervisor de fábrica |
 | CU14 | Consultar historial de paradas | Jefe de cosecha, Supervisor, Administrador |
 | CU15 | Alertar lote en riesgo | (extiende CU11) |
+| CU16 | Simular precipitaciones | Jefe de cosecha |
 
 ## Relaciones
 
 - CU11 `<<include>>` CU10 y CU09. La lluvia acumulada sale de las lecturas de CU08.
 - CU12 `<<include>>` CU11.
+- CU16 `<<include>>` CU10 (usa el índice real de cada lote y reemplaza la lluvia por los valores simulados, sin persistir).
 - CU15 `<<extend>>` CU11, con punto de extensión "lote con semáforo rojo".
 - CU05 `<<extend>>` CU08, con la condición "el operador observa un lote intransitable". CU05 también puede ejecutarse solo.
 - El Administrador hereda del Jefe de cosecha. [válido si en la entrevista confirman que no hay separación estricta]
@@ -72,6 +74,7 @@ rectangle PluviaZafra {
   usecase "CU13 Registrar parada de fábrica" as CU13
   usecase "CU14 Consultar historial de paradas" as CU14
   usecase "CU15 Alertar lote en riesgo" as CU15
+  usecase "CU16 Simular precipitaciones" as CU16
 }
 
 AD --> CU02
@@ -86,6 +89,7 @@ JC --> CU11
 JC --> CU12
 JC --> CU09
 JC --> CU14
+JC --> CU16
 SF --> CU13
 SF --> CU14
 CU09 --> OM
@@ -93,6 +97,7 @@ CU09 --> OM
 CU11 ..> CU10 : <<include>>
 CU11 ..> CU09 : <<include>>
 CU12 ..> CU11 : <<include>>
+CU16 ..> CU10 : <<include>>
 CU05 ..> CU08 : <<extend>>
 CU15 ..> CU11 : <<extend>>
 note right of CU01 : Aplica a todos los actores humanos
@@ -105,9 +110,10 @@ note right of CU01 : Aplica a todos los actores humanos
 - CU07 pasó de "pluviómetros" a "zonas y pluviómetros", porque cada zona tiene un pluviómetro.
 - CU03 incluye polígono dibujado y estados (semáforo y operativos).
 - CU15 se dispara con lotes en rojo.
+- Se agregó CU16 "Simular precipitaciones" para probar escenarios hipotéticos de lluvia en tiempo real.
 
 ## Pendientes
 
-- Decidir si entra CU16 "Registrar stock de patio" (hoy fuera del alcance, pero la hipótesis del problema depende de ese dato).
+- Decidir si entra CU17 "Registrar stock de patio" (hoy fuera del alcance, pero la hipótesis del problema depende de ese dato).
 - Confirmar con la consigna de la cátedra qué otros diagramas piden y el formato de especificación.
 - Confirmar en la entrevista los roles reales y si el Administrador hereda del Jefe de cosecha.

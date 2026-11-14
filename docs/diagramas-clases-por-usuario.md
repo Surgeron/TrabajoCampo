@@ -33,7 +33,7 @@ Reglas de las relaciones:
 
 ## 1. Jefe de cosecha
 
-Casos de uso: CU01, CU05, CU09, CU11, CU12, CU14 y CU15. Es el rol más completo, porque consume casi todo el modelo.
+Casos de uso: CU01, CU05, CU09, CU11, CU12, CU14, CU15 y CU16. Es el rol más completo, porque consume casi todo el modelo.
 
 ```plantuml
 @startuml
@@ -97,6 +97,13 @@ package "Interfaces" {
     +mostrarTotales(totales)
     +exportarCSV()
   }
+  class InterfazSimulador <<interfaz>> {
+    +abrirSimulador()
+    +ajustarLluviaZona(zona, mmAcum, mmPrev)
+    +elegirEscenarioRapido(tipo)
+    +mostrarResultadoSimulado(r: Ranking)
+    +restablecerDatosReales()
+  }
 }
 
 package "Gestores" {
@@ -107,6 +114,7 @@ package "Gestores" {
   }
   class GestorRanking <<gestor>> {
     +generarRanking(): Ranking
+    +simularRanking(lluviasPorZona): Ranking
     +obtenerUltimoRanking(): Ranking
     +calcularPuntajeRiesgo(lote, lluviaAcum, lluviaPrev): Real
     +asignarSemaforo(puntaje): Semaforo
@@ -245,12 +253,15 @@ JC --> InterfazMapa
 JC --> InterfazPronostico
 JC --> InterfazAnegamiento
 JC --> InterfazHistorialParadas
+JC --> InterfazSimulador
 
 ' Interfaz -> gestor
 InterfazLogin ..> GestorSesion : usa
 InterfazRanking ..> GestorRanking : usa
 InterfazRanking ..> InterfazAlertaRiesgo : muestra si\nhay lotes en rojo
 InterfazAlertaRiesgo ..> GestorRanking : usa
+InterfazSimulador ..> GestorRanking : usa
+InterfazSimulador ..> GestorZonas : usa
 InterfazMapa ..> GestorRanking : usa
 InterfazMapa ..> GestorLotes : usa
 InterfazMapa ..> GestorParadas : usa
@@ -803,6 +814,7 @@ Configuracion "0..*" -- "1" Usuario : modificada por
 | CU13 Registrar parada | InterfazParada | GestorParadas | Parada, Usuario | Supervisor |
 | CU14 Historial de paradas | InterfazHistorialParadas | GestorParadas | Parada | Jefe, Supervisor, Administrador |
 | CU15 Alertar lote en riesgo | InterfazAlertaRiesgo | GestorRanking | ItemRanking | Jefe |
+| CU16 Simular precipitaciones | InterfazSimulador | GestorRanking, GestorIndice | Ranking (transitorio), ItemRanking, Lote, Zona | Jefe, Administrador |
 
 ## Decisiones de modelado a revisar
 

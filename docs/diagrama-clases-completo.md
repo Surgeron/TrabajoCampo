@@ -11,7 +11,7 @@ Resumen de lo que reúne:
 
 | Capa | Cantidad | Clases |
 |---|---|---|
-| Interfaces | 14 | InterfazLogin, InterfazUsuarios, InterfazLotes, InterfazAtributosLote, InterfazZonas, InterfazConfiguracion, InterfazLectura, InterfazAnegamiento, InterfazPronostico, InterfazRanking, InterfazAlertaRiesgo, InterfazMapa, InterfazParada, InterfazHistorialParadas |
+| Interfaces | 15 | InterfazLogin, InterfazUsuarios, InterfazLotes, InterfazAtributosLote, InterfazZonas, InterfazConfiguracion, InterfazLectura, InterfazAnegamiento, InterfazPronostico, InterfazRanking, InterfazAlertaRiesgo, InterfazMapa, InterfazSimulador, InterfazParada, InterfazHistorialParadas |
 | Gestores | 12 | GestorSesion, GestorUsuarios, GestorLotes, GestorAtributos, GestorIndice, GestorZonas, GestorConfiguracion, GestorLecturas, GestorAnegamientos, GestorPronostico, GestorRanking, GestorParadas |
 | Clases de objeto | 13 | Usuario, Zona, Pluviometro, Lote, AtributosVulnerabilidad, Lectura, Anegamiento, Pronostico, PronosticoDia, Ranking, ItemRanking, Configuracion, Parada |
 | Externo | 1 | ServicioOpenMeteo |
@@ -125,6 +125,13 @@ package "Interfaces" {
     +mostrarDetalleLote(lote)
     +mostrarParadaAbierta(p: Parada)
   }
+  class InterfazSimulador <<interfaz>> {
+    +abrirSimulador()
+    +ajustarLluviaZona(zona, mmAcum, mmPrev)
+    +elegirEscenarioRapido(tipo)
+    +mostrarResultadoSimulado(r: Ranking)
+    +restablecerDatosReales()
+  }
   class InterfazParada <<interfaz>> {
     +mostrarFormulario()
     +elegirCausa(causa: CausaParada)
@@ -216,6 +223,7 @@ package "Gestores" {
   }
   class GestorRanking <<gestor>> {
     +generarRanking(): Ranking
+    +simularRanking(lluviasPorZona): Ranking
     +obtenerUltimoRanking(): Ranking
     +calcularPuntajeRiesgo(lote, lluviaAcum, lluviaPrev): Real
     +asignarSemaforo(puntaje): Semaforo
@@ -415,6 +423,7 @@ JC --> InterfazMapa
 JC --> InterfazPronostico
 JC --> InterfazAnegamiento
 JC --> InterfazHistorialParadas
+JC --> InterfazSimulador
 OP --> InterfazLectura
 OP --> InterfazAnegamiento
 SF --> InterfazParada
@@ -441,6 +450,8 @@ InterfazAlertaRiesgo ..> GestorRanking : usa
 InterfazMapa ..> GestorRanking : usa
 InterfazMapa ..> GestorLotes : usa
 InterfazMapa ..> GestorParadas : usa
+InterfazSimulador ..> GestorRanking : usa
+InterfazSimulador ..> GestorZonas : usa
 InterfazParada ..> GestorParadas : usa
 InterfazHistorialParadas ..> GestorParadas : usa
 

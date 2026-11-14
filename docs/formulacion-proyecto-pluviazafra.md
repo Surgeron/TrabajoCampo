@@ -64,7 +64,7 @@ Desarrollar un sistema de información que ayude a planificar el orden de cosech
 | Índice de vulnerabilidad | Cálculo del índice por lote con pesos configurables e historial de anegamientos. | Qué lotes son más sensibles a la lluvia. |
 | Pronóstico | Consulta del pronóstico de lluvia desde Open-Meteo. | Lluvia esperada por zona y por día. |
 | Pluviómetros y lecturas | Gestión de pluviómetros y carga manual de lecturas. | Lluvia caída por zona. |
-| Ranking y mapa | Ranking de prioridad de cosecha según índice, pronóstico y lluvia caída, mostrado en un mapa (Leaflet), con alerta de lotes en riesgo. | Orden sugerido de cosecha y lotes críticos. |
+| Ranking y mapa | Ranking de prioridad de cosecha según índice, pronóstico y lluvia caída, mostrado en un mapa (Leaflet), con alerta de lotes en riesgo y simulador interactivo de precipitaciones. | Orden sugerido de cosecha, lotes críticos y análisis de escenarios de lluvia. |
 | Paradas de fábrica | Registro de paradas con causa y duración, y consulta del historial. | Frecuencia, causas y duración de las paradas. |
 
 ### 3.2 Etapas

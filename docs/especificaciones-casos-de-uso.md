@@ -1,6 +1,6 @@
 # PluviaZafra: Especificación de casos de uso (formato Cockburn)
 
-Este documento especifica los 15 casos de uso del diagrama de [casos-de-uso-pluviazafra.md](casos-de-uso-pluviazafra.md). Los casos están en este orden: CU03, CU08, CU10, CU13, CU11, CU12, CU15, CU04, CU05, CU06, CU07, CU09, CU14, CU01 y CU02. Para verlos agrupados por usuario, ver [casos-de-uso-por-usuario.md](casos-de-uso-por-usuario.md).
+Este documento especifica los 16 casos de uso del diagrama de [casos-de-uso-pluviazafra.md](casos-de-uso-pluviazafra.md). Los casos están en este orden: CU03, CU08, CU10, CU13, CU11, CU12, CU15, CU04, CU05, CU06, CU07, CU09, CU14, CU01, CU02 y CU16. Para verlos agrupados por usuario, ver [casos-de-uso-por-usuario.md](casos-de-uso-por-usuario.md).
 
 Los valores entre corchetes son propuestas a confirmar en la entrevista con el ingenio.
 
@@ -581,8 +581,43 @@ Si no llueve ni se pronostica lluvia, todos los lotes quedan en verde y el orden
 
 ---
 
+## CU16 Simular precipitaciones
+
+| Campo | Contenido |
+|---|---|
+| **Objetivo** | Probar escenarios hipotéticos de lluvia por zona para observar en vivo cómo cambian el puntaje de riesgo, el semáforo en el mapa y el orden del ranking, sin alterar los datos reales. |
+| **Alcance** | Sistema PluviaZafra. |
+| **Nivel** | Objetivo de usuario. |
+| **Actor principal** | Jefe de cosecha (y Administrador por herencia). |
+| **Interesados** | Equipo evaluador y jefatura (permite demostrar el comportamiento dinámico del modelo incluso en días sin lluvia y analizar escenarios "¿qué pasaría si...?"). |
+| **Precondición** | Sesión iniciada. Hay zonas y lotes con atributos cargados. |
+| **Garantía mínima** | Ninguna prueba modifica las lecturas de pluviómetro, los pronósticos guardados ni el último ranking oficial. |
+| **Garantía de éxito** | El usuario visualiza en el ranking y en el mapa el efecto inmediato de los milímetros simulados, claramente identificado como simulación. |
+| **Disparador** | El jefe de cosecha activa el modo simulador desde el mapa o el ranking. |
+
+**Datos de entrada de la simulación:** por cada zona, milímetros de lluvia acumulada simulada y milímetros de lluvia prevista simulada (o selección de un escenario rápido predefinido: seco 0 mm, lluvia moderada 30 mm, tormenta fuerte 70 mm).
+
+**Escenario principal**
+
+1. El jefe de cosecha elige "Simular precipitaciones".
+2. El sistema activa el panel del simulador con un aviso visible de "Modo simulación: los cambios no se guardan" y precarga en cada zona los valores actuales de lluvia acumulada y prevista.
+3. El jefe modifica los milímetros de una o más zonas mediante controles deslizantes o elige un escenario rápido.
+4. El sistema calcula el índice de vulnerabilidad de cada lote elegible (CU10, inclusión) y recalcula el factor de lluvia, el puntaje de riesgo y el semáforo usando los milímetros simulados.
+5. El sistema actualiza al instante los colores de los lotes en el mapa, el orden de la lista del ranking y las toneladas en riesgo.
+6. El jefe sale del simulador o elige "Restablecer datos reales", y el sistema vuelve a mostrar el ranking oficial vigente.
+
+**Extensiones**
+
+- 3a. El usuario ingresa un valor negativo o no numérico: el sistema lo corrige a 0 mm o impide el ingreso.
+- 5a. **Lotes pasan a rojo en la simulación:** el sistema muestra cómo se vería la alerta de lotes en riesgo (CU15) indicando que corresponde al escenario simulado.
+- 6a. El usuario cambia de pantalla sin cerrar el simulador: el modo simulación se desactiva solo y no persiste ningún cambio.
+
+**Regla de negocio:** un ranking calculado en modo simulación tiene carácter transitorio (`esSimulacion = true`) y nunca reemplaza al último ranking oficial en la base de datos.
+
+---
+
 ## Pendientes
 
 - Definir con el ingenio los valores entre corchetes. Están reunidos en el documento de preguntas para la entrevista cuando se genere.
 - Revisar la consigna de la cátedra para el formato final.
-- Decidir si entra CU16 "Registrar stock de patio".
+- Decidir si entra CU17 "Registrar stock de patio".
