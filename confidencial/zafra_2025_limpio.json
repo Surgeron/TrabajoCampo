@@ -13,7 +13,11 @@
     "SURCOS": "2866",
     "PLANT": "2015",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.255662,
+    "LONGITUD": -64.818469,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 3.86
   },
   {
     "ID_UNICO": "3201190",
@@ -29,7 +33,11 @@
     "SURCOS": "4103",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "1"
+    "DIST ILE": "1",
+    "LATITUD": -24.233173,
+    "LONGITUD": -64.83632,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 1.0
   },
   {
     "ID_UNICO": "3201101",
@@ -45,7 +53,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.267769,
+    "LONGITUD": -64.840145,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 4.87
   },
   {
     "ID_UNICO": "3201080",
@@ -61,7 +73,11 @@
     "SURCOS": "3533",
     "PLANT": "2019",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.268607,
+    "LONGITUD": -64.849991,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 5.17
   },
   {
     "ID_UNICO": "3201201",
@@ -77,7 +93,11 @@
     "SURCOS": "2078",
     "PLANT": "2019",
     "DIST": "1.6",
-    "DIST ILE": "1"
+    "DIST ILE": "1",
+    "LATITUD": -24.232394,
+    "LONGITUD": -64.839016,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 1.0
   },
   {
     "ID_UNICO": "3203010",
@@ -93,7 +113,11 @@
     "SURCOS": "5198",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "1"
+    "DIST ILE": "1",
+    "LATITUD": -24.232526,
+    "LONGITUD": -64.830769,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 1.0
   },
   {
     "ID_UNICO": "3102190",
@@ -109,7 +133,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.143201,
+    "LONGITUD": -64.828552,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 9.04
   },
   {
     "ID_UNICO": "3102201",
@@ -125,7 +153,11 @@
     "SURCOS": "7131",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.144779,
+    "LONGITUD": -64.816304,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 9.03
   },
   {
     "ID_UNICO": "3102170",
@@ -141,7 +173,11 @@
     "SURCOS": "5858",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "10"
+    "DIST ILE": "10",
+    "LATITUD": -24.133975,
+    "LONGITUD": -64.834736,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 10.04
   },
   {
     "ID_UNICO": "3102230",
@@ -157,7 +193,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.161676,
+    "LONGITUD": -64.82514,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 7.03
   },
   {
     "ID_UNICO": "3102260",
@@ -173,7 +213,11 @@
     "SURCOS": "5270",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "10"
+    "DIST ILE": "10",
+    "LATITUD": -24.137472,
+    "LONGITUD": -64.807585,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 10.04
   },
   {
     "ID_UNICO": "3102032",
@@ -189,7 +233,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": null,
+    "LONGITUD": null,
+    "RUMBO_CARDINAL": null,
+    "DIST_CALCULADA_KM": null
   },
   {
     "ID_UNICO": "3102031",
@@ -205,7 +253,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.198225,
+    "LONGITUD": -64.826591,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 3.01
   },
   {
     "ID_UNICO": "3102041",
@@ -221,7 +273,11 @@
     "SURCOS": "1312",
     "PLANT": "2015",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.188186,
+    "LONGITUD": -64.836569,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 4.02
   },
   {
     "ID_UNICO": "3102042",
@@ -237,7 +293,11 @@
     "SURCOS": "2146",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.188498,
+    "LONGITUD": -64.829253,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 4.02
   },
   {
     "ID_UNICO": "3102052",
@@ -253,7 +313,11 @@
     "SURCOS": "2281",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.179558,
+    "LONGITUD": -64.827882,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 5.02
   },
   {
     "ID_UNICO": "3102070",
@@ -269,7 +333,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.197176,
+    "LONGITUD": -64.834736,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 3.01
   },
   {
     "ID_UNICO": "3202430",
@@ -285,7 +353,11 @@
     "SURCOS": "2926",
     "PLANT": "2014",
     "DIST": "1.6",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.323562,
+    "LONGITUD": -64.836627,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 11.04
   },
   {
     "ID_UNICO": "3202080",
@@ -301,7 +373,11 @@
     "SURCOS": "4265",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.240526,
+    "LONGITUD": -64.843295,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 2.01
   },
   {
     "ID_UNICO": "3203120",
@@ -317,7 +393,11 @@
     "SURCOS": "5668",
     "PLANT": "2019",
     "DIST": "1.6",
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.249195,
+    "LONGITUD": -64.846283,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 3.01
   },
   {
     "ID_UNICO": "3202401",
@@ -333,7 +413,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.30487,
+    "LONGITUD": -64.823548,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 9.03
   },
   {
     "ID_UNICO": "3202390",
@@ -349,7 +433,11 @@
     "SURCOS": "2858",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.298638,
+    "LONGITUD": -64.799031,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 9.03
   },
   {
     "ID_UNICO": "3202310",
@@ -365,7 +453,11 @@
     "SURCOS": "6488",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.278426,
+    "LONGITUD": -64.835768,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 6.02
   },
   {
     "ID_UNICO": "3202150",
@@ -381,7 +473,11 @@
     "SURCOS": "6888",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.281575,
+    "LONGITUD": -64.867149,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 7.17
   },
   {
     "ID_UNICO": "3202410",
@@ -397,7 +493,11 @@
     "SURCOS": "2641",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.304463,
+    "LONGITUD": -64.848987,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 9.03
   },
   {
     "ID_UNICO": "3202420",
@@ -413,7 +513,11 @@
     "SURCOS": "2506",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.297451,
+    "LONGITUD": -64.873252,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 9.03
   },
   {
     "ID_UNICO": "3102910",
@@ -429,7 +533,11 @@
     "SURCOS": "448",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "18"
+    "DIST ILE": "18",
+    "LATITUD": -24.063797,
+    "LONGITUD": -64.85108,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 17.92
   },
   {
     "ID_UNICO": "3102540",
@@ -445,7 +553,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.106903,
+    "LONGITUD": -64.83275,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 13.05
   },
   {
     "ID_UNICO": "3102851",
@@ -461,7 +573,11 @@
     "SURCOS": "3512",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "18"
+    "DIST ILE": "18",
+    "LATITUD": -24.062449,
+    "LONGITUD": -64.818255,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 18.07
   },
   {
     "ID_UNICO": "3102880",
@@ -477,7 +593,11 @@
     "SURCOS": "4656",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "19"
+    "DIST ILE": "19",
+    "LATITUD": -24.053459,
+    "LONGITUD": -64.81734,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 19.07
   },
   {
     "ID_UNICO": "3102632",
@@ -493,7 +613,11 @@
     "SURCOS": "1973",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.074128,
+    "LONGITUD": -64.79992,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 17.06
   },
   {
     "ID_UNICO": "3102631",
@@ -509,7 +633,11 @@
     "SURCOS": "216",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.071148,
+    "LONGITUD": -64.823055,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 17.07
   },
   {
     "ID_UNICO": "3102580",
@@ -525,7 +653,11 @@
     "SURCOS": "2946",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.08003,
+    "LONGITUD": -64.777462,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 17.06
   },
   {
     "ID_UNICO": "3102760",
@@ -541,7 +673,11 @@
     "SURCOS": "1593",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.091791,
+    "LONGITUD": -64.804016,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 15.06
   },
   {
     "ID_UNICO": "3102750",
@@ -557,7 +693,11 @@
     "SURCOS": "1235",
     "PLANT": "2014",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.089161,
+    "LONGITUD": -64.824429,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 15.06
   },
   {
     "ID_UNICO": "3102531",
@@ -573,7 +713,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.108927,
+    "LONGITUD": -64.848455,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 12.9
   },
   {
     "ID_UNICO": "3102532",
@@ -589,7 +733,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.105858,
+    "LONGITUD": -64.840753,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 13.18
   },
   {
     "ID_UNICO": "3102701",
@@ -605,7 +753,11 @@
     "SURCOS": "783",
     "PLANT": "2010",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.106874,
+    "LONGITUD": -64.816737,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 13.18
   },
   {
     "ID_UNICO": "3102710",
@@ -621,7 +773,11 @@
     "SURCOS": "1892",
     "PLANT": "1992",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.109268,
+    "LONGITUD": -64.809084,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 13.05
   },
   {
     "ID_UNICO": "3102730",
@@ -637,7 +793,11 @@
     "SURCOS": "429",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.115607,
+    "LONGITUD": -64.786305,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 13.04
   },
   {
     "ID_UNICO": "3102970",
@@ -653,7 +813,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "19"
+    "DIST ILE": "19",
+    "LATITUD": -24.064471,
+    "LONGITUD": -64.766649,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 19.06
   },
   {
     "ID_UNICO": "3102640",
@@ -669,7 +833,11 @@
     "SURCOS": "4832",
     "PLANT": "2024",
     "DIST": "16",
-    "DIST ILE": "19"
+    "DIST ILE": "19",
+    "LATITUD": -24.054808,
+    "LONGITUD": -64.851995,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 18.92
   },
   {
     "ID_UNICO": "3102960",
@@ -685,7 +853,11 @@
     "SURCOS": "2314",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "19"
+    "DIST ILE": "19",
+    "LATITUD": -24.051772,
+    "LONGITUD": -64.834736,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 19.18
   },
   {
     "ID_UNICO": "3102620",
@@ -701,7 +873,11 @@
     "SURCOS": "2712",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.071148,
+    "LONGITUD": -64.846418,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 17.07
   },
   {
     "ID_UNICO": "3102920",
@@ -717,7 +893,11 @@
     "SURCOS": "4843",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "18"
+    "DIST ILE": "18",
+    "LATITUD": -24.060765,
+    "LONGITUD": -64.834736,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 18.18
   },
   {
     "ID_UNICO": "3102852",
@@ -733,7 +913,11 @@
     "SURCOS": "880",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "18"
+    "DIST ILE": "18",
+    "LATITUD": -24.065884,
+    "LONGITUD": -64.802191,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 17.92
   },
   {
     "ID_UNICO": "3303732",
@@ -749,7 +933,11 @@
     "SURCOS": "885",
     "PLANT": "2019",
     "DIST": "1.6",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.276891,
+    "LONGITUD": -64.742846,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 11.0
   },
   {
     "ID_UNICO": "3303731",
@@ -765,7 +953,11 @@
     "SURCOS": "413",
     "PLANT": "2013",
     "DIST": "1.5",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.238084,
+    "LONGITUD": -64.727435,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 10.99
   },
   {
     "ID_UNICO": "3303701",
@@ -781,7 +973,11 @@
     "SURCOS": "1514",
     "PLANT": "1993",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.221727,
+    "LONGITUD": -64.747603,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 8.84
   },
   {
     "ID_UNICO": "3403380",
@@ -797,7 +993,11 @@
     "SURCOS": "4474",
     "PLANT": "2013",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.189345,
+    "LONGITUD": -64.803519,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 5.01
   },
   {
     "ID_UNICO": "3403490",
@@ -813,7 +1013,11 @@
     "SURCOS": "1773",
     "PLANT": "2013",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.18021,
+    "LONGITUD": -64.797857,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 6.16
   },
   {
     "ID_UNICO": "3403412",
@@ -829,7 +1033,11 @@
     "SURCOS": "2056",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.180161,
+    "LONGITUD": -64.785345,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 7.01
   },
   {
     "ID_UNICO": "3403413",
@@ -845,7 +1053,11 @@
     "SURCOS": "874",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.185551,
+    "LONGITUD": -64.782113,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 6.86
   },
   {
     "ID_UNICO": "3403414",
@@ -861,7 +1073,11 @@
     "SURCOS": "3125",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.188867,
+    "LONGITUD": -64.775836,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 7.15
   },
   {
     "ID_UNICO": "3403411",
@@ -877,7 +1093,11 @@
     "SURCOS": "2548",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.174991,
+    "LONGITUD": -64.789229,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 7.16
   },
   {
     "ID_UNICO": "3403501",
@@ -893,7 +1113,11 @@
     "SURCOS": "4141",
     "PLANT": "2017",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.183481,
+    "LONGITUD": -64.795832,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 6.01
   },
   {
     "ID_UNICO": "3403320",
@@ -909,7 +1133,11 @@
     "SURCOS": "4327.0",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.191034,
+    "LONGITUD": -64.788057,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 6.01
   },
   {
     "ID_UNICO": "3403240",
@@ -925,7 +1153,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.197727,
+    "LONGITUD": -64.79489,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 5.0
   },
   {
     "ID_UNICO": "3302460",
@@ -941,7 +1173,11 @@
     "SURCOS": "3976",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.226783,
+    "LONGITUD": -64.75598,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 7.99
   },
   {
     "ID_UNICO": "3304010",
@@ -957,7 +1193,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.262862,
+    "LONGITUD": -64.719031,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 12.49
   },
   {
     "ID_UNICO": "3301230",
@@ -973,7 +1213,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.225522,
+    "LONGITUD": -64.795358,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 4.0
   },
   {
     "ID_UNICO": "3301240",
@@ -989,7 +1233,11 @@
     "SURCOS": "3144",
     "PLANT": "2015",
     "DIST": "1.6",
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.233526,
+    "LONGITUD": -64.806967,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 3.0
   },
   {
     "ID_UNICO": "3303020",
@@ -1005,7 +1253,11 @@
     "SURCOS": "3077",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.240093,
+    "LONGITUD": -64.799322,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 4.0
   },
   {
     "ID_UNICO": "3403571",
@@ -1021,7 +1273,11 @@
     "SURCOS": "3764",
     "PLANT": "2005",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.194835,
+    "LONGITUD": -64.773713,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 7.0
   },
   {
     "ID_UNICO": "3403573",
@@ -1037,7 +1293,11 @@
     "SURCOS": "149",
     "PLANT": "2005",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.205657,
+    "LONGITUD": -64.767294,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 7.15
   },
   {
     "ID_UNICO": "3403572",
@@ -1053,7 +1313,11 @@
     "SURCOS": "722",
     "PLANT": "2005",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.200844,
+    "LONGITUD": -64.772285,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 6.85
   },
   {
     "ID_UNICO": "3403580",
@@ -1069,7 +1333,11 @@
     "SURCOS": "4884",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.190631,
+    "LONGITUD": -64.764996,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 8.0
   },
   {
     "ID_UNICO": "3403590",
@@ -1085,7 +1353,11 @@
     "SURCOS": "184",
     "PLANT": "2013",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.197425,
+    "LONGITUD": -64.763168,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 7.85
   },
   {
     "ID_UNICO": "3403601",
@@ -1101,7 +1373,11 @@
     "SURCOS": "4690",
     "PLANT": "2013",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.203055,
+    "LONGITUD": -64.757861,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 8.14
   },
   {
     "ID_UNICO": "3403612",
@@ -1117,7 +1393,11 @@
     "SURCOS": "3363",
     "PLANT": "2013",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.198185,
+    "LONGITUD": -64.749212,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 9.15
   },
   {
     "ID_UNICO": "3403611",
@@ -1133,7 +1413,11 @@
     "SURCOS": "72",
     "PLANT": "2013",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.187738,
+    "LONGITUD": -64.7572,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 8.85
   },
   {
     "ID_UNICO": "3403540",
@@ -1149,7 +1433,11 @@
     "SURCOS": "2057",
     "PLANT": "1994",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.1681,
+    "LONGITUD": -64.782865,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 8.17
   },
   {
     "ID_UNICO": "3303840",
@@ -1165,7 +1453,11 @@
     "SURCOS": "2871",
     "PLANT": "2014",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.277109,
+    "LONGITUD": -64.733242,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 11.85
   },
   {
     "ID_UNICO": "3403910",
@@ -1181,7 +1473,11 @@
     "SURCOS": "2582",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.14866,
+    "LONGITUD": -64.750065,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 12.02
   },
   {
     "ID_UNICO": "3403862",
@@ -1197,7 +1493,11 @@
     "SURCOS": "1990",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.18375,
+    "LONGITUD": -64.7267,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 11.85
   },
   {
     "ID_UNICO": "3303850",
@@ -1213,7 +1513,11 @@
     "SURCOS": "5521",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.281568,
+    "LONGITUD": -64.724677,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 12.85
   },
   {
     "ID_UNICO": "3303930",
@@ -1229,7 +1533,11 @@
     "SURCOS": "4194",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.264406,
+    "LONGITUD": -64.714403,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 12.99
   },
   {
     "ID_UNICO": "3304001",
@@ -1245,7 +1553,11 @@
     "SURCOS": "3906",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.270582,
+    "LONGITUD": -64.69589,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 14.99
   },
   {
     "ID_UNICO": "3303820",
@@ -1261,7 +1573,11 @@
     "SURCOS": "4359",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "14"
+    "DIST ILE": "14",
+    "LATITUD": -24.302082,
+    "LONGITUD": -64.726064,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 14.01
   },
   {
     "ID_UNICO": "3303830",
@@ -1277,7 +1593,11 @@
     "SURCOS": "1537",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.303866,
+    "LONGITUD": -64.715198,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 15.01
   },
   {
     "ID_UNICO": "3303740",
@@ -1293,7 +1613,11 @@
     "SURCOS": "3110",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.293595,
+    "LONGITUD": -64.741988,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 12.16
   },
   {
     "ID_UNICO": "3303760",
@@ -1309,7 +1633,11 @@
     "SURCOS": "2926",
     "PLANT": "2014",
     "DIST": "1.6",
-    "DIST ILE": "14"
+    "DIST ILE": "14",
+    "LATITUD": -24.279673,
+    "LONGITUD": -64.710787,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 14.0
   },
   {
     "ID_UNICO": "3303790",
@@ -1325,7 +1653,11 @@
     "SURCOS": "5319",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "14"
+    "DIST ILE": "14",
+    "LATITUD": -24.254841,
+    "LONGITUD": -64.700926,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 13.99
   },
   {
     "ID_UNICO": "3301650",
@@ -1341,7 +1673,11 @@
     "SURCOS": "1063",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.255925,
+    "LONGITUD": -64.763908,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 8.0
   },
   {
     "ID_UNICO": "3301610",
@@ -1357,7 +1693,11 @@
     "SURCOS": "1632",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.272854,
+    "LONGITUD": -64.765532,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 8.86
   },
   {
     "ID_UNICO": "3301630",
@@ -1373,7 +1713,11 @@
     "SURCOS": "2268",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.239881,
+    "LONGITUD": -64.749241,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 8.84
   },
   {
     "ID_UNICO": "3102721",
@@ -1389,7 +1733,11 @@
     "SURCOS": "776",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.112255,
+    "LONGITUD": -64.801738,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 12.9
   },
   {
     "ID_UNICO": "3102722",
@@ -1405,7 +1753,11 @@
     "SURCOS": "7",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.111913,
+    "LONGITUD": -64.793327,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 13.18
   },
   {
     "ID_UNICO": "3303770",
@@ -1421,7 +1773,11 @@
     "SURCOS": "3283",
     "PLANT": "2014",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.299301,
+    "LONGITUD": -64.734355,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 13.16
   },
   {
     "ID_UNICO": "3201162",
@@ -1437,7 +1793,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.251344,
+    "LONGITUD": -64.835252,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 3.01
   },
   {
     "ID_UNICO": "3201161",
@@ -1453,7 +1813,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.249549,
+    "LONGITUD": -64.824146,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 3.01
   },
   {
     "ID_UNICO": "3202103",
@@ -1469,7 +1833,11 @@
     "SURCOS": "2165",
     "PLANT": "2019",
     "DIST": "1.6",
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.242175,
+    "LONGITUD": -64.83225,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 2.01
   },
   {
     "ID_UNICO": "3201271",
@@ -1485,7 +1853,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.26345,
+    "LONGITUD": -64.813419,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 4.86
   },
   {
     "ID_UNICO": "3303003",
@@ -1501,7 +1873,11 @@
     "SURCOS": "10650",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.225521,
+    "LONGITUD": -64.815083,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 2.0
   },
   {
     "ID_UNICO": "3303002",
@@ -1517,7 +1893,11 @@
     "SURCOS": "1968",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.230438,
+    "LONGITUD": -64.816223,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 2.0
   },
   {
     "ID_UNICO": "3303001",
@@ -1533,7 +1913,11 @@
     "SURCOS": "540",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.234876,
+    "LONGITUD": -64.818798,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 2.0
   },
   {
     "ID_UNICO": "3403930",
@@ -1549,7 +1933,11 @@
     "SURCOS": "4340",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.140536,
+    "LONGITUD": -64.757406,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 12.17
   },
   {
     "ID_UNICO": "3403801",
@@ -1565,7 +1953,11 @@
     "SURCOS": "5528",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.192647,
+    "LONGITUD": -64.720131,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 12.14
   },
   {
     "ID_UNICO": "3102854",
@@ -1581,7 +1973,11 @@
     "SURCOS": "28",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "18"
+    "DIST ILE": "18",
+    "LATITUD": -24.072881,
+    "LONGITUD": -64.770233,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 18.06
   },
   {
     "ID_UNICO": "3102853",
@@ -1597,7 +1993,11 @@
     "SURCOS": "24",
     "PLANT": "2016",
     "DIST": "1.6",
-    "DIST ILE": "18"
+    "DIST ILE": "18",
+    "LATITUD": -24.067046,
+    "LONGITUD": -64.785552,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 18.18
   },
   {
     "ID_UNICO": "3201170",
@@ -1613,7 +2013,11 @@
     "SURCOS": "5799",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "1"
+    "DIST ILE": "1",
+    "LATITUD": -24.233218,
+    "LONGITUD": -64.833493,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 1.0
   },
   {
     "ID_UNICO": "3202342",
@@ -1629,7 +2033,11 @@
     "SURCOS": "2322",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.28769,
+    "LONGITUD": -64.800233,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 7.87
   },
   {
     "ID_UNICO": "3202343",
@@ -1645,7 +2053,11 @@
     "SURCOS": "1463",
     "PLANT": "2020",
     "DIST": "0.0",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.295169,
+    "LONGITUD": -64.813282,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 8.18
   },
   {
     "ID_UNICO": "3202090",
@@ -1661,7 +2073,11 @@
     "SURCOS": "5243",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.269266,
+    "LONGITUD": -64.830872,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 5.02
   },
   {
     "ID_UNICO": "3303981",
@@ -1677,7 +2093,11 @@
     "SURCOS": "9028",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.233709,
+    "LONGITUD": -64.687339,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 14.98
   },
   {
     "ID_UNICO": "3301231",
@@ -1693,7 +2113,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.232999,
+    "LONGITUD": -64.796505,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 4.0
   },
   {
     "ID_UNICO": "3301560",
@@ -1709,7 +2133,11 @@
     "SURCOS": "4434",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.225882,
+    "LONGITUD": -64.70817,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 12.84
   },
   {
     "ID_UNICO": "3403335",
@@ -1725,7 +2153,11 @@
     "SURCOS": "11180",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.209481,
+    "LONGITUD": -64.777876,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 6.0
   },
   {
     "ID_UNICO": "3102180",
@@ -1741,7 +2173,11 @@
     "SURCOS": "3588",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.125913,
+    "LONGITUD": -64.819656,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 11.04
   },
   {
     "ID_UNICO": "3102791",
@@ -1757,7 +2193,11 @@
     "SURCOS": "8275",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "14"
+    "DIST ILE": "14",
+    "LATITUD": -24.09909,
+    "LONGITUD": -64.815543,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 14.05
   },
   {
     "ID_UNICO": "3403541",
@@ -1773,7 +2213,11 @@
     "SURCOS": "1848",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.173861,
+    "LONGITUD": -64.778289,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 8.01
   },
   {
     "ID_UNICO": "3404001",
@@ -1789,7 +2233,11 @@
     "SURCOS": "6152",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "10"
+    "DIST ILE": "10",
+    "LATITUD": -24.15823,
+    "LONGITUD": -64.767556,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 10.02
   },
   {
     "ID_UNICO": "3404002",
@@ -1805,7 +2253,11 @@
     "SURCOS": "4124",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.194122,
+    "LONGITUD": -64.731491,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 10.99
   },
   {
     "ID_UNICO": "3202348",
@@ -1821,7 +2273,11 @@
     "SURCOS": "442",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.294681,
+    "LONGITUD": -64.84349,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 7.88
   },
   {
     "ID_UNICO": "3202341",
@@ -1837,7 +2293,11 @@
     "SURCOS": "2593",
     "PLANT": "2020",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.29444,
+    "LONGITUD": -64.858877,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 8.18
   },
   {
     "ID_UNICO": "3403520",
@@ -1853,7 +2313,11 @@
     "SURCOS": "4125",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.173446,
+    "LONGITUD": -64.796275,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 6.87
   },
   {
     "ID_UNICO": "3102811",
@@ -1869,7 +2333,11 @@
     "SURCOS": "6062",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "16"
+    "DIST ILE": "16",
+    "LATITUD": -24.081209,
+    "LONGITUD": -64.812802,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 16.06
   },
   {
     "ID_UNICO": "3403440",
@@ -1885,7 +2353,11 @@
     "SURCOS": "7584",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.179899,
+    "LONGITUD": -64.774431,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 7.86
   },
   {
     "ID_UNICO": "3201220",
@@ -1901,7 +2373,11 @@
     "SURCOS": "1188",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.263935,
+    "LONGITUD": -64.858237,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 5.01
   },
   {
     "ID_UNICO": "3202347",
@@ -1917,7 +2393,11 @@
     "SURCOS": "2277",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.296269,
+    "LONGITUD": -64.828553,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 8.03
   },
   {
     "ID_UNICO": "3301273",
@@ -1933,7 +2413,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.248184,
+    "LONGITUD": -64.792968,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 5.0
   },
   {
     "ID_UNICO": "3304040",
@@ -1949,7 +2433,11 @@
     "SURCOS": "6295",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "10"
+    "DIST ILE": "10",
+    "LATITUD": -24.236827,
+    "LONGITUD": -64.73719,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 9.99
   },
   {
     "ID_UNICO": "3403530",
@@ -1965,7 +2453,11 @@
     "SURCOS": "4477",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.166027,
+    "LONGITUD": -64.790661,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 7.87
   },
   {
     "ID_UNICO": "3403321",
@@ -1981,7 +2473,11 @@
     "SURCOS": "3190",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.194599,
+    "LONGITUD": -64.787057,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 5.85
   },
   {
     "ID_UNICO": "3102801",
@@ -1997,7 +2493,11 @@
     "SURCOS": "783",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.096999,
+    "LONGITUD": -64.7842,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 15.05
   },
   {
     "ID_UNICO": "3409901",
@@ -2013,7 +2513,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.157294,
+    "LONGITUD": -64.743702,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 11.86
   },
   {
     "ID_UNICO": "3409902",
@@ -2029,7 +2533,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.174085,
+    "LONGITUD": -64.717339,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 13.15
   },
   {
     "ID_UNICO": "0000000",
@@ -2045,7 +2553,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": null,
+    "LONGITUD": null,
+    "RUMBO_CARDINAL": null,
+    "DIST_CALCULADA_KM": null
   },
   {
     "ID_UNICO": "3403633",
@@ -2061,7 +2573,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.16605,
+    "LONGITUD": -64.770781,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 9.16
   },
   {
     "ID_UNICO": "3403901",
@@ -2077,7 +2593,11 @@
     "SURCOS": "7557",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.144676,
+    "LONGITUD": -64.772419,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 10.88
   },
   {
     "ID_UNICO": "3403393",
@@ -2093,7 +2613,11 @@
     "SURCOS": "3790",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.180388,
+    "LONGITUD": -64.802652,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 5.86
   },
   {
     "ID_UNICO": "3403472",
@@ -2109,7 +2633,11 @@
     "SURCOS": "10790",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.186805,
+    "LONGITUD": -64.794108,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 5.86
   },
   {
     "ID_UNICO": "3403072",
@@ -2125,7 +2653,11 @@
     "SURCOS": "6141",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.203034,
+    "LONGITUD": -64.802859,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 4.0
   },
   {
     "ID_UNICO": "3403071",
@@ -2141,7 +2673,11 @@
     "SURCOS": "2855",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.196328,
+    "LONGITUD": -64.809762,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 4.01
   },
   {
     "ID_UNICO": "3301540",
@@ -2157,7 +2693,11 @@
     "SURCOS": "9281",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.224262,
+    "LONGITUD": -64.668756,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 16.83
   },
   {
     "ID_UNICO": "3201050",
@@ -2173,7 +2713,11 @@
     "SURCOS": "2315",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.287359,
+    "LONGITUD": -64.819852,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 7.18
   },
   {
     "ID_UNICO": "3403510",
@@ -2189,7 +2733,11 @@
     "SURCOS": "5038",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.19608,
+    "LONGITUD": -64.782538,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 6.15
   },
   {
     "ID_UNICO": "3102061",
@@ -2205,7 +2753,11 @@
     "SURCOS": "3594",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.170617,
+    "LONGITUD": -64.826511,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 6.02
   },
   {
     "ID_UNICO": "3202351",
@@ -2221,7 +2773,11 @@
     "SURCOS": "2742",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.274836,
+    "LONGITUD": -64.813556,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 6.02
   },
   {
     "ID_UNICO": "3202211",
@@ -2237,7 +2793,11 @@
     "SURCOS": "4676",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.274128,
+    "LONGITUD": -64.85783,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 6.02
   },
   {
     "ID_UNICO": "3202211",
@@ -2253,7 +2813,11 @@
     "SURCOS": "4676",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.274128,
+    "LONGITUD": -64.85783,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 6.02
   },
   {
     "ID_UNICO": "3201120",
@@ -2269,7 +2833,11 @@
     "SURCOS": "8634",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.260885,
+    "LONGITUD": -64.826097,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 4.17
   },
   {
     "ID_UNICO": "3403271",
@@ -2285,7 +2853,11 @@
     "SURCOS": "7027",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.211123,
+    "LONGITUD": -64.798034,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 4.0
   },
   {
     "ID_UNICO": "3202091",
@@ -2301,7 +2873,11 @@
     "SURCOS": "1588",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.269068,
+    "LONGITUD": -64.821179,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 5.17
   },
   {
     "ID_UNICO": "3303711",
@@ -2317,7 +2893,11 @@
     "SURCOS": "206",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.244064,
+    "LONGITUD": -64.717019,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 12.14
   },
   {
     "ID_UNICO": "3203091",
@@ -2333,7 +2913,11 @@
     "SURCOS": "6542",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.260371,
+    "LONGITUD": -64.835424,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 4.02
   },
   {
     "ID_UNICO": "3201044",
@@ -2349,7 +2933,11 @@
     "SURCOS": "8570",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.287738,
+    "LONGITUD": -64.872338,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 8.02
   },
   {
     "ID_UNICO": "3301623",
@@ -2365,7 +2953,11 @@
     "SURCOS": "2612",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.263969,
+    "LONGITUD": -64.755698,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 9.15
   },
   {
     "ID_UNICO": "3301611",
@@ -2381,7 +2973,11 @@
     "SURCOS": "325",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.279345,
+    "LONGITUD": -64.767564,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 9.16
   },
   {
     "ID_UNICO": "3102251",
@@ -2397,7 +2993,11 @@
     "SURCOS": "7577",
     "PLANT": "2022",
     "DIST": "1.6",
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.152735,
+    "LONGITUD": -64.823769,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 8.03
   },
   {
     "ID_UNICO": "3102160",
@@ -2413,7 +3013,11 @@
     "SURCOS": "1215",
     "PLANT": "2015",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.143201,
+    "LONGITUD": -64.84092,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 9.04
   },
   {
     "ID_UNICO": "3309906",
@@ -2429,7 +3033,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.241736,
+    "LONGITUD": -64.758273,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 7.99
   },
   {
     "ID_UNICO": "3301570",
@@ -2445,7 +3053,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "14"
+    "DIST ILE": "14",
+    "LATITUD": -24.228673,
+    "LONGITUD": -64.696914,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 13.98
   },
   {
     "ID_UNICO": "3403613",
@@ -2461,7 +3073,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.176499,
+    "LONGITUD": -64.763013,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 9.01
   },
   {
     "ID_UNICO": "3403581",
@@ -2477,7 +3093,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.183916,
+    "LONGITUD": -64.767598,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 8.15
   },
   {
     "ID_UNICO": "3309908",
@@ -2493,7 +3113,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.261318,
+    "LONGITUD": -64.723659,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 11.99
   },
   {
     "ID_UNICO": "3309907",
@@ -2509,7 +3133,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "10"
+    "DIST ILE": "10",
+    "LATITUD": -24.272107,
+    "LONGITUD": -64.751199,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 10.0
   },
   {
     "ID_UNICO": "3409904",
@@ -2525,7 +3153,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.164115,
+    "LONGITUD": -64.734647,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 12.16
   },
   {
     "ID_UNICO": "3409905",
@@ -2541,7 +3173,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.16221,
+    "LONGITUD": -64.727783,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 12.86
   },
   {
     "ID_UNICO": "3301513",
@@ -2557,7 +3193,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.306316,
+    "LONGITUD": -64.691471,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 17.15
   },
   {
     "ID_UNICO": "3301551",
@@ -2573,7 +3213,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "16"
+    "DIST ILE": "16",
+    "LATITUD": -24.27367,
+    "LONGITUD": -64.686633,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 15.99
   },
   {
     "ID_UNICO": "3301542",
@@ -2589,7 +3233,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.245812,
+    "LONGITUD": -64.667445,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 17.13
   },
   {
     "ID_UNICO": "3301521",
@@ -2605,7 +3253,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.266569,
+    "LONGITUD": -64.673765,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 16.98
   },
   {
     "ID_UNICO": "3301644",
@@ -2621,7 +3273,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.257224,
+    "LONGITUD": -64.755323,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 8.85
   },
   {
     "ID_UNICO": "3301612",
@@ -2637,7 +3293,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.268626,
+    "LONGITUD": -64.760461,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 9.0
   },
   {
     "ID_UNICO": "3301651",
@@ -2653,7 +3313,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "8"
+    "DIST ILE": "8",
+    "LATITUD": -24.268731,
+    "LONGITUD": -64.772638,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 8.01
   },
   {
     "ID_UNICO": "3301561",
@@ -2669,7 +3333,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.245694,
+    "LONGITUD": -64.70733,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 13.14
   },
   {
     "ID_UNICO": "3403802",
@@ -2685,7 +3353,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.188642,
+    "LONGITUD": -64.712719,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 12.99
   },
   {
     "ID_UNICO": "3403902",
@@ -2701,7 +3373,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.136354,
+    "LONGITUD": -64.768202,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 11.88
   },
   {
     "ID_UNICO": "3302451",
@@ -2717,7 +3393,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.257753,
+    "LONGITUD": -64.77626,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 7.0
   },
   {
     "ID_UNICO": "3301631",
@@ -2733,7 +3413,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.252054,
+    "LONGITUD": -64.751428,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 8.99
   },
   {
     "ID_UNICO": "3409903",
@@ -2749,7 +3433,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "10"
+    "DIST ILE": "10",
+    "LATITUD": -24.186105,
+    "LONGITUD": -64.745461,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 10.0
   },
   {
     "ID_UNICO": "3403511",
@@ -2765,7 +3453,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.199809,
+    "LONGITUD": -64.781997,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 6.0
   },
   {
     "ID_UNICO": "3102890",
@@ -2781,7 +3473,11 @@
     "SURCOS": "185",
     "PLANT": "2015",
     "DIST": "1.6",
-    "DIST ILE": "19"
+    "DIST ILE": "19",
+    "LATITUD": -24.057012,
+    "LONGITUD": -64.800368,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 18.92
   },
   {
     "ID_UNICO": "3403250",
@@ -2797,7 +3493,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.204452,
+    "LONGITUD": -64.814582,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 3.0
   },
   {
     "ID_UNICO": "3301612",
@@ -2813,7 +3513,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.268626,
+    "LONGITUD": -64.760461,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 9.0
   },
   {
     "ID_UNICO": "3203103",
@@ -2829,7 +3533,11 @@
     "SURCOS": "8474",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.257527,
+    "LONGITUD": -64.853549,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 4.16
   },
   {
     "ID_UNICO": "3203104",
@@ -2845,7 +3553,11 @@
     "SURCOS": "8927",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.25796,
+    "LONGITUD": -64.844039,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 3.86
   },
   {
     "ID_UNICO": "3403924",
@@ -2861,7 +3573,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.160867,
+    "LONGITUD": -64.751327,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 11.01
   },
   {
     "ID_UNICO": "3403925",
@@ -2877,7 +3593,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.171868,
+    "LONGITUD": -64.74443,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 10.86
   },
   {
     "ID_UNICO": "3403920",
@@ -2893,7 +3613,11 @@
     "SURCOS": "4061",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.181717,
+    "LONGITUD": -64.735194,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 11.15
   },
   {
     "ID_UNICO": "3403251",
@@ -2909,7 +3633,11 @@
     "SURCOS": "901",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "3"
+    "DIST ILE": "3",
+    "LATITUD": -24.212815,
+    "LONGITUD": -64.807954,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 3.0
   },
   {
     "ID_UNICO": "3303726",
@@ -2925,7 +3653,11 @@
     "SURCOS": "8809",
     "PLANT": "2023",
     "DIST": "1.8",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.234037,
+    "LONGITUD": -64.746726,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 8.99
   },
   {
     "ID_UNICO": "3303727",
@@ -2941,7 +3673,11 @@
     "SURCOS": "8355",
     "PLANT": "2023",
     "DIST": "1.8",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.227931,
+    "LONGITUD": -64.744693,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 9.14
   },
   {
     "ID_UNICO": "3303710",
@@ -2957,7 +3693,11 @@
     "SURCOS": "1786",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.225756,
+    "LONGITUD": -64.718019,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 11.84
   },
   {
     "ID_UNICO": "3102550",
@@ -2973,7 +3713,11 @@
     "SURCOS": "1676",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.108592,
+    "LONGITUD": -64.824927,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 12.9
   },
   {
     "ID_UNICO": "3102891",
@@ -2989,7 +3733,11 @@
     "SURCOS": "2740",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "19"
+    "DIST ILE": "19",
+    "LATITUD": -24.058399,
+    "LONGITUD": -64.782847,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 19.18
   },
   {
     "ID_UNICO": "3403921",
@@ -3005,7 +3753,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "11"
+    "DIST ILE": "11",
+    "LATITUD": -24.150636,
+    "LONGITUD": -64.75983,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 11.17
   },
   {
     "ID_UNICO": "3102560",
@@ -3021,7 +3773,11 @@
     "SURCOS": "4250",
     "PLANT": "2011",
     "DIST": "1.6",
-    "DIST ILE": "15"
+    "DIST ILE": "15",
+    "LATITUD": -24.089161,
+    "LONGITUD": -64.845043,
+    "RUMBO_CARDINAL": "N",
+    "DIST_CALCULADA_KM": 15.06
   },
   {
     "ID_UNICO": "3202102",
@@ -3037,7 +3793,11 @@
     "SURCOS": "3873",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.242084,
+    "LONGITUD": -64.837903,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 2.01
   },
   {
     "ID_UNICO": "3202101",
@@ -3053,7 +3813,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "2"
+    "DIST ILE": "2",
+    "LATITUD": -24.24079,
+    "LONGITUD": -64.826802,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 2.01
   },
   {
     "ID_UNICO": "3403885",
@@ -3069,7 +3833,11 @@
     "SURCOS": "1551",
     "PLANT": "2023",
     "DIST": "1.6",
-    "DIST ILE": "12"
+    "DIST ILE": "12",
+    "LATITUD": -24.173815,
+    "LONGITUD": -64.730126,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 12.0
   },
   {
     "ID_UNICO": "3500101",
@@ -3085,7 +3853,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.194812,
+    "LONGITUD": -64.695565,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 14.49
   },
   {
     "ID_UNICO": "3500102",
@@ -3101,7 +3873,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.200779,
+    "LONGITUD": -64.694221,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 14.49
   },
   {
     "ID_UNICO": "3500103",
@@ -3117,7 +3893,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.206796,
+    "LONGITUD": -64.693181,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 14.49
   },
   {
     "ID_UNICO": "3500104",
@@ -3133,7 +3913,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.212852,
+    "LONGITUD": -64.692448,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 14.48
   },
   {
     "ID_UNICO": "3500105",
@@ -3149,7 +3933,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.192781,
+    "LONGITUD": -64.685967,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 15.49
   },
   {
     "ID_UNICO": "3500106",
@@ -3165,7 +3953,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.199159,
+    "LONGITUD": -64.68453,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 15.49
   },
   {
     "ID_UNICO": "3500107",
@@ -3181,7 +3973,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.205592,
+    "LONGITUD": -64.683419,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 15.49
   },
   {
     "ID_UNICO": "3500108",
@@ -3197,7 +3993,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.212065,
+    "LONGITUD": -64.682635,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 15.48
   },
   {
     "ID_UNICO": "3500109",
@@ -3213,7 +4013,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.19075,
+    "LONGITUD": -64.676369,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 16.49
   },
   {
     "ID_UNICO": "3500110",
@@ -3229,7 +4033,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.19754,
+    "LONGITUD": -64.674839,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 16.49
   },
   {
     "ID_UNICO": "3500111",
@@ -3245,7 +4053,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.204387,
+    "LONGITUD": -64.673656,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 16.48
   },
   {
     "ID_UNICO": "3500112",
@@ -3261,7 +4073,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": null
+    "DIST ILE": null,
+    "LATITUD": -24.211278,
+    "LONGITUD": -64.672822,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 16.48
   },
   {
     "ID_UNICO": "3301530",
@@ -3277,7 +4093,11 @@
     "SURCOS": "7673",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.28614,
+    "LONGITUD": -64.683105,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 16.84
   },
   {
     "ID_UNICO": "3301640",
@@ -3293,7 +4113,11 @@
     "SURCOS": "2257",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.246528,
+    "LONGITUD": -64.74794,
+    "RUMBO_CARDINAL": "ESE",
+    "DIST_CALCULADA_KM": 9.14
   },
   {
     "ID_UNICO": "3403630",
@@ -3309,7 +4133,11 @@
     "SURCOS": "11760",
     "PLANT": "2021",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.159948,
+    "LONGITUD": -64.783004,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 8.87
   },
   {
     "ID_UNICO": "3404005",
@@ -3325,7 +4153,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.14934,
+    "LONGITUD": -64.736162,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 13.01
   },
   {
     "ID_UNICO": "3404004",
@@ -3341,7 +4173,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.13743,
+    "LONGITUD": -64.746394,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 13.17
   },
   {
     "ID_UNICO": "3404003",
@@ -3357,7 +4193,11 @@
     "SURCOS": null,
     "PLANT": null,
     "DIST": null,
-    "DIST ILE": "13"
+    "DIST ILE": "13",
+    "LATITUD": -24.130006,
+    "LONGITUD": -64.760932,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 12.88
   },
   {
     "ID_UNICO": "3102161",
@@ -3373,7 +4213,11 @@
     "SURCOS": "2304",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "9"
+    "DIST ILE": "9",
+    "LATITUD": -24.147904,
+    "LONGITUD": -64.804415,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 9.03
   },
   {
     "ID_UNICO": "3202350",
@@ -3389,7 +4233,11 @@
     "SURCOS": "7474",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.287453,
+    "LONGITUD": -64.83594,
+    "RUMBO_CARDINAL": "S",
+    "DIST_CALCULADA_KM": 7.03
   },
   {
     "ID_UNICO": "3202349",
@@ -3405,7 +4253,11 @@
     "SURCOS": "321",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.284219,
+    "LONGITUD": -64.851289,
+    "RUMBO_CARDINAL": "SSO",
+    "DIST_CALCULADA_KM": 6.87
   },
   {
     "ID_UNICO": "3102010",
@@ -3421,7 +4273,11 @@
     "SURCOS": "5773",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.190047,
+    "LONGITUD": -64.822125,
+    "RUMBO_CARDINAL": "NNE",
+    "DIST_CALCULADA_KM": 4.01
   },
   {
     "ID_UNICO": "3202371",
@@ -3437,7 +4293,11 @@
     "SURCOS": "5507",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.28013,
+    "LONGITUD": -64.805794,
+    "RUMBO_CARDINAL": "SSE",
+    "DIST_CALCULADA_KM": 6.87
   },
   {
     "ID_UNICO": "3302441",
@@ -3453,7 +4313,11 @@
     "SURCOS": "9394",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "7"
+    "DIST ILE": "7",
+    "LATITUD": -24.233058,
+    "LONGITUD": -64.766454,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 6.99
   },
   {
     "ID_UNICO": "3403550",
@@ -3469,7 +4333,11 @@
     "SURCOS": "5166",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.205727,
+    "LONGITUD": -64.777631,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 6.15
   },
   {
     "ID_UNICO": "3403408",
@@ -3485,7 +4353,11 @@
     "SURCOS": "8879",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.203483,
+    "LONGITUD": -64.781758,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 5.85
   },
   {
     "ID_UNICO": "3403370",
@@ -3501,7 +4373,11 @@
     "SURCOS": "4722",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "6"
+    "DIST ILE": "6",
+    "LATITUD": -24.187469,
+    "LONGITUD": -64.789364,
+    "RUMBO_CARDINAL": "NE",
+    "DIST_CALCULADA_KM": 6.16
   },
   {
     "ID_UNICO": "3403310",
@@ -3517,7 +4393,11 @@
     "SURCOS": "3494",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.207839,
+    "LONGITUD": -64.788859,
+    "RUMBO_CARDINAL": "ENE",
+    "DIST_CALCULADA_KM": 5.0
   },
   {
     "ID_UNICO": "3301514",
@@ -3533,7 +4413,11 @@
     "SURCOS": "238",
     "PLANT": "2024",
     "DIST": "1.6",
-    "DIST ILE": "17"
+    "DIST ILE": "17",
+    "LATITUD": -24.322922,
+    "LONGITUD": -64.706456,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 17.01
   },
   {
     "ID_UNICO": "3303180",
@@ -3549,7 +4433,11 @@
     "SURCOS": null,
     "PLANT": "2025",
     "DIST": "1.6",
-    "DIST ILE": "5"
+    "DIST ILE": "5",
+    "LATITUD": -24.230545,
+    "LONGITUD": -64.785963,
+    "RUMBO_CARDINAL": "E",
+    "DIST_CALCULADA_KM": 4.99
   },
   {
     "ID_UNICO": "3303144",
@@ -3565,6 +4453,10 @@
     "SURCOS": null,
     "PLANT": "2025",
     "DIST": "1.6",
-    "DIST ILE": "4"
+    "DIST ILE": "4",
+    "LATITUD": -24.246496,
+    "LONGITUD": -64.803687,
+    "RUMBO_CARDINAL": "SE",
+    "DIST_CALCULADA_KM": 4.0
   }
 ]
