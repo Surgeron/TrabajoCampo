@@ -1,4 +1,4 @@
-# PluviaZafra: Especificación de casos de uso unificada (`CU01` a `CU23`)
+# NexoZafra: Especificación de casos de uso unificada (`CU01` a `CU23`)
 
 Especifica los **23 casos de uso** del [modelo de casos de uso unificado (v2)](casos-de-uso-v2.md): mantiene los **20 casos de @Jairo con su numeración exacta (`CU01`–`CU20`)** y suma nuestros **3 casos al final (`CU21`–`CU23`)**, integrando todos los valores reales ya confirmados.
 

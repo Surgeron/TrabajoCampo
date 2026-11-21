@@ -1,4 +1,4 @@
-# PluviaZafra: Valores confirmados y preguntas pendientes para el experto (v2 unificado)
+# NexoZafra: Valores confirmados y preguntas pendientes para el experto (v2 unificado)
 
 Documento de control alineado con el [modelo de casos de uso unificado (`CU01`–`CU23`)](casos-de-uso-v2.md).
 

@@ -1,4 +1,4 @@
-# PluviaZafra: Casos de uso y permisos por rol (v2 unificado)
+# NexoZafra: Casos de uso y permisos por rol (v2 unificado)
 
 Agrupa los **23 casos de uso** de [casos-de-uso-v2.md](casos-de-uso-v2.md) según los **5 actores humanos** definidos en la propuesta unificada con @Jairo. Las especificaciones completas están en [especificaciones-casos-de-uso-v2.md](especificaciones-casos-de-uso-v2.md).
 

@@ -1,4 +1,4 @@
-# Modelado v2 (datos reales): PluviaZafra
+# Modelado v2 (datos reales): NexoZafra
 
 Base: entrevistas del 19/11/2026 (técnico agrícola y Pedro, jefe de fábrica). Entrega: **2/12**.
 

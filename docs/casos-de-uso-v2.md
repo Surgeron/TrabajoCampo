@@ -1,4 +1,4 @@
-# PluviaZafra: Modelo de casos de uso unificado (v2)
+# NexoZafra: Modelo de casos de uso unificado (v2)
 
 Proyecto: Sistema de priorización de cosecha – Ingenio La Esperanza (ILE).
 Unifica la propuesta de **@Jairo** (`CU01`–`CU20` y 5 actores humanos) con los casos adicionales y los parámetros confirmados de nuestro relevamiento (`CU21`–`CU23`).
@@ -94,7 +94,7 @@ FAB --|> USR
 BAS --|> USR
 ADM --|> USR
 
-rectangle "PluviaZafra – Ingenio La Esperanza" {
+rectangle "NexoZafra – Ingenio La Esperanza" {
   usecase "CU01 Iniciar sesión" as CU01
   usecase "CU02 Gestionar usuarios" as CU02
   usecase "CU03 Configurar parámetros de priorización" as CU03

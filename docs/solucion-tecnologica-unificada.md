@@ -1,4 +1,4 @@
-# Solución tecnológica – Sistema de priorización de cosecha (Ingenio La Esperanza) [Versión Unificada]
+# NexoZafra: Solución tecnológica – Sistema de priorización de cosecha (Ingenio La Esperanza) [Versión Unificada]
 
 Unifica el documento original de **@Jairo** con los parámetros confirmados y los casos de uso `CU21`, `CU22` y `CU23`.
 
