@@ -20,37 +20,33 @@ Base: entrevistas del 19/11/2026 (técnico agrícola y Pedro, jefe de fábrica).
 | Sin orgánico | `Tipo` (Convencional vs. Organico Full/NOP) y modo "Prioridad Orgánica" |
 | Roles de operador | Roles: Equipo Técnico, Jefe de Lote, Fábrica |
 
-## 3. Análisis de la base real `ZAFRA 2025 (1).xlsx` (223 lotes válidos)
+## 3. Análisis de la base real `ZAFRA 2025 (1).xlsx`
 
-- **Fincas:**
-  - San Antonio: 63 lotes (media DIST ILE: 8.4 km)
-  - Miraflores: 57 lotes (media DIST ILE: 10.3 km)
-  - El Quemado: 47 lotes (media DIST ILE: 12.9 km, cruza Ruta 34)
-  - Parapeti: 42 lotes (media DIST ILE: 5.4 km, colindante a ILE)
-  - Meguida: 12 lotes (potreros/montes)
-- **Áreas reales:**
-  - Superficie Bruta total (`AREA_B`): **18.386,42 ha**
-  - Superficie Neta total (`AREA_N`): **9.307,40 ha** (resuelve la duda del área neta)
-- **Tipos de cultivo:**
-  - Convencional: 110 lotes (49.3%)
-  - Orgánico Full / NOP: 111 lotes (49.8%)
-- **Distribución de Distancia a ILE (`DIST ILE` de 1 a 19 km):**
-  - **Cercana (1 a 6 km):** 63 lotes (30.3%) - Mayoría Parapeti y San Antonio bajo
-  - **Media / Intermedia (7 a 12 km):** 89 lotes (42.8%) - San Antonio, Miraflores y El Quemado bajo
-  - **Lejana (13 a 19 km):** 56 lotes (26.9%) - El Quemado alto y Miraflores fondo
-- **Variedades principales relevadas:**
-  - `LCP 85-384`: 65 lotes (maduración temprana/intermedia)
-  - `TUC 03-12`: 31 lotes (maduración temprana/intermedia)
-  - `Descepe 2024`: 22 lotes (caña a renovar)
-  - `TUC 06-7`: 12 lotes (maduración intermedia)
-  - `CP 65-350`: 12 lotes (maduración temprana)
-  - Otras (`NA 97-3152`, `NA 78-639`, etc.)
-- **Edad / Soca (`PLANT`):** años 2011 a 2024. Permite calcular soca (`2025 - PLANT`). Caña planta: siembras 2024/2025.
+La hoja `inv2025_ile_oficial` tiene 223 filas con datos. De ellas, 2 están vacías (`3102032` y `0000000`) y 2 están repetidas (`3202211` Largas B y `3301612` Monte Represa). Quedan **219 lotes únicos**. Corrección: antes se habían contado 223.
+
+- **Fincas (lotes únicos):**
+  - San Antonio (340): 63 lotes
+  - Miraflores (330): 56 lotes
+  - El Quemado (310): 47 lotes, cruza la Ruta 34
+  - Parapeti (320): 41 lotes, la más cercana al ingenio
+  - Meguida (350): 12 potreros, todos "Monte" y sin distancia
+- **Áreas:**
+  - Superficie bruta total (`AREA_B`): **18.290,84 ha**
+  - Superficie neta total (`AREA_N`): **9.232,90 ha**, pero **65 lotes no tienen área neta**, así que ese total es parcial
+- **Tipos de cultivo:** Convencional 109, Orgánico Full 107, Orgánico NOP 3.
+- **Distancia a ILE (`DIST ILE`, 1 a 19 km):** 206 lotes la tienen y 13 no.
+  - Cercana (1 a 6 km): 62 lotes
+  - Media (7 a 12 km): 88 lotes
+  - Lejana (13 a 19 km): 56 lotes
+- **Variedades más frecuentes:** `LCP 85-384` (65), `TUC 03-12` (31), `CP 65-350` (12), `TUC 06-7` (11), `NA 97-3152` (6). La época de maduración de cada variedad **no viene en el inventario** y hay que pedirla al ingenio.
+- **Estados mezclados en la columna `VARIEDAD`:** `Descepe 2024` (22), `Monte` (12), `Vacío` (13), `Varias` (11) y 19 celdas vacías. No son variedades, son estados del lote.
+- **Año de plantación (`PLANT`):** años 2011 a 2025. La **soca (cantidad de cortes) no viene en el inventario** y la carga el Equipo Técnico. No se calcula con `PLANT`, porque un lote replantado reinicia el conteo.
+- **Lotes críticos por drenaje:** son los lotes Ciénaga (`2441`, Miraflores) y Potrero Vacunos (`9901`, San Antonio). Las fincas más problemáticas son Miraflores y San Antonio.
 
 ## 3. Entidades (colecciones Firestore)
 
 ### `fincas`
-`nombre`, `zona_distancia` (lejana | intermedia | cercana), `km_a_fabrica`, `cruza_ruta_34` (bool; solo El Quemado), `critica_drenaje` (bool; Miraflores, San Antonio, Ciénaga, Vacuno), `pluviometro_id`.
+`nombre`, `zona_distancia` (lejana | intermedia | cercana), `km_a_fabrica`, `cruza_ruta_34` (bool; solo El Quemado), `critica_drenaje` (bool; Miraflores y San Antonio), `pluviometro_id`.
 
 ### `lotes`
 | Campo | Detalle |
@@ -119,19 +115,4 @@ Roles: `equipo_tecnico`, `jefe_lote`, `fabrica`.
 
 ## 7. Pendientes y estado de confirmación
 
-- **Área neta de los lotes:** ✅ **Resuelto.** Consta en la columna `AREA_N` del inventario oficial (Total: 9.307,40 ha netas vs 18.386,42 ha brutas).
-- **Distancias a ILE:** ✅ **Resuelto.** Columna `DIST ILE` clasificada en:
-  - Cercana: 1 a 6 km
-  - Media / Intermedia: 7 a 12 km
-  - Lejana: 13 a 19 km
-- **Brix mínimo:** A confirmar (se oye "8" en la entrevista; campaña cerró en ~10,31).
-- **Suelos mal drenados:** Validar si se adelantan ante lluvia o se reservan/evitan en cierre de zafra.
-- **Inaccesibilidad formal:** Confirmar si el historial se registra en algún libro/sistema.
-- **Capacidad por carro:** Confirmar toneladas promedio por carro (para afinar el cálculo de molienda continua a 312,5 t/h).
-
-## 7. Plan hasta el 2/12
-
-1. Cargar la **base 2025 real** (fincas y lotes) en Firestore, sin inventar datos. Usar un subconjunto que cubra las 3 zonas e incluya Ciénaga, Miraflores y San Antonio.
-2. Backend FastAPI: endpoints `/lotes`, `/ranking`, `/riesgo-piso`, `/lecturas`, `/paradas`.
-3. Frontend: carga de lluvia, piso y Brix (celular), ranking, tablero de alertas y escenarios.
-4. Actualizar documentación: casos de uso, diagrama de clases y objetivos con la nueva formulación.
+Ver la lista consolidada y actualizada en [valores-a-confirmar-v2.md](valores-a-confirmar-v2.md).
