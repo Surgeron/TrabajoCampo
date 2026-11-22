@@ -23,6 +23,11 @@ async def ciclo_pronostico(espera_inicial: int = 10):
     while True:
         repo = repositorio()
         try:
+            restantes = await asyncio.to_thread(pronostico.segundos_vigencia_restantes, repo)
+            if restantes > 0:
+                log.info("Pronóstico automático vigente; próxima actualización en %d min", max(1, restantes // 60))
+                await asyncio.sleep(restantes)
+                continue
             resultado = await asyncio.to_thread(pronostico.actualizar_automatico, repo, origen="automático")
             log.info("Pronóstico actualizado: %s registros, %s alertas",
                      resultado["registros_actualizados"], len(resultado["alertas"]))

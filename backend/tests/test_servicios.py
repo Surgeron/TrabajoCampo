@@ -5,7 +5,7 @@ o en ../informacion (relativo a la raíz del proyecto). Si no está, se saltean.
 """
 import os
 import unittest
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest import mock
 
@@ -204,6 +204,52 @@ class TestPronosticoYAlertas(Base):
         with self.assertRaises(ServicioExterno):
             pronostico.actualizar_automatico(self.repo, consultar=caido)
         self.assertEqual(self.repo.obtener("pronosticos", "330_2026-11-22")["prob_lluvia_pct"], 85)
+
+    def test_lote_open_meteo_y_respaldo_met_no(self):
+        respuesta_lote = [
+            {"daily": {"time": ["2026-11-21"], "precipitation_sum": [12.5], "precipitation_probability_max": [70]}},
+            {"daily": {"time": ["2026-11-21"], "precipitation_sum": [0.0], "precipitation_probability_max": [10]}},
+        ]
+        with mock.patch.object(pronostico, "_pedir_json", return_value=respuesta_lote) as m_lote:
+            res = pronostico.consultar_open_meteo_lote([(-24.1, -64.8), (-24.2, -64.9)])
+        self.assertEqual(m_lote.call_count, 1)
+        self.assertEqual(res[0][0], {"fecha": "2026-11-21", "mm": 12.5, "prob": 70.0})
+        self.assertEqual(res[1][0], {"fecha": "2026-11-21", "mm": 0.0, "prob": 10.0})
+
+        respuesta_met = {
+            "properties": {
+                "timeseries": [
+                    {"time": "2026-11-21T15:00:00Z", "data": {"next_1_hours": {"details": {"precipitation_amount": 4.2}}}},
+                    {"time": "2026-11-21T16:00:00Z", "data": {"next_1_hours": {"details": {"precipitation_amount": 5.8}}}},
+                    {
+                        "time": "2026-11-22T12:00:00Z",
+                        "data": {"next_6_hours": {"details": {"precipitation_amount": 0.0, "probability_of_precipitation": 15}}},
+                    },
+                ]
+            }
+        }
+        with mock.patch.object(pronostico, "_pedir_json", return_value=respuesta_met):
+            met = pronostico.consultar_met_no(-24.1, -64.8)
+        self.assertEqual(met[0], {"fecha": "2026-11-21", "mm": 10.0, "prob": 70.0})
+        self.assertEqual(met[1], {"fecha": "2026-11-22", "mm": 0.0, "prob": 15.0})
+
+        with mock.patch.object(pronostico, "consultar_open_meteo_lote", side_effect=OSError("429 Too Many Requests")), \
+             mock.patch.object(pronostico, "consultar_met_no", return_value=[{"fecha": "2026-11-21", "mm": 3.0, "prob": 49.0}]) as m_met:
+            r = pronostico.actualizar_automatico(self.repo)
+        self.assertEqual(m_met.call_count, 5)
+        self.assertEqual(r["registros_actualizados"], 5)
+        self.assertEqual(self.repo.obtener("pronosticos", "330_2026-11-21")["fuente"], "API")
+
+    def test_vigencia_pronostico_automatico(self):
+        self.assertEqual(pronostico.segundos_vigencia_restantes(self.repo), 0)
+        pronostico.actualizar_automatico(
+            self.repo,
+            consultar=lambda lat, lon: [{"fecha": "2026-11-21", "mm": 0, "prob": 0}],
+        )
+        with mock.patch.object(fechas, "ahora", return_value=AHORA + timedelta(minutes=10)):
+            self.assertEqual(pronostico.segundos_vigencia_restantes(self.repo), 3000)
+        with mock.patch.object(fechas, "ahora", return_value=AHORA + timedelta(minutes=61)):
+            self.assertEqual(pronostico.segundos_vigencia_restantes(self.repo), 0)
 
 
 class TestPatioYParadas(Base):
