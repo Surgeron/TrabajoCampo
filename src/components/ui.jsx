@@ -228,9 +228,22 @@ export function Dialogo({ abierto, titulo, children, alCerrar, acciones }) {
   )
 }
 
+function paginasVisibles(actual, total) {
+  if (total <= 7) return Array.from({ length: total }, (_, i) => i + 1)
+  const salida = [1]
+  const desde = Math.max(2, actual - 1)
+  const hasta = Math.min(total - 1, actual + 1)
+  if (desde > 2) salida.push('…-izq')
+  for (let p = desde; p <= hasta; p += 1) salida.push(p)
+  if (hasta < total - 1) salida.push('…-der')
+  salida.push(total)
+  return salida
+}
+
 // Tabla que en el celular se muestra como lista de fichas. Columnas: {clave, titulo, render, alinear, ordenable, oculta}
-export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, resumenMovil, ordenInicial, etiqueta }) {
+export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, resumenMovil, ordenInicial, etiqueta, porPagina = 10 }) {
   const [orden, setOrden] = useState(ordenInicial || null)
+  const [pagina, setPagina] = useState(1)
   const ordenadas = useMemo(() => {
     if (!orden) return filas
     const col = columnas.find((c) => c.clave === orden.clave)
@@ -246,9 +259,21 @@ export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, r
     })
   }, [filas, orden, columnas])
 
+  useEffect(() => {
+    setPagina(1)
+  }, [filas.length, orden])
+
   if (!filas.length) return vacio || <Vacio titulo="No hay datos para mostrar." />
 
+  const tamPagina = Math.max(1, porPagina)
+  const totalPaginas = Math.max(1, Math.ceil(ordenadas.length / tamPagina))
+  const paginaActual = Math.min(pagina, totalPaginas)
+  const inicio = (paginaActual - 1) * tamPagina
+  const visibles = ordenadas.slice(inicio, inicio + tamPagina)
+
   const alinear = (c) => (c.alinear === 'derecha' ? 'text-right' : 'text-left')
+  const clasePag =
+    'inline-flex min-h-9 min-w-9 items-center justify-center rounded-md border px-2.5 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-45'
   return (
     <>
       <div className="hidden overflow-x-auto md:block">
@@ -275,7 +300,7 @@ export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, r
             </tr>
           </thead>
           <tbody>
-            {ordenadas.map((f) => (
+            {visibles.map((f) => (
               <tr
                 key={f[claveFila]}
                 className={`border-b border-linea last:border-0 ${alTocarFila ? 'cursor-pointer hover:bg-cana-claro/60' : ''}`}
@@ -292,7 +317,7 @@ export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, r
         </table>
       </div>
       <ul className="flex flex-col divide-y divide-linea md:hidden" aria-label={etiqueta}>
-        {ordenadas.map((f) => (
+        {visibles.map((f) => (
           <li key={f[claveFila]}>
             {resumenMovil ? (
               resumenMovil(f)
@@ -311,6 +336,53 @@ export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, r
           </li>
         ))}
       </ul>
+      {totalPaginas > 1 && (
+        <nav aria-label="Paginación" className="no-imprimir mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-linea pt-3 text-xs text-tinta-2">
+          <span>
+            Mostrando {inicio + 1}–{Math.min(inicio + tamPagina, ordenadas.length)} de {ordenadas.length}
+          </span>
+          <div className="flex flex-wrap items-center gap-1">
+            <button
+              type="button"
+              onClick={() => setPagina((p) => Math.max(1, p - 1))}
+              disabled={paginaActual === 1}
+              className={`${clasePag} border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro`}
+            >
+              Anterior
+            </button>
+            {paginasVisibles(paginaActual, totalPaginas).map((item) =>
+              typeof item === 'string' ? (
+                <span key={item} className="px-1.5 text-tenue" aria-hidden="true">
+                  …
+                </span>
+              ) : (
+                <button
+                  key={item}
+                  type="button"
+                  onClick={() => setPagina(item)}
+                  aria-current={item === paginaActual ? 'page' : undefined}
+                  aria-label={`Página ${item}`}
+                  className={`${clasePag} ${
+                    item === paginaActual
+                      ? 'border-cana bg-cana text-white'
+                      : 'border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro'
+                  }`}
+                >
+                  {item}
+                </button>
+              ),
+            )}
+            <button
+              type="button"
+              onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
+              disabled={paginaActual === totalPaginas}
+              className={`${clasePag} border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro`}
+            >
+              Siguiente
+            </button>
+          </div>
+        </nav>
+      )}
     </>
   )
 }
