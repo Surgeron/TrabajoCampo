@@ -1,0 +1,19 @@
+rules_version = '2';
+// Reglas de seguridad de Firestore para el prototipo v2.
+// Toda escritura pasa por el back end (Firebase Admin ignora estas reglas).
+// El front end solo lee en tiempo real alertas y registros de patio (CU18 y CU22).
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /alertas/{id} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /registros_patio/{id} {
+      allow read: if request.auth != null;
+      allow write: if false;
+    }
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

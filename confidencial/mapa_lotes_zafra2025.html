@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mapa de Lotes Zafra 2025 – Ingenio La Esperanza</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    crossorigin=""
+  />
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #ffffff;
+      --panel-alt: #f8fafc;
+      --border: #e2e8f0;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #15803d;
+      --accent-soft: #dcfce7;
+      --shadow: 0 4px 18px rgba(15, 23, 42, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      overflow: hidden;
+    }
+
+    .app-shell {
+      display: flex;
+      height: 100vh;
+      width: 100vw;
+      position: relative;
+    }
+
+    .sidebar {
+      width: 390px;
+      min-width: 340px;
+      max-width: 92vw;
+      height: 100%;
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      z-index: 900;
+      box-shadow: var(--shadow);
+      transition: margin-left 0.22s ease;
+    }
+
+    .sidebar.collapsed {
+      margin-left: -390px;
+    }
+
+    .sidebar-header {
+      padding: 14px 16px 12px;
+      background: linear-gradient(135deg, #14532d 0%, #166534 65%, #15803d 100%);
+      color: #ffffff;
+    }
+
+    .sidebar-header h1 {
+      margin: 0;
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+
+    .sidebar-header p {
+      margin: 4px 0 0;
+      font-size: 12px;
+      color: #dcfce7;
+    }
+
+    .controls {
+      padding: 12px 14px;
+      background: var(--panel-alt);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .control-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .field label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .field select,
+    .field input {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 13px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      background: #ffffff;
+      color: var(--text);
+      outline: none;
+    }
+
+    .field select:focus,
+    .field input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(21, 128, 61, 0.16);
+    }
+
+    .search-wrap {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 6px 10px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 6px;
+      border: 1px solid #cbd5e1;
+      background: #ffffff;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .btn:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #166534;
+      border-color: #166534;
+    }
+
+    .toggles-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5px 10px;
+      padding-top: 2px;
+    }
+
+    .toggle-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #334155;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .toggle-item input {
+      accent-color: var(--accent);
+      cursor: pointer;
+      margin: 0;
+    }
+
+    .actions-bar {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+    }
+
+    .stat-card {
+      background: var(--panel-alt);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .stat-label {
+      font-size: 10.5px;
+      color: var(--muted);
+      margin-top: 1px;
+    }
+
+    .legend-box {
+      padding: 8px 14px;
+      border-bottom: 1px solid var(--border);
+      background: #ffffff;
+    }
+
+    .legend-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+
+    .legend-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      color: #334155;
+    }
+
+    .legend-swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 3px;
+      border: 1px solid rgba(15, 23, 42, 0.28);
+      flex-shrink: 0;
+    }
+
+    .lot-list-header {
+      padding: 7px 14px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      background: var(--panel-alt);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .lot-list {
+      flex: 1;
+      overflow-y: auto;
+      background: #ffffff;
+    }
+
+    .lot-row {
+      padding: 8px 14px;
+      border-bottom: 1px solid #f1f5f9;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      transition: background 0.12s ease;
+    }
+
+    .lot-row:hover {
+      background: #f8fafc;
+    }
+
+    .lot-row.active {
+      background: var(--accent-soft);
+    }
+
+    .lot-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1px solid rgba(15, 23, 42, 0.3);
+    }
+
+    .lot-main {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .lot-name {
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lot-sub {
+      font-size: 11.5px;
+      color: var(--muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .lot-metrics {
+      text-align: right;
+      font-size: 11.5px;
+      color: #334155;
+      flex-shrink: 0;
+    }
+
+    .lot-metrics strong {
+      display: block;
+      font-size: 12px;
+    }
+
+    .empty-state {
+      padding: 28px 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .map-wrap {
+      flex: 1;
+      height: 100%;
+      position: relative;
+    }
+
+    #map {
+      width: 100%;
+      height: 100%;
+    }
+
+    .sidebar-toggle {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      z-index: 950;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 7px 11px;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      box-shadow: 0 2px 10px rgba(15, 23, 42, 0.2);
+    }
+
+    .sidebar-toggle:hover {
+      background: #f8fafc;
+    }
+
+    .ile-badge {
+      background: #dc2626;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 999px;
+      font-weight: 800;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    }
+
+    .finca-badge {
+      background: #0f172a;
+      color: #ffffff;
+      border: 2px solid #ffffff;
+      border-radius: 6px;
+      padding: 2px 6px;
+      font-size: 10.5px;
+      font-weight: 700;
+      white-space: nowrap;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+    }
+
+    .ring-label {
+      background: rgba(15, 23, 42, 0.78);
+      color: #f8fafc;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      padding: 2px 7px;
+      font-size: 10.5px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .popup-card {
+      font-size: 12.5px;
+      line-height: 1.4;
+      min-width: 245px;
+    }
+
+    .popup-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 2px;
+    }
+
+    .popup-sub {
+      font-size: 11.5px;
+      color: #475569;
+      margin-bottom: 8px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .popup-grid {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 3px 10px;
+      margin-bottom: 9px;
+    }
+
+    .popup-grid span.k {
+      color: #64748b;
+      font-weight: 600;
+    }
+
+    .popup-grid span.v {
+      color: #0f172a;
+      text-align: right;
+    }
+
+    .gmaps-link {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 6px 10px;
+      background: #15803d;
+      color: #ffffff !important;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      font-size: 12px;
+    }
+
+    .gmaps-link:hover {
+      background: #166534;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 330px;
+      }
+      .sidebar.collapsed {
+        margin-left: -330px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <aside id="sidebar" class="sidebar">
+      <header class="sidebar-header">
+        <h1>Visor de Lotes · Zafra 2025</h1>
+        <p>Ingenio La Esperanza (219 lotes únicos · coordenadas aproximadas)</p>
+      </header>
+
+      <section class="controls">
+        <div class="control-row">
+          <div class="field">
+            <label for="colorMode">Colorear por</label>
+            <select id="colorMode">
+              <option value="finca">Finca</option>
+              <option value="zona">Zona de distancia</option>
+              <option value="tipo">Tipo de cultivo</option>
+              <option value="estado">Estado / Variedad</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filterFinca">Finca</label>
+            <select id="filterFinca">
+              <option value="ALL">Todas (5)</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="control-row">
+          <div class="field">
+            <label for="filterZona">Zona de distancia</label>
+            <select id="filterZona">
+              <option value="ALL">Todas</option>
+              <option value="Cercana">Cercana (1–6 km)</option>
+              <option value="Media">Media (7–12 km)</option>
+              <option value="Lejana">Lejana (13–19 km)</option>
+              <option value="Estimada">Estimada (sin DIST ILE)</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="filterTipo">Tipo de cultivo</label>
+            <select id="filterTipo">
+              <option value="ALL">Todos</option>
+              <option value="Convencional">Convencional</option>
+              <option value="Organico Full">Orgánico Full</option>
+              <option value="Organico NOP">Orgánico NOP</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="searchInput">Buscar lote, ID o variedad</label>
+          <div class="search-wrap">
+            <input
+              id="searchInput"
+              type="text"
+              placeholder="Ej: Cienaga, Londres, 3201170, LCP 85..."
+            />
+            <button id="btnClear" class="btn" type="button" title="Limpiar filtros">Limpiar</button>
+          </div>
+        </div>
+
+        <div class="toggles-grid">
+          <label class="toggle-item">
+            <input type="checkbox" id="togglePolygons" checked />
+            Polígonos aproximados
+          </label>
+          <label class="toggle-item">
+            <input type="checkbox" id="toggleCentroids" checked />
+            Centroides de lotes
+          </label>
+          <label class="toggle-item">
+            <input type="checkbox" id="toggleCabeceras" checked />
+            Cabeceras de finca
+          </label>
+          <label class="toggle-item">
+            <input type="checkbox" id="toggleRings" checked />
+            Anillos 6 / 12 / 19 km
+          </label>
+        </div>
+
+        <div class="actions-bar">
+          <span id="filterNotice" style="font-size: 11.5px; color: #64748b;">
+            Coordenadas estimadas por rumbo y DIST ILE
+          </span>
+          <button id="btnFit" class="btn btn-primary" type="button">Ajustar vista</button>
+        </div>
+      </section>
+
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div id="statCount" class="stat-value">0</div>
+          <div class="stat-label">Lotes visibles</div>
+        </div>
+        <div class="stat-card">
+          <div id="statAreaB" class="stat-value">0 ha</div>
+          <div class="stat-label">Sup. Bruta</div>
+        </div>
+        <div class="stat-card">
+          <div id="statAreaN" class="stat-value">0 ha</div>
+          <div class="stat-label">Sup. Neta</div>
+        </div>
+      </section>
+
+      <section class="legend-box">
+        <div id="legendTitle" class="legend-title">Leyenda</div>
+        <div id="legendItems" class="legend-items"></div>
+      </section>
+
+      <div class="lot-list-header">
+        <span>Listado de lotes</span>
+        <span id="listCountLabel">0</span>
+      </div>
+      <div id="lotList" class="lot-list"></div>
+    </aside>
+
+    <main class="map-wrap">
+      <button id="sidebarToggle" class="sidebar-toggle" type="button">◀ Ocultar panel</button>
+      <div id="map"></div>
+    </main>
+  </div>
+
+  <script id="zafra-data" type="application/json">{"ingenio":{"nombre":"Ingenio La Esperanza","latitud":-24.22426178105287,"longitud":-64.83473626514535},"fincas":[{"id_finca":"310","nombre":"El Quemado","latitud_cabecera":-24.1047,"longitud_cabecera":-64.8239,"referencia_cabecera":"Localidad El Quemado sobre RN 34 (pasando por Arrayanal)","sector_acimut_grados":[352.0,24.0],"rumbo":"N - NNE","rango_dist_ile_km":[3,19],"rango_dist_calculada_km":[3.01,19.18],"cantidad_lotes":47,"area_bruta_total_ha":2362.2,"cruza_ruta_34":true,"critica_drenaje":false},{"id_finca":"320","nombre":"Parapeti","latitud_cabecera":-24.23618,"longitud_cabecera":-64.84412,"referencia_cabecera":"Lote Parapeti hacia Golf, Londres, Urundeles, Largas y Cedros","sector_acimut_grados":[148.0,214.0],"rumbo":"SSE - SSO","rango_dist_ile_km":[1,11],"rango_dist_calculada_km":[1.0,11.04],"cantidad_lotes":41,"area_bruta_total_ha":2764.34,"cruza_ruta_34":false,"critica_drenaje":false},{"id_finca":"330","nombre":"Miraflores","latitud_cabecera":-24.2239,"longitud_cabecera":-64.8211,"referencia_cabecera":"Lote Miraflores hacia Cienaga, Bordo, Silvia y Vera","sector_acimut_grados":[86.0,134.0],"rumbo":"E - SE","rango_dist_ile_km":[2,17],"rango_dist_calculada_km":[2.0,17.15],"cantidad_lotes":56,"area_bruta_total_ha":4507.1,"cruza_ruta_34":false,"critica_drenaje":true},{"id_finca":"340","nombre":"San Antonio","latitud_cabecera":-24.2081,"longitud_cabecera":-64.7971,"referencia_cabecera":"Eje entre Lote San Antonio y Lote El Puesto","sector_acimut_grados":[32.0,76.0],"rumbo":"NE - ENE","rango_dist_ile_km":[3,13],"rango_dist_calculada_km":[3.0,13.17],"cantidad_lotes":63,"area_bruta_total_ha":5335.2,"cruza_ruta_34":false,"critica_drenaje":true},{"id_finca":"350","nombre":"Meguida","latitud_cabecera":-24.185,"longitud_cabecera":-64.695,"referencia_cabecera":"Campo Meguida (Lote 2A2, Padron D-6533) al ENE","sector_acimut_grados":[77.0,85.0],"rumbo":"ENE - E","rango_dist_ile_km":null,"rango_dist_calculada_km":[14.48,16.49],"cantidad_lotes":12,"area_bruta_total_ha":3322.0,"cruza_ruta_34":false,"critica_drenaje":false}],"lotes":[{"ID_UNICO":"3102031","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2031","LOTE":"San Lorenzo","VARIEDAD":"Descepe 2024","AREA_B":"49.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.01,"ACIMUT_GRADOS":16.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.198225,"LONGITUD":-64.826591,"POLIGONO_APROX":[[-24.200805,-64.830814],[-24.200805,-64.822368],[-24.195645,-64.822368],[-24.195645,-64.830814]]},{"ID_UNICO":"3102070","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2070","LOTE":"Chag. Abajo","VARIEDAD":"Descepe 2024","AREA_B":"114.5","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.01,"ACIMUT_GRADOS":0.0,"RUMBO_CARDINAL":"N","LATITUD":-24.197176,"LONGITUD":-64.834736,"POLIGONO_APROX":[[-24.20112,-64.841191],[-24.20112,-64.828281],[-24.193232,-64.828281],[-24.193232,-64.841191]]},{"ID_UNICO":"3102010","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2010","LOTE":"Moralito","VARIEDAD":"TUC 03-12","AREA_B":"109.0","AREA_N":"92.4","SURCOS":"5773","PLANT":"2024","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.01,"ACIMUT_GRADOS":18.7,"RUMBO_CARDINAL":"NNE","LATITUD":-24.190047,"LONGITUD":-64.822125,"POLIGONO_APROX":[[-24.193895,-64.828423],[-24.193895,-64.815827],[-24.186199,-64.815827],[-24.186199,-64.828423]]},{"ID_UNICO":"3102041","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2041","LOTE":"Chag. Arriba A","VARIEDAD":"LCP 85-384","AREA_B":"25.1","AREA_N":"21.0","SURCOS":"1312","PLANT":"2015","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.02,"ACIMUT_GRADOS":357.3,"RUMBO_CARDINAL":"N","LATITUD":-24.188186,"LONGITUD":-64.836569,"POLIGONO_APROX":[[-24.190033,-64.839591],[-24.190033,-64.833547],[-24.186339,-64.833547],[-24.186339,-64.839591]]},{"ID_UNICO":"3102042","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2042","LOTE":"Chag. Arriba A","VARIEDAD":"LCP 85-384","AREA_B":"41.0","AREA_N":"34.3","SURCOS":"2146","PLANT":"2016","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.02,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.188498,"LONGITUD":-64.829253,"POLIGONO_APROX":[[-24.190858,-64.833115],[-24.190858,-64.825391],[-24.186138,-64.825391],[-24.186138,-64.833115]]},{"ID_UNICO":"3102052","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2052","LOTE":"Chag. Arriba B","VARIEDAD":"TUC 03-12","AREA_B":"40.7","AREA_N":"36.5","SURCOS":"2281","PLANT":"2024","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.02,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.179558,"LONGITUD":-64.827882,"POLIGONO_APROX":[[-24.18191,-64.83173],[-24.18191,-64.824034],[-24.177206,-64.824034],[-24.177206,-64.83173]]},{"ID_UNICO":"3102061","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2061","LOTE":"Chag. Arriba C","VARIEDAD":"Varias","AREA_B":"63.3","AREA_N":"57.5","SURCOS":"3594","PLANT":"2022","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.02,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.170617,"LONGITUD":-64.826511,"POLIGONO_APROX":[[-24.17355,-64.83131],[-24.17355,-64.821712],[-24.167684,-64.821712],[-24.167684,-64.83131]]},{"ID_UNICO":"3102230","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2230","LOTE":"Yuchanal A","VARIEDAD":"Descepe 2024","AREA_B":"87.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.03,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.161676,"LONGITUD":-64.82514,"POLIGONO_APROX":[[-24.165114,-64.830766],[-24.165114,-64.819514],[-24.158238,-64.819514],[-24.158238,-64.830766]]},{"ID_UNICO":"3102251","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2251","LOTE":"Yuchanal B","VARIEDAD":"TUC 06-7","AREA_B":"130.9","AREA_N":"120.9","SURCOS":"7577","PLANT":"2022","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.03,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.152735,"LONGITUD":-64.823769,"POLIGONO_APROX":[[-24.156952,-64.83067],[-24.156952,-64.816868],[-24.148518,-64.816868],[-24.148518,-64.83067]]},{"ID_UNICO":"3102161","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2161","LOTE":"Sauce Oeste A","VARIEDAD":"LCP 85-384","AREA_B":"45.0","AREA_N":"36.9","SURCOS":"2304","PLANT":"2024","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.03,"ACIMUT_GRADOS":20.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.147904,"LONGITUD":-64.804415,"POLIGONO_APROX":[[-24.150377,-64.808461],[-24.150377,-64.800369],[-24.145431,-64.800369],[-24.145431,-64.808461]]},{"ID_UNICO":"3102201","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2201","LOTE":"Sauce Este B","VARIEDAD":"LCP 85-384","AREA_B":"126.0","AREA_N":"113.5","SURCOS":"7131","PLANT":"2020","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.03,"ACIMUT_GRADOS":12.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.144779,"LONGITUD":-64.816304,"POLIGONO_APROX":[[-24.148916,-64.823075],[-24.148916,-64.809533],[-24.140642,-64.809533],[-24.140642,-64.823075]]},{"ID_UNICO":"3102160","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2160","LOTE":"Sauce Arriba A","VARIEDAD":"LCP 85-384","AREA_B":"22.5","AREA_N":"19.4","SURCOS":"1215","PLANT":"2015","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.04,"ACIMUT_GRADOS":356.0,"RUMBO_CARDINAL":"N","LATITUD":-24.143201,"LONGITUD":-64.84092,"POLIGONO_APROX":[[-24.144949,-64.843781],[-24.144949,-64.838059],[-24.141453,-64.838059],[-24.141453,-64.843781]]},{"ID_UNICO":"3102190","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2190","LOTE":"Sauce Este A","VARIEDAD":"Descepe 2024","AREA_B":"49.1","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.04,"ACIMUT_GRADOS":4.0,"RUMBO_CARDINAL":"N","LATITUD":-24.143201,"LONGITUD":-64.828552,"POLIGONO_APROX":[[-24.145784,-64.832779],[-24.145784,-64.824325],[-24.140618,-64.824325],[-24.140618,-64.832779]]},{"ID_UNICO":"3102170","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2170","LOTE":"Sauce Oeste B","VARIEDAD":"LCP 85-384","AREA_B":"104.7","AREA_N":"93.1","SURCOS":"5858","PLANT":"2020","DIST":"1.6","DIST ILE":"10","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.04,"ACIMUT_GRADOS":0.0,"RUMBO_CARDINAL":"N","LATITUD":-24.133975,"LONGITUD":-64.834736,"POLIGONO_APROX":[[-24.137747,-64.840908],[-24.137747,-64.828564],[-24.130203,-64.828564],[-24.130203,-64.840908]]},{"ID_UNICO":"3102260","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2260","LOTE":"Yuchanal D","VARIEDAD":"LCP 85-384","AREA_B":"100.3","AREA_N":"84.3","SURCOS":"5270","PLANT":"2011","DIST":"1.6","DIST ILE":"10","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.04,"ACIMUT_GRADOS":16.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.137472,"LONGITUD":-64.807585,"POLIGONO_APROX":[[-24.141163,-64.813626],[-24.141163,-64.801544],[-24.133781,-64.801544],[-24.133781,-64.813626]]},{"ID_UNICO":"3102180","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2180","LOTE":"Sauce Oeste C","VARIEDAD":"LCP 85-384","AREA_B":"63.4","AREA_N":"57.4","SURCOS":"3588","PLANT":"2020","DIST":"1.6","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.04,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.125913,"LONGITUD":-64.819656,"POLIGONO_APROX":[[-24.128848,-64.824459],[-24.128848,-64.814853],[-24.122978,-64.814853],[-24.122978,-64.824459]]},{"ID_UNICO":"3102531","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2531","LOTE":"Mateo Gde. S. I","VARIEDAD":"Descepe 2024","AREA_B":"23.1","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.9,"ACIMUT_GRADOS":353.8,"RUMBO_CARDINAL":"N","LATITUD":-24.108927,"LONGITUD":-64.848455,"POLIGONO_APROX":[[-24.110699,-64.851354],[-24.110699,-64.845556],[-24.107155,-64.845556],[-24.107155,-64.851354]]},{"ID_UNICO":"3102550","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2550","LOTE":"Mateo Gde. S. I Norte","VARIEDAD":"TUC 06-7","AREA_B":"31.1","AREA_N":"26.8","SURCOS":"1676","PLANT":"2023","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.9,"ACIMUT_GRADOS":4.4,"RUMBO_CARDINAL":"N","LATITUD":-24.108592,"LONGITUD":-64.824927,"POLIGONO_APROX":[[-24.110648,-64.828291],[-24.110648,-64.821563],[-24.106536,-64.821563],[-24.106536,-64.828291]]},{"ID_UNICO":"3102721","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2721","LOTE":"Mateo Gde. S. II","VARIEDAD":"LCP 85-384","AREA_B":"13.5","AREA_N":"12.4","SURCOS":"776","PLANT":"2016","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.9,"ACIMUT_GRADOS":15.1,"RUMBO_CARDINAL":"NNE","LATITUD":-24.112255,"LONGITUD":-64.801738,"POLIGONO_APROX":[[-24.113609,-64.803954],[-24.113609,-64.799522],[-24.110901,-64.799522],[-24.110901,-64.803954]]},{"ID_UNICO":"3102730","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2730","LOTE":"Mateo Gde. S. II","VARIEDAD":"LCP 85-384","AREA_B":"7.7","AREA_N":"6.9","SURCOS":"429","PLANT":"2022","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.04,"ACIMUT_GRADOS":22.2,"RUMBO_CARDINAL":"NNE","LATITUD":-24.115607,"LONGITUD":-64.786305,"POLIGONO_APROX":[[-24.11663,-64.787979],[-24.11663,-64.784631],[-24.114584,-64.784631],[-24.114584,-64.787979]]},{"ID_UNICO":"3102540","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2540","LOTE":"Mateo Gde. S. I","VARIEDAD":"Descepe 2024","AREA_B":"32.7","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.05,"ACIMUT_GRADOS":0.9,"RUMBO_CARDINAL":"N","LATITUD":-24.106903,"LONGITUD":-64.83275,"POLIGONO_APROX":[[-24.109011,-64.836199],[-24.109011,-64.829301],[-24.104795,-64.829301],[-24.104795,-64.836199]]},{"ID_UNICO":"3102710","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2710","LOTE":"Mateo Gde. S. II","VARIEDAD":"CP 65-350","AREA_B":"33.0","AREA_N":"30.3","SURCOS":"1892","PLANT":"1992","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.05,"ACIMUT_GRADOS":11.6,"RUMBO_CARDINAL":"NNE","LATITUD":-24.109268,"LONGITUD":-64.809084,"POLIGONO_APROX":[[-24.111385,-64.812549],[-24.111385,-64.805619],[-24.107151,-64.805619],[-24.107151,-64.812549]]},{"ID_UNICO":"3102532","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2532","LOTE":"Mateo Gde. S. I","VARIEDAD":"Descepe 2024","AREA_B":"22.5","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.18,"ACIMUT_GRADOS":357.3,"RUMBO_CARDINAL":"N","LATITUD":-24.105858,"LONGITUD":-64.840753,"POLIGONO_APROX":[[-24.107606,-64.843614],[-24.107606,-64.837892],[-24.10411,-64.837892],[-24.10411,-64.843614]]},{"ID_UNICO":"3102701","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2701","LOTE":"Mateo Gde. S. II","VARIEDAD":"LCP 85-384","AREA_B":"13.7","AREA_N":"12.5","SURCOS":"783","PLANT":"2010","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.18,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.106874,"LONGITUD":-64.816737,"POLIGONO_APROX":[[-24.108238,-64.81897],[-24.108238,-64.814504],[-24.10551,-64.814504],[-24.10551,-64.81897]]},{"ID_UNICO":"3102722","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2722","LOTE":"Mateo Gde. S. II","VARIEDAD":"TUC 97-8","AREA_B":"0.1","AREA_N":"0.1","SURCOS":"7","PLANT":"2016","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.18,"ACIMUT_GRADOS":18.7,"RUMBO_CARDINAL":"NNE","LATITUD":-24.111913,"LONGITUD":-64.793327,"POLIGONO_APROX":[[-24.11203,-64.793518],[-24.11203,-64.793136],[-24.111796,-64.793136],[-24.111796,-64.793518]]},{"ID_UNICO":"3102791","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2791","LOTE":"Mateo Chico","VARIEDAD":"LCP 85-384","AREA_B":"145.1","AREA_N":"132.5","SURCOS":"8275","PLANT":"2021","DIST":"1.6","DIST ILE":"14","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":14.05,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.09909,"LONGITUD":-64.815543,"POLIGONO_APROX":[[-24.10353,-64.822809],[-24.10353,-64.808277],[-24.09465,-64.808277],[-24.09465,-64.822809]]},{"ID_UNICO":"3102801","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2801","LOTE":"Zapallito","VARIEDAD":"LCP 85-384","AREA_B":"14.3","AREA_N":"12.5","SURCOS":"783","PLANT":"2021","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":15.05,"ACIMUT_GRADOS":20.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.096999,"LONGITUD":-64.7842,"POLIGONO_APROX":[[-24.098393,-64.786481],[-24.098393,-64.781919],[-24.095605,-64.781919],[-24.095605,-64.786481]]},{"ID_UNICO":"3102560","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2560","LOTE":"Mateo Gde. S. III","VARIEDAD":"LCP 85-384","AREA_B":"78.0","AREA_N":"68.0","SURCOS":"4250","PLANT":"2011","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":15.06,"ACIMUT_GRADOS":356.0,"RUMBO_CARDINAL":"N","LATITUD":-24.089161,"LONGITUD":-64.845043,"POLIGONO_APROX":[[-24.092416,-64.85037],[-24.092416,-64.839716],[-24.085906,-64.839716],[-24.085906,-64.85037]]},{"ID_UNICO":"3102750","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2750","LOTE":"Mateo Gde. S. IV","VARIEDAD":"LCP 85-384","AREA_B":"22.7","AREA_N":"19.8","SURCOS":"1235","PLANT":"2014","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":15.06,"ACIMUT_GRADOS":4.0,"RUMBO_CARDINAL":"N","LATITUD":-24.089161,"LONGITUD":-64.824429,"POLIGONO_APROX":[[-24.090917,-64.827303],[-24.090917,-64.821555],[-24.087405,-64.821555],[-24.087405,-64.827303]]},{"ID_UNICO":"3102760","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2760","LOTE":"Mateo Gde. S. IV","VARIEDAD":"LCP 85-384","AREA_B":"28.8","AREA_N":"25.5","SURCOS":"1593","PLANT":"2011","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":15.06,"ACIMUT_GRADOS":12.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.091791,"LONGITUD":-64.804016,"POLIGONO_APROX":[[-24.093769,-64.807253],[-24.093769,-64.800779],[-24.089813,-64.800779],[-24.089813,-64.807253]]},{"ID_UNICO":"3102811","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2811","LOTE":"Tomatales","VARIEDAD":"Varias","AREA_B":"105.7","AREA_N":"96.6","SURCOS":"6062","PLANT":"2021","DIST":"1.6","DIST ILE":"16","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":16.06,"ACIMUT_GRADOS":8.0,"RUMBO_CARDINAL":"N","LATITUD":-24.081209,"LONGITUD":-64.812802,"POLIGONO_APROX":[[-24.084999,-64.819004],[-24.084999,-64.8066],[-24.077419,-64.8066],[-24.077419,-64.819004]]},{"ID_UNICO":"3102580","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2580","LOTE":"Mateo D Arr.","VARIEDAD":"LCP 85-384","AREA_B":"53.0","AREA_N":"47.1","SURCOS":"2946","PLANT":"2011","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.06,"ACIMUT_GRADOS":20.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.08003,"LONGITUD":-64.777462,"POLIGONO_APROX":[[-24.082713,-64.781853],[-24.082713,-64.773071],[-24.077347,-64.773071],[-24.077347,-64.781853]]},{"ID_UNICO":"3102632","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2632","LOTE":"Mateo D Ab.","VARIEDAD":"LCP 85-384","AREA_B":"33.0","AREA_N":"31.6","SURCOS":"1973","PLANT":"2016","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.06,"ACIMUT_GRADOS":12.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.074128,"LONGITUD":-64.79992,"POLIGONO_APROX":[[-24.076245,-64.803385],[-24.076245,-64.796455],[-24.072011,-64.796455],[-24.072011,-64.803385]]},{"ID_UNICO":"3102620","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2620","LOTE":"Aguila A","VARIEDAD":"Descepe 2024","AREA_B":"49.7","AREA_N":"43.4","SURCOS":"2712","PLANT":"2011","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.07,"ACIMUT_GRADOS":356.0,"RUMBO_CARDINAL":"N","LATITUD":-24.071148,"LONGITUD":-64.846418,"POLIGONO_APROX":[[-24.073747,-64.850671],[-24.073747,-64.842165],[-24.068549,-64.842165],[-24.068549,-64.850671]]},{"ID_UNICO":"3102631","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2631","LOTE":"Mateo D Ab.","VARIEDAD":"LCP 85-384","AREA_B":"3.9","AREA_N":"3.5","SURCOS":"216","PLANT":"2011","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.07,"ACIMUT_GRADOS":4.0,"RUMBO_CARDINAL":"N","LATITUD":-24.071148,"LONGITUD":-64.823055,"POLIGONO_APROX":[[-24.071876,-64.824246],[-24.071876,-64.821864],[-24.07042,-64.821864],[-24.07042,-64.824246]]},{"ID_UNICO":"3102852","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2852","LOTE":"Mateo A","VARIEDAD":"LCP 85-384","AREA_B":"15.6","AREA_N":"14.1","SURCOS":"880","PLANT":"2016","DIST":"1.6","DIST ILE":"18","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.92,"ACIMUT_GRADOS":10.7,"RUMBO_CARDINAL":"N","LATITUD":-24.065884,"LONGITUD":-64.802191,"POLIGONO_APROX":[[-24.06734,-64.804574],[-24.06734,-64.799808],[-24.064428,-64.799808],[-24.064428,-64.804574]]},{"ID_UNICO":"3102910","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2910","LOTE":"Aguila B","VARIEDAD":"TUC 03-12","AREA_B":"8.1","AREA_N":"7.2","SURCOS":"448","PLANT":"2023","DIST":"1.6","DIST ILE":"18","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.92,"ACIMUT_GRADOS":354.7,"RUMBO_CARDINAL":"N","LATITUD":-24.063797,"LONGITUD":-64.85108,"POLIGONO_APROX":[[-24.064846,-64.852797],[-24.064846,-64.849363],[-24.062748,-64.849363],[-24.062748,-64.852797]]},{"ID_UNICO":"3102854","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2854","LOTE":"Mateo A","VARIEDAD":"TUC 95-10","AREA_B":"0.5","AREA_N":"0.4","SURCOS":"28","PLANT":"2016","DIST":"1.6","DIST ILE":"18","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":18.06,"ACIMUT_GRADOS":21.3,"RUMBO_CARDINAL":"NNE","LATITUD":-24.072881,"LONGITUD":-64.770233,"POLIGONO_APROX":[[-24.073142,-64.77066],[-24.073142,-64.769806],[-24.07262,-64.769806],[-24.07262,-64.77066]]},{"ID_UNICO":"3102851","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2851","LOTE":"Mateo A","VARIEDAD":"LCP 85-384","AREA_B":"62.4","AREA_N":"56.2","SURCOS":"3512","PLANT":"2011","DIST":"1.6","DIST ILE":"18","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":18.07,"ACIMUT_GRADOS":5.3,"RUMBO_CARDINAL":"N","LATITUD":-24.062449,"LONGITUD":-64.818255,"POLIGONO_APROX":[[-24.065361,-64.82302],[-24.065361,-64.81349],[-24.059537,-64.81349],[-24.059537,-64.82302]]},{"ID_UNICO":"3102853","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2853","LOTE":"Mateo A","VARIEDAD":"TUC 95-37","AREA_B":"0.4","AREA_N":"0.4","SURCOS":"24","PLANT":"2016","DIST":"1.6","DIST ILE":"18","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":18.18,"ACIMUT_GRADOS":16.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.067046,"LONGITUD":-64.785552,"POLIGONO_APROX":[[-24.067279,-64.785934],[-24.067279,-64.78517],[-24.066813,-64.78517],[-24.066813,-64.785934]]},{"ID_UNICO":"3102920","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2920","LOTE":"Aguila C","VARIEDAD":"TUC 03-12","AREA_B":"86.7","AREA_N":"77.5","SURCOS":"4843","PLANT":"2024","DIST":"1.6","DIST ILE":"18","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":18.18,"ACIMUT_GRADOS":0.0,"RUMBO_CARDINAL":"N","LATITUD":-24.060765,"LONGITUD":-64.834736,"POLIGONO_APROX":[[-24.064197,-64.840353],[-24.064197,-64.829119],[-24.057333,-64.829119],[-24.057333,-64.840353]]},{"ID_UNICO":"3102640","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2640","LOTE":"Casas A","VARIEDAD":"TUC 03-12","AREA_B":"83.6","AREA_N":"77.3","SURCOS":"4832","PLANT":"2024","DIST":"16","DIST ILE":"19","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":18.92,"ACIMUT_GRADOS":354.7,"RUMBO_CARDINAL":"N","LATITUD":-24.054808,"LONGITUD":-64.851995,"POLIGONO_APROX":[[-24.058178,-64.85751],[-24.058178,-64.84648],[-24.051438,-64.84648],[-24.051438,-64.85751]]},{"ID_UNICO":"3102890","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2890","LOTE":"Mateo C","VARIEDAD":"LCP 85-384","AREA_B":"3.4","AREA_N":"3.0","SURCOS":"185","PLANT":"2015","DIST":"1.6","DIST ILE":"19","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":18.92,"ACIMUT_GRADOS":10.7,"RUMBO_CARDINAL":"N","LATITUD":-24.057012,"LONGITUD":-64.800368,"POLIGONO_APROX":[[-24.057692,-64.80148],[-24.057692,-64.799256],[-24.056332,-64.799256],[-24.056332,-64.80148]]},{"ID_UNICO":"3102970","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2970","LOTE":"Viraru","VARIEDAD":"Descepe 2024","AREA_B":"45.4","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"19","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":19.06,"ACIMUT_GRADOS":21.3,"RUMBO_CARDINAL":"NNE","LATITUD":-24.064471,"LONGITUD":-64.766649,"POLIGONO_APROX":[[-24.066955,-64.770713],[-24.066955,-64.762585],[-24.061987,-64.762585],[-24.061987,-64.770713]]},{"ID_UNICO":"3102880","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2880","LOTE":"Mateo B","VARIEDAD":"TUC 06-7","AREA_B":"83.0","AREA_N":"74.5","SURCOS":"4656","PLANT":"2023","DIST":"1.6","DIST ILE":"19","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":19.07,"ACIMUT_GRADOS":5.3,"RUMBO_CARDINAL":"N","LATITUD":-24.053459,"LONGITUD":-64.81734,"POLIGONO_APROX":[[-24.056817,-64.822836],[-24.056817,-64.811844],[-24.050101,-64.811844],[-24.050101,-64.822836]]},{"ID_UNICO":"3102891","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2891","LOTE":"Mateo C Este","VARIEDAD":"TUC 03-12","AREA_B":"49.0","AREA_N":"43.8","SURCOS":"2740","PLANT":"2023","DIST":"1.6","DIST ILE":"19","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":19.18,"ACIMUT_GRADOS":16.0,"RUMBO_CARDINAL":"NNE","LATITUD":-24.058399,"LONGITUD":-64.782847,"POLIGONO_APROX":[[-24.060979,-64.78707],[-24.060979,-64.778624],[-24.055819,-64.778624],[-24.055819,-64.78707]]},{"ID_UNICO":"3102960","ID_OIA":null,"ID_FINCA":"310","FINCA":"El Quemado","Tipo":"Convencional","ID_LOTE":"2960","LOTE":"Casas B","VARIEDAD":"TUC 03-12","AREA_B":"41.0","AREA_N":"37.0","SURCOS":"2314","PLANT":"2024","DIST":"1.6","DIST ILE":"19","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":19.18,"ACIMUT_GRADOS":0.0,"RUMBO_CARDINAL":"N","LATITUD":-24.051772,"LONGITUD":-64.834736,"POLIGONO_APROX":[[-24.054132,-64.838598],[-24.054132,-64.830874],[-24.049412,-64.830874],[-24.049412,-64.838598]]},{"ID_UNICO":"3201170","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1170","LOTE":"Londres D","VARIEDAD":"LCP 85-384","AREA_B":"98.9","AREA_N":"92.4","SURCOS":"5799","PLANT":"2020","DIST":"1.6","DIST ILE":"1","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":1.0,"ACIMUT_GRADOS":172.8,"RUMBO_CARDINAL":"S","LATITUD":-24.233218,"LONGITUD":-64.833493,"POLIGONO_APROX":[[-24.236884,-64.839492],[-24.236884,-64.827494],[-24.229552,-64.827494],[-24.229552,-64.839492]]},{"ID_UNICO":"3201190","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1190","LOTE":"Londres E","VARIEDAD":"LCP 85-384","AREA_B":"70.5","AREA_N":"65.4","SURCOS":"4103","PLANT":"2020","DIST":"1.6","DIST ILE":"1","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":1.0,"ACIMUT_GRADOS":189.2,"RUMBO_CARDINAL":"S","LATITUD":-24.233173,"LONGITUD":-64.83632,"POLIGONO_APROX":[[-24.236268,-64.841385],[-24.236268,-64.831255],[-24.230078,-64.831255],[-24.230078,-64.841385]]},{"ID_UNICO":"3201201","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1201","LOTE":"Londres F","VARIEDAD":"LCP 85-384","AREA_B":"37.0","AREA_N":"33.2","SURCOS":"2078","PLANT":"2019","DIST":"1.6","DIST ILE":"1","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":1.0,"ACIMUT_GRADOS":205.8,"RUMBO_CARDINAL":"SSO","LATITUD":-24.232394,"LONGITUD":-64.839016,"POLIGONO_APROX":[[-24.234636,-64.842685],[-24.234636,-64.835347],[-24.230152,-64.835347],[-24.230152,-64.842685]]},{"ID_UNICO":"3203010","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"3010","LOTE":"Golf","VARIEDAD":"TUC 03-12","AREA_B":"89.9","AREA_N":"83.2","SURCOS":"5198","PLANT":"2024","DIST":"1.6","DIST ILE":"1","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":1.0,"ACIMUT_GRADOS":156.2,"RUMBO_CARDINAL":"SSE","LATITUD":-24.232526,"LONGITUD":-64.830769,"POLIGONO_APROX":[[-24.236021,-64.836488],[-24.236021,-64.82505],[-24.229031,-64.82505],[-24.229031,-64.836488]]},{"ID_UNICO":"3202080","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2080","LOTE":"Manga Chica","VARIEDAD":"LCP 85-384","AREA_B":"78.7","AREA_N":"68.2","SURCOS":"4265","PLANT":"2017","DIST":"1.6","DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.01,"ACIMUT_GRADOS":205.8,"RUMBO_CARDINAL":"SSO","LATITUD":-24.240526,"LONGITUD":-64.843295,"POLIGONO_APROX":[[-24.243796,-64.848646],[-24.243796,-64.837944],[-24.237256,-64.837944],[-24.237256,-64.848646]]},{"ID_UNICO":"3202101","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2101","LOTE":"Londres B","VARIEDAD":"Descepe 2024","AREA_B":"48.7","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.01,"ACIMUT_GRADOS":156.2,"RUMBO_CARDINAL":"SSE","LATITUD":-24.24079,"LONGITUD":-64.826802,"POLIGONO_APROX":[[-24.243362,-64.831012],[-24.243362,-64.822592],[-24.238218,-64.822592],[-24.238218,-64.831012]]},{"ID_UNICO":"3202102","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2102","LOTE":"Londres B Este","VARIEDAD":"TUC 03-12","AREA_B":"68.2","AREA_N":"61.8","SURCOS":"3873","PLANT":"2024","DIST":"1.6","DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.01,"ACIMUT_GRADOS":189.2,"RUMBO_CARDINAL":"S","LATITUD":-24.242084,"LONGITUD":-64.837903,"POLIGONO_APROX":[[-24.245128,-64.842885],[-24.245128,-64.832921],[-24.23904,-64.832921],[-24.23904,-64.842885]]},{"ID_UNICO":"3202103","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2103","LOTE":"Londres B","VARIEDAD":"LCP 85-384","AREA_B":"38.1","AREA_N":"34.6","SURCOS":"2165","PLANT":"2019","DIST":"1.6","DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.01,"ACIMUT_GRADOS":172.8,"RUMBO_CARDINAL":"S","LATITUD":-24.242175,"LONGITUD":-64.83225,"POLIGONO_APROX":[[-24.24445,-64.835973],[-24.24445,-64.828527],[-24.2399,-64.828527],[-24.2399,-64.835973]]},{"ID_UNICO":"3201161","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1161","LOTE":"Union","VARIEDAD":"Descepe 2024","AREA_B":"5.8","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.01,"ACIMUT_GRADOS":159.0,"RUMBO_CARDINAL":"SSE","LATITUD":-24.249549,"LONGITUD":-64.824146,"POLIGONO_APROX":[[-24.250437,-64.825599],[-24.250437,-64.822693],[-24.248661,-64.822693],[-24.248661,-64.825599]]},{"ID_UNICO":"3201162","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1162","LOTE":"Union","VARIEDAD":"Descepe 2024","AREA_B":"65.6","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.01,"ACIMUT_GRADOS":181.0,"RUMBO_CARDINAL":"S","LATITUD":-24.251344,"LONGITUD":-64.835252,"POLIGONO_APROX":[[-24.254329,-64.840138],[-24.254329,-64.830366],[-24.248359,-64.830366],[-24.248359,-64.840138]]},{"ID_UNICO":"3203120","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"3120","LOTE":"Urundeles C","VARIEDAD":"LCP 85-384","AREA_B":"99.3","AREA_N":"90.7","SURCOS":"5668","PLANT":"2019","DIST":"1.6","DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.01,"ACIMUT_GRADOS":203.0,"RUMBO_CARDINAL":"SSO","LATITUD":-24.249195,"LONGITUD":-64.846283,"POLIGONO_APROX":[[-24.252868,-64.852294],[-24.252868,-64.840272],[-24.245522,-64.840272],[-24.245522,-64.852294]]},{"ID_UNICO":"3202110","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2110","LOTE":"Londres A","VARIEDAD":"LCP 85-384","AREA_B":"51.8","AREA_N":"45.9","SURCOS":"2866","PLANT":"2015","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.86,"ACIMUT_GRADOS":154.6,"RUMBO_CARDINAL":"SSE","LATITUD":-24.255662,"LONGITUD":-64.818469,"POLIGONO_APROX":[[-24.258315,-64.82281],[-24.258315,-64.814128],[-24.253009,-64.814128],[-24.253009,-64.82281]]},{"ID_UNICO":"3203104","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"3104","LOTE":"Urundeles Norte (Goteo)","VARIEDAD":"TUC 03-12","AREA_B":"150.1","AREA_N":"142.8","SURCOS":"8927","PLANT":"2023","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.86,"ACIMUT_GRADOS":194.2,"RUMBO_CARDINAL":"SSO","LATITUD":-24.25796,"LONGITUD":-64.844039,"POLIGONO_APROX":[[-24.262476,-64.851429],[-24.262476,-64.836649],[-24.253444,-64.836649],[-24.253444,-64.851429]]},{"ID_UNICO":"3203091","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"3091","LOTE":"Pastre","VARIEDAD":"Varias","AREA_B":"110.8","AREA_N":"104.3","SURCOS":"6542","PLANT":"2022","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.02,"ACIMUT_GRADOS":181.0,"RUMBO_CARDINAL":"S","LATITUD":-24.260371,"LONGITUD":-64.835424,"POLIGONO_APROX":[[-24.264251,-64.841774],[-24.264251,-64.829074],[-24.256491,-64.829074],[-24.256491,-64.841774]]},{"ID_UNICO":"3203103","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"3103","LOTE":"Urundeles Sur (Goteo)","VARIEDAD":"TUC 03-12","AREA_B":"141.6","AREA_N":"135.6","SURCOS":"8474","PLANT":"2023","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.16,"ACIMUT_GRADOS":207.4,"RUMBO_CARDINAL":"SSO","LATITUD":-24.257527,"LONGITUD":-64.853549,"POLIGONO_APROX":[[-24.261913,-64.860727],[-24.261913,-64.846371],[-24.253141,-64.846371],[-24.253141,-64.860727]]},{"ID_UNICO":"3201120","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1120","LOTE":"Londres Nuevo","VARIEDAD":"LCP 85-384","AREA_B":"146.9","AREA_N":"137.9","SURCOS":"8634","PLANT":"2022","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.17,"ACIMUT_GRADOS":167.8,"RUMBO_CARDINAL":"SSE","LATITUD":-24.260885,"LONGITUD":-64.826097,"POLIGONO_APROX":[[-24.265352,-64.833408],[-24.265352,-64.818786],[-24.256418,-64.818786],[-24.256418,-64.833408]]},{"ID_UNICO":"3201271","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1271","LOTE":"Ensy Sala la Esper. UNJU","VARIEDAD":"Descepe 2024","AREA_B":"0.3","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.86,"ACIMUT_GRADOS":153.5,"RUMBO_CARDINAL":"SSE","LATITUD":-24.26345,"LONGITUD":-64.813419,"POLIGONO_APROX":[[-24.263652,-64.813749],[-24.263652,-64.813089],[-24.263248,-64.813089],[-24.263248,-64.813749]]},{"ID_UNICO":"3201101","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1101","LOTE":"Parapeti Nuevo","VARIEDAD":"Descepe 2024","AREA_B":"47.5","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.87,"ACIMUT_GRADOS":186.5,"RUMBO_CARDINAL":"S","LATITUD":-24.267769,"LONGITUD":-64.840145,"POLIGONO_APROX":[[-24.270309,-64.844302],[-24.270309,-64.835988],[-24.265229,-64.835988],[-24.265229,-64.844302]]},{"ID_UNICO":"3201220","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1220","LOTE":"Parques","VARIEDAD":"NA 03-3300","AREA_B":"20.2","AREA_N":"19.0","SURCOS":"1188","PLANT":"2021","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.01,"ACIMUT_GRADOS":208.5,"RUMBO_CARDINAL":"SSO","LATITUD":-24.263935,"LONGITUD":-64.858237,"POLIGONO_APROX":[[-24.265592,-64.860948],[-24.265592,-64.855526],[-24.262278,-64.855526],[-24.262278,-64.860948]]},{"ID_UNICO":"3202090","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2090","LOTE":"Manga Grande","VARIEDAD":"Varias","AREA_B":"88.9","AREA_N":"83.4","SURCOS":"5243","PLANT":"2020","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.02,"ACIMUT_GRADOS":175.5,"RUMBO_CARDINAL":"S","LATITUD":-24.269266,"LONGITUD":-64.830872,"POLIGONO_APROX":[[-24.272741,-64.83656],[-24.272741,-64.825184],[-24.265791,-64.825184],[-24.265791,-64.83656]]},{"ID_UNICO":"3201080","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1080","LOTE":"Parapeti Viejo","VARIEDAD":"LCP 85-384","AREA_B":"60.2","AREA_N":"56.5","SURCOS":"3533","PLANT":"2019","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.17,"ACIMUT_GRADOS":197.5,"RUMBO_CARDINAL":"SSO","LATITUD":-24.268607,"LONGITUD":-64.849991,"POLIGONO_APROX":[[-24.271467,-64.854671],[-24.271467,-64.845311],[-24.265747,-64.845311],[-24.265747,-64.854671]]},{"ID_UNICO":"3202091","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2091","LOTE":"Manga Norte","VARIEDAD":"NA 97-3152","AREA_B":"27.39","AREA_N":"25.2","SURCOS":"1588","PLANT":"2022","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.17,"ACIMUT_GRADOS":164.5,"RUMBO_CARDINAL":"SSE","LATITUD":-24.269068,"LONGITUD":-64.821179,"POLIGONO_APROX":[[-24.270997,-64.824336],[-24.270997,-64.818022],[-24.267139,-64.818022],[-24.267139,-64.824336]]},{"ID_UNICO":"3202211","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2211","LOTE":"Largas B","VARIEDAD":"TUC 06-7","AREA_B":"80.58","AREA_N":"74.5","SURCOS":"4676","PLANT":"2022","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.02,"ACIMUT_GRADOS":203.0,"RUMBO_CARDINAL":"SSO","LATITUD":-24.274128,"LONGITUD":-64.85783,"POLIGONO_APROX":[[-24.277437,-64.863245],[-24.277437,-64.852415],[-24.270819,-64.852415],[-24.270819,-64.863245]]},{"ID_UNICO":"3202310","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2310","LOTE":"Largas A","VARIEDAD":"TUC 03-12","AREA_B":"113.7","AREA_N":"103.8","SURCOS":"6488","PLANT":"2024","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.02,"ACIMUT_GRADOS":181.0,"RUMBO_CARDINAL":"S","LATITUD":-24.278426,"LONGITUD":-64.835768,"POLIGONO_APROX":[[-24.282356,-64.8422],[-24.282356,-64.829336],[-24.274496,-64.829336],[-24.274496,-64.8422]]},{"ID_UNICO":"3202351","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2351","LOTE":"Cortas Horticola","VARIEDAD":"NA 97-3152","AREA_B":"48.57","AREA_N":"43.9","SURCOS":"2742","PLANT":"2022","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.02,"ACIMUT_GRADOS":159.0,"RUMBO_CARDINAL":"SSE","LATITUD":-24.274836,"LONGITUD":-64.813556,"POLIGONO_APROX":[[-24.277405,-64.81776],[-24.277405,-64.809352],[-24.272267,-64.809352],[-24.272267,-64.81776]]},{"ID_UNICO":"3202349","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2349","LOTE":"Cortas Ensayo","VARIEDAD":"Varias","AREA_B":"6.0","AREA_N":"5.1","SURCOS":"321","PLANT":"2024","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.87,"ACIMUT_GRADOS":194.2,"RUMBO_CARDINAL":"SSO","LATITUD":-24.284219,"LONGITUD":-64.851289,"POLIGONO_APROX":[[-24.285122,-64.852767],[-24.285122,-64.849811],[-24.283316,-64.849811],[-24.283316,-64.852767]]},{"ID_UNICO":"3202371","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2371","LOTE":"Canal","VARIEDAD":"TUC 03-12","AREA_B":"91.5","AREA_N":"88.1","SURCOS":"5507","PLANT":"2024","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.87,"ACIMUT_GRADOS":154.6,"RUMBO_CARDINAL":"SSE","LATITUD":-24.28013,"LONGITUD":-64.805794,"POLIGONO_APROX":[[-24.283656,-64.811564],[-24.283656,-64.800024],[-24.276604,-64.800024],[-24.276604,-64.811564]]},{"ID_UNICO":"3202350","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2350","LOTE":"Cortas","VARIEDAD":"TUC 03-12","AREA_B":"131.6","AREA_N":"119.6","SURCOS":"7474","PLANT":"2024","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.03,"ACIMUT_GRADOS":181.0,"RUMBO_CARDINAL":"S","LATITUD":-24.287453,"LONGITUD":-64.83594,"POLIGONO_APROX":[[-24.291681,-64.84286],[-24.291681,-64.82902],[-24.283225,-64.82902],[-24.283225,-64.84286]]},{"ID_UNICO":"3202150","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2150","LOTE":"Largas C","VARIEDAD":"LCP 85-384","AREA_B":"149.0","AREA_N":"110.2","SURCOS":"6888","PLANT":"2011","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.17,"ACIMUT_GRADOS":207.4,"RUMBO_CARDINAL":"SSO","LATITUD":-24.281575,"LONGITUD":-64.867149,"POLIGONO_APROX":[[-24.286074,-64.874512],[-24.286074,-64.859786],[-24.277076,-64.859786],[-24.277076,-64.874512]]},{"ID_UNICO":"3201050","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1050","LOTE":"Ca�ita","VARIEDAD":"TUC 03-12","AREA_B":"40.9","AREA_N":"36.8","SURCOS":"2315","PLANT":"2022","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.18,"ACIMUT_GRADOS":167.8,"RUMBO_CARDINAL":"SSE","LATITUD":-24.287359,"LONGITUD":-64.819852,"POLIGONO_APROX":[[-24.289716,-64.82371],[-24.289716,-64.815994],[-24.285002,-64.815994],[-24.285002,-64.82371]]},{"ID_UNICO":"3202342","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2342","LOTE":"Largas D Centro","VARIEDAD":"CP 65-350","AREA_B":"40.5","AREA_N":"36.8","SURCOS":"2322","PLANT":"2020","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.87,"ACIMUT_GRADOS":153.5,"RUMBO_CARDINAL":"SSE","LATITUD":-24.28769,"LONGITUD":-64.800233,"POLIGONO_APROX":[[-24.290036,-64.804072],[-24.290036,-64.796394],[-24.285344,-64.796394],[-24.285344,-64.804072]]},{"ID_UNICO":"3202348","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2348","LOTE":"Largas D Norte Semillero","VARIEDAD":"TUC 03-12","AREA_B":"7.7","AREA_N":"7.1","SURCOS":"442","PLANT":"2020","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.88,"ACIMUT_GRADOS":186.5,"RUMBO_CARDINAL":"S","LATITUD":-24.294681,"LONGITUD":-64.84349,"POLIGONO_APROX":[[-24.295704,-64.845164],[-24.295704,-64.841816],[-24.293658,-64.841816],[-24.293658,-64.845164]]},{"ID_UNICO":"3201044","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"1044","LOTE":"Posta Vieja","VARIEDAD":"TUC 03-12","AREA_B":"151.2","AREA_N":"136.6","SURCOS":"8570","PLANT":"2022","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.02,"ACIMUT_GRADOS":208.5,"RUMBO_CARDINAL":"SSO","LATITUD":-24.287738,"LONGITUD":-64.872338,"POLIGONO_APROX":[[-24.29227,-64.879755],[-24.29227,-64.864921],[-24.283206,-64.864921],[-24.283206,-64.879755]]},{"ID_UNICO":"3202347","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2347","LOTE":"Largas D Norte","VARIEDAD":"TUC 03-12","AREA_B":"40.0","AREA_N":"30.2","SURCOS":"2277","PLANT":"2021","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.03,"ACIMUT_GRADOS":175.5,"RUMBO_CARDINAL":"S","LATITUD":-24.296269,"LONGITUD":-64.828553,"POLIGONO_APROX":[[-24.2986,-64.832368],[-24.2986,-64.824738],[-24.293938,-64.824738],[-24.293938,-64.832368]]},{"ID_UNICO":"3202341","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2341","LOTE":"Largas D Sur","VARIEDAD":"NA 78-639","AREA_B":"44.3","AREA_N":"41.4","SURCOS":"2593","PLANT":"2020","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.18,"ACIMUT_GRADOS":197.5,"RUMBO_CARDINAL":"SSO","LATITUD":-24.29444,"LONGITUD":-64.858877,"POLIGONO_APROX":[[-24.296893,-64.862892],[-24.296893,-64.854862],[-24.291987,-64.854862],[-24.291987,-64.862892]]},{"ID_UNICO":"3202343","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2343","LOTE":"Largas D Este","VARIEDAD":"LCP 85-384","AREA_B":"26.9","AREA_N":"20.7","SURCOS":"1463","PLANT":"2020","DIST":"0.0","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.18,"ACIMUT_GRADOS":164.5,"RUMBO_CARDINAL":"SSE","LATITUD":-24.295169,"LONGITUD":-64.813282,"POLIGONO_APROX":[[-24.297081,-64.816411],[-24.297081,-64.810153],[-24.293257,-64.810153],[-24.293257,-64.816411]]},{"ID_UNICO":"3202390","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2390","LOTE":"Cedros Nuevos","VARIEDAD":"LCP 85-384","AREA_B":"54.6","AREA_N":"45.7","SURCOS":"2858","PLANT":"2017","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.03,"ACIMUT_GRADOS":156.2,"RUMBO_CARDINAL":"SSE","LATITUD":-24.298638,"LONGITUD":-64.799031,"POLIGONO_APROX":[[-24.301362,-64.803488],[-24.301362,-64.794574],[-24.295914,-64.794574],[-24.295914,-64.803488]]},{"ID_UNICO":"3202401","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2401","LOTE":"Cedros Viejos","VARIEDAD":"Vacio","AREA_B":"46.6","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.03,"ACIMUT_GRADOS":172.8,"RUMBO_CARDINAL":"S","LATITUD":-24.30487,"LONGITUD":-64.823548,"POLIGONO_APROX":[[-24.307386,-64.827666],[-24.307386,-64.81943],[-24.302354,-64.81943],[-24.302354,-64.827666]]},{"ID_UNICO":"3202410","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2410","LOTE":"Largas F","VARIEDAD":"LCP 85-384","AREA_B":"46.9","AREA_N":"42.3","SURCOS":"2641","PLANT":"2017","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.03,"ACIMUT_GRADOS":189.2,"RUMBO_CARDINAL":"S","LATITUD":-24.304463,"LONGITUD":-64.848987,"POLIGONO_APROX":[[-24.306987,-64.853118],[-24.306987,-64.844856],[-24.301939,-64.844856],[-24.301939,-64.853118]]},{"ID_UNICO":"3202420","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2420","LOTE":"Largas F","VARIEDAD":"LCP 85-384","AREA_B":"45.0","AREA_N":"40.1","SURCOS":"2506","PLANT":"2011","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.03,"ACIMUT_GRADOS":205.8,"RUMBO_CARDINAL":"SSO","LATITUD":-24.297451,"LONGITUD":-64.873252,"POLIGONO_APROX":[[-24.299924,-64.877298],[-24.299924,-64.869206],[-24.294978,-64.869206],[-24.294978,-64.877298]]},{"ID_UNICO":"3202430","ID_OIA":null,"ID_FINCA":"320","FINCA":"Parapeti","Tipo":"Convencional","ID_LOTE":"2430","LOTE":"Largas E","VARIEDAD":"LCP 85-384","AREA_B":"52.4","AREA_N":"46.8","SURCOS":"2926","PLANT":"2014","DIST":"1.6","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.04,"ACIMUT_GRADOS":181.0,"RUMBO_CARDINAL":"S","LATITUD":-24.323562,"LONGITUD":-64.836627,"POLIGONO_APROX":[[-24.32623,-64.840994],[-24.32623,-64.83226],[-24.320894,-64.83226],[-24.320894,-64.840994]]},{"ID_UNICO":"3303001","ID_OIA":"20","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3001","LOTE":"Miraflores Oeste","VARIEDAD":"NA 05-860","AREA_B":"9.0","AREA_N":"8.1","SURCOS":"540","PLANT":"2020","DIST":"1.6","DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.0,"ACIMUT_GRADOS":126.0,"RUMBO_CARDINAL":"SE","LATITUD":-24.234876,"LONGITUD":-64.818798,"POLIGONO_APROX":[[-24.235982,-64.820608],[-24.235982,-64.816988],[-24.23377,-64.816988],[-24.23377,-64.820608]]},{"ID_UNICO":"3303002","ID_OIA":"19","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3002","LOTE":"Miraflores Este","VARIEDAD":"NA 97-3152","AREA_B":"33.4","AREA_N":"31.4","SURCOS":"1968","PLANT":"2020","DIST":"1.6","DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.0,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.230438,"LONGITUD":-64.816223,"POLIGONO_APROX":[[-24.232568,-64.819709],[-24.232568,-64.812737],[-24.228308,-64.812737],[-24.228308,-64.819709]]},{"ID_UNICO":"3303003","ID_OIA":"18","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3003","LOTE":"Aromos Sur","VARIEDAD":"LCP 85-384","AREA_B":"178.2","AREA_N":"167.3","SURCOS":"10650","PLANT":"2020","DIST":"1.6","DIST ILE":"2","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":2.0,"ACIMUT_GRADOS":94.0,"RUMBO_CARDINAL":"E","LATITUD":-24.225521,"LONGITUD":-64.815083,"POLIGONO_APROX":[[-24.230441,-64.823135],[-24.230441,-64.807031],[-24.220601,-64.807031],[-24.220601,-64.823135]]},{"ID_UNICO":"3301240","ID_OIA":"3","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1240","LOTE":"Florida Arriba","VARIEDAD":"LCP 85-384","AREA_B":"60.0","AREA_N":"50.3","SURCOS":"3144","PLANT":"2015","DIST":"1.6","DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.0,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.233526,"LONGITUD":-64.806967,"POLIGONO_APROX":[[-24.236381,-64.811639],[-24.236381,-64.802295],[-24.230671,-64.802295],[-24.230671,-64.811639]]},{"ID_UNICO":"3301230","ID_OIA":"1","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1230","LOTE":"Esperanza","VARIEDAD":"Descepe 2024","AREA_B":"86.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.0,"ACIMUT_GRADOS":92.0,"RUMBO_CARDINAL":"E","LATITUD":-24.225522,"LONGITUD":-64.795358,"POLIGONO_APROX":[[-24.22894,-64.800952],[-24.22894,-64.789764],[-24.222104,-64.789764],[-24.222104,-64.800952]]},{"ID_UNICO":"3301231","ID_OIA":"2","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1231","LOTE":"Semillero Esperanza","VARIEDAD":"Descepe 2024","AREA_B":"5.6","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.0,"ACIMUT_GRADOS":104.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.232999,"LONGITUD":-64.796505,"POLIGONO_APROX":[[-24.233871,-64.797932],[-24.233871,-64.795078],[-24.232127,-64.795078],[-24.232127,-64.797932]]},{"ID_UNICO":"3303020","ID_OIA":"16","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3020","LOTE":"Florida Abajo","VARIEDAD":"LCP 85-384","AREA_B":"59.5","AREA_N":"49.2","SURCOS":"3077","PLANT":"2011","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.0,"ACIMUT_GRADOS":116.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.240093,"LONGITUD":-64.799322,"POLIGONO_APROX":[[-24.242936,-64.803975],[-24.242936,-64.794669],[-24.23725,-64.794669],[-24.23725,-64.803975]]},{"ID_UNICO":"3303144","ID_OIA":"22","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3144","LOTE":"Sahara Goteo","VARIEDAD":"Descepe 2024","AREA_B":"216.2","AREA_N":null,"SURCOS":null,"PLANT":"2025","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.0,"ACIMUT_GRADOS":128.0,"RUMBO_CARDINAL":"SE","LATITUD":-24.246496,"LONGITUD":-64.803687,"POLIGONO_APROX":[[-24.251916,-64.812557],[-24.251916,-64.794817],[-24.241076,-64.794817],[-24.241076,-64.812557]]},{"ID_UNICO":"3303180","ID_OIA":"25","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3180","LOTE":"Ceibal Goteo","VARIEDAD":"Descepe 2024","AREA_B":"225.6","AREA_N":null,"SURCOS":null,"PLANT":"2025","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.99,"ACIMUT_GRADOS":98.0,"RUMBO_CARDINAL":"E","LATITUD":-24.230545,"LONGITUD":-64.785963,"POLIGONO_APROX":[[-24.236081,-64.795023],[-24.236081,-64.776903],[-24.225009,-64.776903],[-24.225009,-64.795023]]},{"ID_UNICO":"3301273","ID_OIA":"2","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1273","LOTE":"Esperanza Semillero 2","VARIEDAD":"Descepe 2024","AREA_B":"2.2","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.0,"ACIMUT_GRADOS":122.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.248184,"LONGITUD":-64.792968,"POLIGONO_APROX":[[-24.248731,-64.793863],[-24.248731,-64.792073],[-24.247637,-64.792073],[-24.247637,-64.793863]]},{"ID_UNICO":"3302441","ID_OIA":"13","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"2441","LOTE":"Cienaga","VARIEDAD":"Varias","AREA_B":"160.0","AREA_N":"150.3","SURCOS":"9394","PLANT":"2024","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.99,"ACIMUT_GRADOS":98.0,"RUMBO_CARDINAL":"E","LATITUD":-24.233058,"LONGITUD":-64.766454,"POLIGONO_APROX":[[-24.23772,-64.774084],[-24.23772,-64.758824],[-24.228396,-64.758824],[-24.228396,-64.774084]]},{"ID_UNICO":"3302451","ID_OIA":"48","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"2451","LOTE":"Monte Cienaga Norte","VARIEDAD":null,"AREA_B":"5.3","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.0,"ACIMUT_GRADOS":122.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.257753,"LONGITUD":-64.77626,"POLIGONO_APROX":[[-24.258602,-64.777649],[-24.258602,-64.774871],[-24.256904,-64.774871],[-24.256904,-64.777649]]},{"ID_UNICO":"3302460","ID_OIA":"15","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"2460","LOTE":"Chanchos","VARIEDAD":"LCP 85-384","AREA_B":"71.3","AREA_N":"63.6","SURCOS":"3976","PLANT":"2011","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.99,"ACIMUT_GRADOS":92.0,"RUMBO_CARDINAL":"E","LATITUD":-24.226783,"LONGITUD":-64.75598,"POLIGONO_APROX":[[-24.229895,-64.761074],[-24.229895,-64.750886],[-24.223671,-64.750886],[-24.223671,-64.761074]]},{"ID_UNICO":"3309906","ID_OIA":"49","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico NOP","ID_LOTE":"9906","LOTE":"Monte Eucalipto 1","VARIEDAD":null,"AREA_B":"185.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.99,"ACIMUT_GRADOS":104.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.241736,"LONGITUD":-64.758273,"POLIGONO_APROX":[[-24.246749,-64.766478],[-24.246749,-64.750068],[-24.236723,-64.750068],[-24.236723,-64.766478]]},{"ID_UNICO":"3301650","ID_OIA":"12","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1650","LOTE":"Lapacho C","VARIEDAD":"TUC 03-12","AREA_B":"19.5","AREA_N":"17.0","SURCOS":"1063","PLANT":"2024","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.0,"ACIMUT_GRADOS":116.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.255925,"LONGITUD":-64.763908,"POLIGONO_APROX":[[-24.257553,-64.766572],[-24.257553,-64.761244],[-24.254297,-64.761244],[-24.254297,-64.766572]]},{"ID_UNICO":"3301651","ID_OIA":"47","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1651","LOTE":"Monte Lapacho C","VARIEDAD":null,"AREA_B":"57.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.01,"ACIMUT_GRADOS":128.0,"RUMBO_CARDINAL":"SE","LATITUD":-24.268731,"LONGITUD":-64.772638,"POLIGONO_APROX":[[-24.271514,-64.777192],[-24.271514,-64.768084],[-24.265948,-64.768084],[-24.265948,-64.777192]]},{"ID_UNICO":"3301630","ID_OIA":"10","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1630","LOTE":"Lapacho A","VARIEDAD":"TUC 03-12","AREA_B":"40.5","AREA_N":"36.3","SURCOS":"2268","PLANT":"2024","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.84,"ACIMUT_GRADOS":101.3,"RUMBO_CARDINAL":"ESE","LATITUD":-24.239881,"LONGITUD":-64.749241,"POLIGONO_APROX":[[-24.242227,-64.75308],[-24.242227,-64.745402],[-24.237535,-64.745402],[-24.237535,-64.75308]]},{"ID_UNICO":"3303701","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3701","LOTE":"Monte Alto A","VARIEDAD":"NA 78-639","AREA_B":"27.1","AREA_N":"24.2","SURCOS":"1514","PLANT":"1993","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.84,"ACIMUT_GRADOS":88.2,"RUMBO_CARDINAL":"E","LATITUD":-24.221727,"LONGITUD":-64.747603,"POLIGONO_APROX":[[-24.223646,-64.750743],[-24.223646,-64.744463],[-24.219808,-64.744463],[-24.219808,-64.750743]]},{"ID_UNICO":"3301644","ID_OIA":"46","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1644","LOTE":"Monte Lapacho B","VARIEDAD":null,"AREA_B":"21.7","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.85,"ACIMUT_GRADOS":114.4,"RUMBO_CARDINAL":"ESE","LATITUD":-24.257224,"LONGITUD":-64.755323,"POLIGONO_APROX":[[-24.258941,-64.758133],[-24.258941,-64.752513],[-24.255507,-64.752513],[-24.255507,-64.758133]]},{"ID_UNICO":"3301610","ID_OIA":"7","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1610","LOTE":"Represa Norte","VARIEDAD":"CP 65-350","AREA_B":"29.1","AREA_N":"25.9","SURCOS":"1632","PLANT":"2020","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.86,"ACIMUT_GRADOS":127.5,"RUMBO_CARDINAL":"SE","LATITUD":-24.272854,"LONGITUD":-64.765532,"POLIGONO_APROX":[[-24.274842,-64.768786],[-24.274842,-64.762278],[-24.270866,-64.762278],[-24.270866,-64.768786]]},{"ID_UNICO":"3301631","ID_OIA":"45","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1631","LOTE":"Monte Lapacho A","VARIEDAD":null,"AREA_B":"25.8","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.99,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.252054,"LONGITUD":-64.751428,"POLIGONO_APROX":[[-24.253926,-64.754492],[-24.253926,-64.748364],[-24.250182,-64.748364],[-24.250182,-64.754492]]},{"ID_UNICO":"3303726","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3726","LOTE":"Monte Alto C Goteo Sur","VARIEDAD":"TUC 03-12","AREA_B":"166.2","AREA_N":"158.6","SURCOS":"8809","PLANT":"2023","DIST":"1.8","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.99,"ACIMUT_GRADOS":96.9,"RUMBO_CARDINAL":"E","LATITUD":-24.234037,"LONGITUD":-64.746726,"POLIGONO_APROX":[[-24.238789,-64.754503],[-24.238789,-64.738949],[-24.229285,-64.738949],[-24.229285,-64.754503]]},{"ID_UNICO":"3301612","ID_OIA":"44","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1612","LOTE":"Monte Represa","VARIEDAD":null,"AREA_B":"15.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.0,"ACIMUT_GRADOS":123.1,"RUMBO_CARDINAL":"ESE","LATITUD":-24.268626,"LONGITUD":-64.760461,"POLIGONO_APROX":[[-24.270054,-64.762797],[-24.270054,-64.758125],[-24.267198,-64.758125],[-24.267198,-64.762797]]},{"ID_UNICO":"3301640","ID_OIA":"11","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1640","LOTE":"Lapacho B","VARIEDAD":"TUC 03-12","AREA_B":"41.3","AREA_N":"36.1","SURCOS":"2257","PLANT":"2024","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.14,"ACIMUT_GRADOS":105.6,"RUMBO_CARDINAL":"ESE","LATITUD":-24.246528,"LONGITUD":-64.74794,"POLIGONO_APROX":[[-24.248897,-64.751817],[-24.248897,-64.744063],[-24.244159,-64.744063],[-24.244159,-64.751817]]},{"ID_UNICO":"3303727","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3727","LOTE":"Monte Alto C Goteo Norte","VARIEDAD":"TUC 06-7","AREA_B":"158.0","AREA_N":"150.4","SURCOS":"8355","PLANT":"2023","DIST":"1.8","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.14,"ACIMUT_GRADOS":92.5,"RUMBO_CARDINAL":"E","LATITUD":-24.227931,"LONGITUD":-64.744693,"POLIGONO_APROX":[[-24.232564,-64.752275],[-24.232564,-64.737111],[-24.223298,-64.737111],[-24.223298,-64.752275]]},{"ID_UNICO":"3301623","ID_OIA":"9","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1623","LOTE":"Puerta Colorada","VARIEDAD":"NA 05-860","AREA_B":"46.1","AREA_N":"41.8","SURCOS":"2612","PLANT":"2022","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.15,"ACIMUT_GRADOS":118.7,"RUMBO_CARDINAL":"ESE","LATITUD":-24.263969,"LONGITUD":-64.755698,"POLIGONO_APROX":[[-24.266472,-64.759794],[-24.266472,-64.751602],[-24.261466,-64.751602],[-24.261466,-64.759794]]},{"ID_UNICO":"3301611","ID_OIA":"8","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1611","LOTE":"Represa Sur","VARIEDAD":"CP 65-350","AREA_B":"6.1","AREA_N":"5.2","SURCOS":"325","PLANT":"2022","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.16,"ACIMUT_GRADOS":131.8,"RUMBO_CARDINAL":"SE","LATITUD":-24.279345,"LONGITUD":-64.767564,"POLIGONO_APROX":[[-24.280255,-64.769054],[-24.280255,-64.766074],[-24.278435,-64.766074],[-24.278435,-64.769054]]},{"ID_UNICO":"3304040","ID_OIA":"38","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"4040","LOTE":"Chanchos Abajo","VARIEDAD":"CP 65-350","AREA_B":"108.6","AREA_N":"100.9","SURCOS":"6295","PLANT":"2021","DIST":"1.6","DIST ILE":"10","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.99,"ACIMUT_GRADOS":98.0,"RUMBO_CARDINAL":"E","LATITUD":-24.236827,"LONGITUD":-64.73719,"POLIGONO_APROX":[[-24.240668,-64.743476],[-24.240668,-64.730904],[-24.232986,-64.730904],[-24.232986,-64.743476]]},{"ID_UNICO":"3309907","ID_OIA":"50","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico NOP","ID_LOTE":"9907","LOTE":"Monte Eucalipto 2","VARIEDAD":null,"AREA_B":"128.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"10","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.0,"ACIMUT_GRADOS":122.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.272107,"LONGITUD":-64.751199,"POLIGONO_APROX":[[-24.276277,-64.758024],[-24.276277,-64.744374],[-24.267937,-64.744374],[-24.267937,-64.758024]]},{"ID_UNICO":"3303731","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3731","LOTE":"Los Limones","VARIEDAD":"LCP 85-384","AREA_B":"6.2","AREA_N":"6.2","SURCOS":"413","PLANT":"2013","DIST":"1.5","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.99,"ACIMUT_GRADOS":98.0,"RUMBO_CARDINAL":"E","LATITUD":-24.238084,"LONGITUD":-64.727435,"POLIGONO_APROX":[[-24.239002,-64.728937],[-24.239002,-64.725933],[-24.237166,-64.725933],[-24.237166,-64.728937]]},{"ID_UNICO":"3303732","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3732","LOTE":"Los Limones","VARIEDAD":"LCP 85-384","AREA_B":"14.2","AREA_N":"13.3","SURCOS":"885","PLANT":"2019","DIST":"1.6","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.0,"ACIMUT_GRADOS":122.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.276891,"LONGITUD":-64.742846,"POLIGONO_APROX":[[-24.27828,-64.745119],[-24.27828,-64.740573],[-24.275502,-64.740573],[-24.275502,-64.745119]]},{"ID_UNICO":"3303710","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3710","LOTE":"Monte Alto B Norte","VARIEDAD":"TUC 03-12","AREA_B":"34.2","AREA_N":"30.6","SURCOS":"1786","PLANT":"2023","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.84,"ACIMUT_GRADOS":90.8,"RUMBO_CARDINAL":"E","LATITUD":-24.225756,"LONGITUD":-64.718019,"POLIGONO_APROX":[[-24.227912,-64.721547],[-24.227912,-64.714491],[-24.2236,-64.714491],[-24.2236,-64.721547]]},{"ID_UNICO":"3303840","ID_OIA":"32","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3840","LOTE":"Federico","VARIEDAD":"LCP 85-384","AREA_B":"54.4","AREA_N":"45.9","SURCOS":"2871","PLANT":"2014","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.85,"ACIMUT_GRADOS":119.6,"RUMBO_CARDINAL":"ESE","LATITUD":-24.277109,"LONGITUD":-64.733242,"POLIGONO_APROX":[[-24.279828,-64.737691],[-24.279828,-64.728793],[-24.27439,-64.728793],[-24.27439,-64.737691]]},{"ID_UNICO":"3309908","ID_OIA":"51","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico NOP","ID_LOTE":"9908","LOTE":"Monte Eucalipto 3","VARIEDAD":null,"AREA_B":"121.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.99,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.261318,"LONGITUD":-64.723659,"POLIGONO_APROX":[[-24.265373,-64.730294],[-24.265373,-64.717024],[-24.257263,-64.717024],[-24.257263,-64.730294]]},{"ID_UNICO":"3303711","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"3711","LOTE":"Monte Alto B sur","VARIEDAD":"TUC 06-7","AREA_B":"4.3","AREA_N":"3.3","SURCOS":"206","PLANT":"2022","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.14,"ACIMUT_GRADOS":100.4,"RUMBO_CARDINAL":"E","LATITUD":-24.244064,"LONGITUD":-64.717019,"POLIGONO_APROX":[[-24.244828,-64.71827],[-24.244828,-64.715768],[-24.2433,-64.715768],[-24.2433,-64.71827]]},{"ID_UNICO":"3303740","ID_OIA":"26","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3740","LOTE":"Tomas A","VARIEDAD":"TUC 06-7","AREA_B":"54.6","AREA_N":"49.8","SURCOS":"3110","PLANT":"2023","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.16,"ACIMUT_GRADOS":129.2,"RUMBO_CARDINAL":"SE","LATITUD":-24.293595,"LONGITUD":-64.741988,"POLIGONO_APROX":[[-24.296319,-64.746445],[-24.296319,-64.737531],[-24.290871,-64.737531],[-24.290871,-64.746445]]},{"ID_UNICO":"3304010","ID_OIA":"37","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"4010","LOTE":"La Chivas","VARIEDAD":"Vacio","AREA_B":"16.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":12.49,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.262862,"LONGITUD":-64.719031,"POLIGONO_APROX":[[-24.264336,-64.721444],[-24.264336,-64.716618],[-24.261388,-64.716618],[-24.261388,-64.721444]]},{"ID_UNICO":"3301560","ID_OIA":"6","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1560","LOTE":"Destileria","VARIEDAD":"CP 65-350","AREA_B":"76.1","AREA_N":"70.9","SURCOS":"4434","PLANT":"2020","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.84,"ACIMUT_GRADOS":90.8,"RUMBO_CARDINAL":"E","LATITUD":-24.225882,"LONGITUD":-64.70817,"POLIGONO_APROX":[[-24.229097,-64.713432],[-24.229097,-64.702908],[-24.222667,-64.702908],[-24.222667,-64.713432]]},{"ID_UNICO":"3303850","ID_OIA":"33","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3850","LOTE":"Quebrachal Arriba","VARIEDAD":"TUC 06-7","AREA_B":"96.4","AREA_N":"88.3","SURCOS":"5521","PLANT":"2023","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.85,"ACIMUT_GRADOS":119.6,"RUMBO_CARDINAL":"ESE","LATITUD":-24.281568,"LONGITUD":-64.724677,"POLIGONO_APROX":[[-24.285187,-64.7306],[-24.285187,-64.718754],[-24.277949,-64.718754],[-24.277949,-64.7306]]},{"ID_UNICO":"3303930","ID_OIA":"34","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3930","LOTE":"Quebrachal Abajo","VARIEDAD":"TUC 03-12","AREA_B":"71.4","AREA_N":"67.1","SURCOS":"4194","PLANT":"2023","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.99,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.264406,"LONGITUD":-64.714403,"POLIGONO_APROX":[[-24.267521,-64.7195],[-24.267521,-64.709306],[-24.261291,-64.709306],[-24.261291,-64.7195]]},{"ID_UNICO":"3301561","ID_OIA":"42","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1561","LOTE":"Monte Destileria","VARIEDAD":null,"AREA_B":"14.2","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.14,"ACIMUT_GRADOS":100.4,"RUMBO_CARDINAL":"E","LATITUD":-24.245694,"LONGITUD":-64.70733,"POLIGONO_APROX":[[-24.247083,-64.709603],[-24.247083,-64.705057],[-24.244305,-64.705057],[-24.244305,-64.709603]]},{"ID_UNICO":"3303770","ID_OIA":"28","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3770","LOTE":"Tomas C","VARIEDAD":"LCP 85-384","AREA_B":"60.7","AREA_N":"52.5","SURCOS":"3283","PLANT":"2014","DIST":"1.6","DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.16,"ACIMUT_GRADOS":129.2,"RUMBO_CARDINAL":"SE","LATITUD":-24.299301,"LONGITUD":-64.734355,"POLIGONO_APROX":[[-24.302173,-64.739055],[-24.302173,-64.729655],[-24.296429,-64.729655],[-24.296429,-64.739055]]},{"ID_UNICO":"3301570","ID_OIA":"43","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1570","LOTE":"Monte Bordo Abajo","VARIEDAD":null,"AREA_B":"245.5","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"14","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.98,"ACIMUT_GRADOS":92.0,"RUMBO_CARDINAL":"E","LATITUD":-24.228673,"LONGITUD":-64.696914,"POLIGONO_APROX":[[-24.234448,-64.706365],[-24.234448,-64.687463],[-24.222898,-64.687463],[-24.222898,-64.706365]]},{"ID_UNICO":"3303790","ID_OIA":"29","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3790","LOTE":"Quinta","VARIEDAD":"LCP 85-384","AREA_B":"95.3","AREA_N":"85.1","SURCOS":"5319","PLANT":"2011","DIST":"1.6","DIST ILE":"14","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.99,"ACIMUT_GRADOS":104.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.254841,"LONGITUD":-64.700926,"POLIGONO_APROX":[[-24.258439,-64.706815],[-24.258439,-64.695037],[-24.251243,-64.695037],[-24.251243,-64.706815]]},{"ID_UNICO":"3303760","ID_OIA":"27","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3760","LOTE":"Tomas B","VARIEDAD":"LCP 85-384","AREA_B":"53.2","AREA_N":"46.8","SURCOS":"2926","PLANT":"2014","DIST":"1.6","DIST ILE":"14","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":14.0,"ACIMUT_GRADOS":116.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.279673,"LONGITUD":-64.710787,"POLIGONO_APROX":[[-24.282361,-64.715187],[-24.282361,-64.706387],[-24.276985,-64.706387],[-24.276985,-64.715187]]},{"ID_UNICO":"3303820","ID_OIA":"30","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3820","LOTE":"Walterio \"A\"","VARIEDAD":"LCP 85-384","AREA_B":"75.0","AREA_N":"69.7","SURCOS":"4359","PLANT":"2011","DIST":"1.6","DIST ILE":"14","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":14.01,"ACIMUT_GRADOS":128.0,"RUMBO_CARDINAL":"SE","LATITUD":-24.302082,"LONGITUD":-64.726064,"POLIGONO_APROX":[[-24.305274,-64.731288],[-24.305274,-64.72084],[-24.29889,-64.72084],[-24.29889,-64.731288]]},{"ID_UNICO":"3303981","ID_OIA":"35","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3981","LOTE":"Los Blancos","VARIEDAD":"LCP 85-384","AREA_B":"147.6","AREA_N":"144.5","SURCOS":"9028","PLANT":"2011","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":14.98,"ACIMUT_GRADOS":94.0,"RUMBO_CARDINAL":"E","LATITUD":-24.233709,"LONGITUD":-64.687339,"POLIGONO_APROX":[[-24.238187,-64.694668],[-24.238187,-64.68001],[-24.229231,-64.68001],[-24.229231,-64.694668]]},{"ID_UNICO":"3304001","ID_OIA":"36","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"4001","LOTE":"Los Negros","VARIEDAD":"TUC 03-12","AREA_B":"67.5","AREA_N":"62.5","SURCOS":"3906","PLANT":"2023","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":14.99,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.270582,"LONGITUD":-64.69589,"POLIGONO_APROX":[[-24.27361,-64.700846],[-24.27361,-64.690934],[-24.267554,-64.690934],[-24.267554,-64.700846]]},{"ID_UNICO":"3303830","ID_OIA":"31","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"3830","LOTE":"Walterio B","VARIEDAD":"LCP 85-384","AREA_B":"26.2","AREA_N":"24.6","SURCOS":"1537","PLANT":"2011","DIST":"1.6","DIST ILE":"15","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":15.01,"ACIMUT_GRADOS":126.0,"RUMBO_CARDINAL":"SE","LATITUD":-24.303866,"LONGITUD":-64.715198,"POLIGONO_APROX":[[-24.305753,-64.718286],[-24.305753,-64.71211],[-24.301979,-64.71211],[-24.301979,-64.718286]]},{"ID_UNICO":"3301551","ID_OIA":"41","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1551","LOTE":"Monte Bordo del Medio","VARIEDAD":null,"AREA_B":"311.7","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"16","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":15.99,"ACIMUT_GRADOS":110.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.27367,"LONGITUD":-64.686633,"POLIGONO_APROX":[[-24.280178,-64.697283],[-24.280178,-64.675983],[-24.267162,-64.675983],[-24.267162,-64.697283]]},{"ID_UNICO":"3301540","ID_OIA":"5","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1540","LOTE":"Bordo Arriba","VARIEDAD":"CP 65-350","AREA_B":"159.3","AREA_N":"148.5","SURCOS":"9281","PLANT":"2022","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":16.83,"ACIMUT_GRADOS":90.0,"RUMBO_CARDINAL":"E","LATITUD":-24.224262,"LONGITUD":-64.668756,"POLIGONO_APROX":[[-24.228914,-64.676369],[-24.228914,-64.661143],[-24.21961,-64.661143],[-24.21961,-64.676369]]},{"ID_UNICO":"3301530","ID_OIA":"4","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1530","LOTE":"Silvia","VARIEDAD":"LCP 85-384","AREA_B":"136.0","AREA_N":"122.8","SURCOS":"7673","PLANT":"2024","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":16.84,"ACIMUT_GRADOS":114.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.28614,"LONGITUD":-64.683105,"POLIGONO_APROX":[[-24.290439,-64.69014],[-24.290439,-64.67607],[-24.281841,-64.67607],[-24.281841,-64.69014]]},{"ID_UNICO":"3301521","ID_OIA":"39","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1521","LOTE":"Monte Silvia","VARIEDAD":null,"AREA_B":"195.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":16.98,"ACIMUT_GRADOS":106.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.266569,"LONGITUD":-64.673765,"POLIGONO_APROX":[[-24.271716,-64.682188],[-24.271716,-64.665342],[-24.261422,-64.665342],[-24.261422,-64.682188]]},{"ID_UNICO":"3301514","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"1514","LOTE":"Vera Este","VARIEDAD":"Varias","AREA_B":"4.0","AREA_N":"3.8","SURCOS":"238","PLANT":"2024","DIST":"1.6","DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.01,"ACIMUT_GRADOS":130.0,"RUMBO_CARDINAL":"SE","LATITUD":-24.322922,"LONGITUD":-64.706456,"POLIGONO_APROX":[[-24.323659,-64.707662],[-24.323659,-64.70525],[-24.322185,-64.70525],[-24.322185,-64.707662]]},{"ID_UNICO":"3301542","ID_OIA":"40","ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Organico Full","ID_LOTE":"1542","LOTE":"Monte Bordo Arriba","VARIEDAD":null,"AREA_B":"111.3","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.13,"ACIMUT_GRADOS":98.0,"RUMBO_CARDINAL":"E","LATITUD":-24.245812,"LONGITUD":-64.667445,"POLIGONO_APROX":[[-24.249701,-64.673809],[-24.249701,-64.661081],[-24.241923,-64.661081],[-24.241923,-64.673809]]},{"ID_UNICO":"3301513","ID_OIA":null,"ID_FINCA":"330","FINCA":"Miraflores","Tipo":"Convencional","ID_LOTE":"1513","LOTE":"Monte Vera","VARIEDAD":null,"AREA_B":"68.5","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"17","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":17.15,"ACIMUT_GRADOS":122.0,"RUMBO_CARDINAL":"ESE","LATITUD":-24.306316,"LONGITUD":-64.691471,"POLIGONO_APROX":[[-24.309367,-64.696464],[-24.309367,-64.686478],[-24.303265,-64.686478],[-24.303265,-64.696464]]},{"ID_UNICO":"3403250","ID_OIA":"83","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3250","LOTE":"Lecheria","VARIEDAD":"Descepe 2024","AREA_B":"11.4","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.0,"ACIMUT_GRADOS":43.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.204452,"LONGITUD":-64.814582,"POLIGONO_APROX":[[-24.205697,-64.816619],[-24.205697,-64.812545],[-24.203207,-64.812545],[-24.203207,-64.816619]]},{"ID_UNICO":"3403251","ID_OIA":"83","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3251","LOTE":"Lecheria Norte","VARIEDAD":"TUC 02-22","AREA_B":"17.0","AREA_N":"14.4","SURCOS":"901","PLANT":"2023","DIST":"1.6","DIST ILE":"3","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":3.0,"ACIMUT_GRADOS":65.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.212815,"LONGITUD":-64.807954,"POLIGONO_APROX":[[-24.214335,-64.810441],[-24.214335,-64.805467],[-24.211295,-64.805467],[-24.211295,-64.810441]]},{"ID_UNICO":"3403072","ID_OIA":"81","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3072","LOTE":"Bajada Miraflores Sur","VARIEDAD":"VARIAS","AREA_B":"105.6","AREA_N":"98.0","SURCOS":"6141","PLANT":"2022","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.0,"ACIMUT_GRADOS":54.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.203034,"LONGITUD":-64.802859,"POLIGONO_APROX":[[-24.206822,-64.809058],[-24.206822,-64.79666],[-24.199246,-64.79666],[-24.199246,-64.809058]]},{"ID_UNICO":"3403271","ID_OIA":"84","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3271","LOTE":"Machado","VARIEDAD":"Varias","AREA_B":"121.5","AREA_N":"112.3","SURCOS":"7027","PLANT":"2022","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.0,"ACIMUT_GRADOS":68.7,"RUMBO_CARDINAL":"ENE","LATITUD":-24.211123,"LONGITUD":-64.798034,"POLIGONO_APROX":[[-24.215186,-64.804683],[-24.215186,-64.791385],[-24.20706,-64.791385],[-24.20706,-64.804683]]},{"ID_UNICO":"3403071","ID_OIA":"80","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3071","LOTE":"Bajada Miraflores Norte","VARIEDAD":"TUC 06-7","AREA_B":"49.6","AREA_N":"45.4","SURCOS":"2855","PLANT":"2022","DIST":"1.6","DIST ILE":"4","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":4.01,"ACIMUT_GRADOS":39.3,"RUMBO_CARDINAL":"NE","LATITUD":-24.196328,"LONGITUD":-64.809762,"POLIGONO_APROX":[[-24.198924,-64.81401],[-24.198924,-64.805514],[-24.193732,-64.805514],[-24.193732,-64.81401]]},{"ID_UNICO":"3403240","ID_OIA":"82","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3240","LOTE":"Ensayo Sala S. Ant","VARIEDAD":"Descepe 2024","AREA_B":"2.8","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.0,"ACIMUT_GRADOS":54.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.197727,"LONGITUD":-64.79489,"POLIGONO_APROX":[[-24.198344,-64.795899],[-24.198344,-64.793881],[-24.19711,-64.793881],[-24.19711,-64.795899]]},{"ID_UNICO":"3403310","ID_OIA":"85","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3310","LOTE":"Parvas","VARIEDAD":"TUC 06-7","AREA_B":"61.8","AREA_N":"55.9","SURCOS":"3494","PLANT":"2024","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.0,"ACIMUT_GRADOS":68.7,"RUMBO_CARDINAL":"ENE","LATITUD":-24.207839,"LONGITUD":-64.788859,"POLIGONO_APROX":[[-24.210737,-64.793601],[-24.210737,-64.784117],[-24.204941,-64.784117],[-24.204941,-64.793601]]},{"ID_UNICO":"3403380","ID_OIA":"90","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3380","LOTE":"Algodon Arriba","VARIEDAD":"LCP 85-384","AREA_B":"79.9","AREA_N":"71.6","SURCOS":"4474","PLANT":"2013","DIST":"1.6","DIST ILE":"5","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.01,"ACIMUT_GRADOS":39.3,"RUMBO_CARDINAL":"NE","LATITUD":-24.189345,"LONGITUD":-64.803519,"POLIGONO_APROX":[[-24.19264,-64.808911],[-24.19264,-64.798127],[-24.18605,-64.798127],[-24.18605,-64.808911]]},{"ID_UNICO":"3403321","ID_OIA":"87","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3321","LOTE":"Bajada San Antonio","VARIEDAD":"CP 97-3152","AREA_B":"53.8","AREA_N":"50.8","SURCOS":"3190","PLANT":"2021","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.85,"ACIMUT_GRADOS":55.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.194599,"LONGITUD":-64.787057,"POLIGONO_APROX":[[-24.197303,-64.791482],[-24.197303,-64.782632],[-24.191895,-64.782632],[-24.191895,-64.791482]]},{"ID_UNICO":"3403408","ID_OIA":"92","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3408","LOTE":"Potrero Arriba","VARIEDAD":"TUC 03-12","AREA_B":"156.5","AREA_N":"142.1","SURCOS":"8879","PLANT":"2024","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.85,"ACIMUT_GRADOS":66.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.203483,"LONGITUD":-64.781758,"POLIGONO_APROX":[[-24.208094,-64.789304],[-24.208094,-64.774212],[-24.198872,-64.774212],[-24.198872,-64.789304]]},{"ID_UNICO":"3403393","ID_OIA":"91","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3393","LOTE":"Algodon Abajo","VARIEDAD":"TUC 06-7","AREA_B":"65.7","AREA_N":"60.7","SURCOS":"3790","PLANT":"2022","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.86,"ACIMUT_GRADOS":33.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.180388,"LONGITUD":-64.802652,"POLIGONO_APROX":[[-24.183376,-64.807541],[-24.183376,-64.797763],[-24.1774,-64.797763],[-24.1774,-64.807541]]},{"ID_UNICO":"3403472","ID_OIA":"95","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3472","LOTE":"Algodonal Arriba","VARIEDAD":"CP 65-350","AREA_B":"182.5","AREA_N":"172.4","SURCOS":"10790","PLANT":"2022","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":5.86,"ACIMUT_GRADOS":44.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.186805,"LONGITUD":-64.794108,"POLIGONO_APROX":[[-24.191784,-64.802257],[-24.191784,-64.785959],[-24.181826,-64.785959],[-24.181826,-64.802257]]},{"ID_UNICO":"3403335","ID_OIA":"88","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3335","LOTE":"San Antonio","VARIEDAD":"LCP 85-384","AREA_B":"190.9","AREA_N":"179.0","SURCOS":"11180","PLANT":"2021","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.0,"ACIMUT_GRADOS":74.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.209481,"LONGITUD":-64.777876,"POLIGONO_APROX":[[-24.214574,-64.78621],[-24.214574,-64.769542],[-24.204388,-64.769542],[-24.204388,-64.78621]]},{"ID_UNICO":"3403511","ID_OIA":"101","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3511","LOTE":"Monte Castoral Arriba","VARIEDAD":null,"AREA_B":"8.6","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.0,"ACIMUT_GRADOS":63.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.199809,"LONGITUD":-64.781997,"POLIGONO_APROX":[[-24.20089,-64.783766],[-24.20089,-64.780228],[-24.198728,-64.780228],[-24.198728,-64.783766]]},{"ID_UNICO":"3403320","ID_OIA":"86","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3320","LOTE":"Bajada San Antonio","VARIEDAD":"NA 97-3152","AREA_B":"74.4","AREA_N":"69.2","SURCOS":"4327.0","PLANT":"2020","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.01,"ACIMUT_GRADOS":52.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.191034,"LONGITUD":-64.788057,"POLIGONO_APROX":[[-24.194213,-64.79326],[-24.194213,-64.782854],[-24.187855,-64.782854],[-24.187855,-64.79326]]},{"ID_UNICO":"3403501","ID_OIA":"96","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3501","LOTE":"Algodonal Abajo","VARIEDAD":"LCP 85-384","AREA_B":"78.4","AREA_N":"66.3","SURCOS":"4141","PLANT":"2017","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.01,"ACIMUT_GRADOS":41.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.183481,"LONGITUD":-64.795832,"POLIGONO_APROX":[[-24.186745,-64.801173],[-24.186745,-64.790491],[-24.180217,-64.790491],[-24.180217,-64.801173]]},{"ID_UNICO":"3403510","ID_OIA":"98","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3510","LOTE":"Castoral Arriba","VARIEDAD":"Varias","AREA_B":"85.1","AREA_N":"80.3","SURCOS":"5038","PLANT":"2022","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.15,"ACIMUT_GRADOS":59.5,"RUMBO_CARDINAL":"ENE","LATITUD":-24.19608,"LONGITUD":-64.782538,"POLIGONO_APROX":[[-24.19948,-64.788103],[-24.19948,-64.776973],[-24.19268,-64.776973],[-24.19268,-64.788103]]},{"ID_UNICO":"3403550","ID_OIA":"52","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3550","LOTE":"Puesto Arriba A","VARIEDAD":"TUC 03-12","AREA_B":"88.5","AREA_N":"82.7","SURCOS":"5166","PLANT":"2024","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.15,"ACIMUT_GRADOS":70.5,"RUMBO_CARDINAL":"ENE","LATITUD":-24.205727,"LONGITUD":-64.777631,"POLIGONO_APROX":[[-24.209195,-64.783306],[-24.209195,-64.771956],[-24.202259,-64.771956],[-24.202259,-64.783306]]},{"ID_UNICO":"3403370","ID_OIA":"89","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3370","LOTE":"Arriendos","VARIEDAD":"TUC 03-12","AREA_B":"81.8","AREA_N":"75.6","SURCOS":"4722","PLANT":"2024","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.16,"ACIMUT_GRADOS":48.5,"RUMBO_CARDINAL":"NE","LATITUD":-24.187469,"LONGITUD":-64.789364,"POLIGONO_APROX":[[-24.190803,-64.79482],[-24.190803,-64.783908],[-24.184135,-64.783908],[-24.184135,-64.79482]]},{"ID_UNICO":"3403490","ID_OIA":"96","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3490","LOTE":"Algodonal Abajo","VARIEDAD":"LCP 85-384","AREA_B":"33.6","AREA_N":"28.4","SURCOS":"1773","PLANT":"2013","DIST":"1.6","DIST ILE":"6","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.16,"ACIMUT_GRADOS":37.5,"RUMBO_CARDINAL":"NE","LATITUD":-24.18021,"LONGITUD":-64.797857,"POLIGONO_APROX":[[-24.182347,-64.801354],[-24.182347,-64.79436],[-24.178073,-64.79436],[-24.178073,-64.801354]]},{"ID_UNICO":"3403572","ID_OIA":"53","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3572","LOTE":"Puesto Arriba B","VARIEDAD":"LCP 85-384","AREA_B":"12.9","AREA_N":"11.6","SURCOS":"722","PLANT":"2005","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.85,"ACIMUT_GRADOS":67.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.200844,"LONGITUD":-64.772285,"POLIGONO_APROX":[[-24.202168,-64.774452],[-24.202168,-64.770118],[-24.19952,-64.770118],[-24.19952,-64.774452]]},{"ID_UNICO":"3403413","ID_OIA":"93","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3413","LOTE":"Potrero del Medio -2 etapa","VARIEDAD":"NA 02-514","AREA_B":"15.0","AREA_N":"14.0","SURCOS":"874","PLANT":"2017","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.86,"ACIMUT_GRADOS":51.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.185551,"LONGITUD":-64.782113,"POLIGONO_APROX":[[-24.186979,-64.784449],[-24.186979,-64.779777],[-24.184123,-64.779777],[-24.184123,-64.784449]]},{"ID_UNICO":"3403520","ID_OIA":"99","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3520","LOTE":"Castoral del medio","VARIEDAD":"CP 65-350","AREA_B":"71.0","AREA_N":"66.1","SURCOS":"4125","PLANT":"2021","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":6.87,"ACIMUT_GRADOS":34.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.173446,"LONGITUD":-64.796275,"POLIGONO_APROX":[[-24.176552,-64.801358],[-24.176552,-64.791192],[-24.17034,-64.791192],[-24.17034,-64.801358]]},{"ID_UNICO":"3403571","ID_OIA":"53","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3571","LOTE":"Puesto Arriba B","VARIEDAD":"NA 76-128","AREA_B":"67.4","AREA_N":"60.2","SURCOS":"3764","PLANT":"2005","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.0,"ACIMUT_GRADOS":62.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.194835,"LONGITUD":-64.773713,"POLIGONO_APROX":[[-24.197861,-64.778665],[-24.197861,-64.768761],[-24.191809,-64.768761],[-24.191809,-64.778665]]},{"ID_UNICO":"3403412","ID_OIA":"93","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3412","LOTE":"Potrero del Medio -2 etapa","VARIEDAD":"NA 03-3300","AREA_B":"35.3","AREA_N":"32.9","SURCOS":"2056","PLANT":"2017","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.01,"ACIMUT_GRADOS":45.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.180161,"LONGITUD":-64.785345,"POLIGONO_APROX":[[-24.182351,-64.788929],[-24.182351,-64.781761],[-24.177971,-64.781761],[-24.177971,-64.788929]]},{"ID_UNICO":"3403414","ID_OIA":"93","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3414","LOTE":"Potrero del Medio -2 etapa","VARIEDAD":"NA 97-3152","AREA_B":"53.6","AREA_N":"50.0","SURCOS":"3125","PLANT":"2017","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.15,"ACIMUT_GRADOS":56.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.188867,"LONGITUD":-64.775836,"POLIGONO_APROX":[[-24.191566,-64.780252],[-24.191566,-64.77142],[-24.186168,-64.77142],[-24.186168,-64.780252]]},{"ID_UNICO":"3403573","ID_OIA":"53","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3573","LOTE":"Puesto Arriba B","VARIEDAD":"CP 65-350","AREA_B":"2.7","AREA_N":"2.4","SURCOS":"149","PLANT":"2005","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.15,"ACIMUT_GRADOS":73.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.205657,"LONGITUD":-64.767294,"POLIGONO_APROX":[[-24.206263,-64.768285],[-24.206263,-64.766303],[-24.205051,-64.766303],[-24.205051,-64.768285]]},{"ID_UNICO":"3403411","ID_OIA":"93","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3411","LOTE":"Potrero del Medio -1 etapa","VARIEDAD":"NA 96-2929","AREA_B":"46.0","AREA_N":"40.8","SURCOS":"2548","PLANT":"2017","DIST":"1.6","DIST ILE":"7","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.16,"ACIMUT_GRADOS":40.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.174991,"LONGITUD":-64.789229,"POLIGONO_APROX":[[-24.177491,-64.79332],[-24.177491,-64.785138],[-24.172491,-64.785138],[-24.172491,-64.79332]]},{"ID_UNICO":"3403590","ID_OIA":"57","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3590","LOTE":"Puesto del 1/2 A","VARIEDAD":"LCP 85-384","AREA_B":"3.6","AREA_N":"2.9","SURCOS":"184","PLANT":"2013","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.85,"ACIMUT_GRADOS":67.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.197425,"LONGITUD":-64.763168,"POLIGONO_APROX":[[-24.198124,-64.764313],[-24.198124,-64.762023],[-24.196726,-64.762023],[-24.196726,-64.764313]]},{"ID_UNICO":"3403440","ID_OIA":"94","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3440","LOTE":"Potrero Abajo","VARIEDAD":"CP 65-350","AREA_B":"128.6","AREA_N":"121.4","SURCOS":"7584","PLANT":"2021","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.86,"ACIMUT_GRADOS":51.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.179899,"LONGITUD":-64.774431,"POLIGONO_APROX":[[-24.184079,-64.781272],[-24.184079,-64.76759],[-24.175719,-64.76759],[-24.175719,-64.781272]]},{"ID_UNICO":"3403530","ID_OIA":"100","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3530","LOTE":"Castoral Abajo","VARIEDAD":"NA 05-860","AREA_B":"79.0","AREA_N":"71.5","SURCOS":"4477","PLANT":"2021","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":7.87,"ACIMUT_GRADOS":34.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.166027,"LONGITUD":-64.790661,"POLIGONO_APROX":[[-24.169303,-64.796023],[-24.169303,-64.785299],[-24.162751,-64.785299],[-24.162751,-64.796023]]},{"ID_UNICO":"3403580","ID_OIA":"56","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3580","LOTE":"Puesto Arriba C","VARIEDAD":"LCP 85-384","AREA_B":"84.9","AREA_N":"78.1","SURCOS":"4884","PLANT":"2011","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.0,"ACIMUT_GRADOS":62.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.190631,"LONGITUD":-64.764996,"POLIGONO_APROX":[[-24.194027,-64.770554],[-24.194027,-64.759438],[-24.187235,-64.759438],[-24.187235,-64.770554]]},{"ID_UNICO":"3403541","ID_OIA":"62","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3541","LOTE":"Chacras B","VARIEDAD":"LCP 85-384","AREA_B":"32.3","AREA_N":"29.6","SURCOS":"1848","PLANT":"2020","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.01,"ACIMUT_GRADOS":45.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.173861,"LONGITUD":-64.778289,"POLIGONO_APROX":[[-24.175956,-64.781717],[-24.175956,-64.774861],[-24.171766,-64.774861],[-24.171766,-64.781717]]},{"ID_UNICO":"3403601","ID_OIA":"57","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3601","LOTE":"Puesto del 1/2 A","VARIEDAD":"NA 97-3152","AREA_B":"90.7","AREA_N":"75.0","SURCOS":"4690","PLANT":"2013","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.14,"ACIMUT_GRADOS":73.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.203055,"LONGITUD":-64.757861,"POLIGONO_APROX":[[-24.206565,-64.763606],[-24.206565,-64.752116],[-24.199545,-64.752116],[-24.199545,-64.763606]]},{"ID_UNICO":"3403581","ID_OIA":"102","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3581","LOTE":"Monte Puesto Arriba C","VARIEDAD":null,"AREA_B":"77.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.15,"ACIMUT_GRADOS":56.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.183916,"LONGITUD":-64.767598,"POLIGONO_APROX":[[-24.18715,-64.772891],[-24.18715,-64.762305],[-24.180682,-64.762305],[-24.180682,-64.772891]]},{"ID_UNICO":"3403540","ID_OIA":"61","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3540","LOTE":"Chacras","VARIEDAD":"NA 78-639","AREA_B":"36.9","AREA_N":"32.9","SURCOS":"2057","PLANT":"1994","DIST":"1.6","DIST ILE":"8","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.17,"ACIMUT_GRADOS":40.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.1681,"LONGITUD":-64.782865,"POLIGONO_APROX":[[-24.170339,-64.786529],[-24.170339,-64.779201],[-24.165861,-64.779201],[-24.165861,-64.786529]]},{"ID_UNICO":"3403611","ID_OIA":"58","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3611","LOTE":"Puesto del 1/2 B","VARIEDAD":"NA 90-1001","AREA_B":"1.4","AREA_N":"1.2","SURCOS":"72","PLANT":"2013","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.85,"ACIMUT_GRADOS":62.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.187738,"LONGITUD":-64.7572,"POLIGONO_APROX":[[-24.188174,-64.757914],[-24.188174,-64.756486],[-24.187302,-64.756486],[-24.187302,-64.757914]]},{"ID_UNICO":"3403630","ID_OIA":"60","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3630","LOTE":"Puesto Abajo","VARIEDAD":"CP 65-350","AREA_B":"201.0","AREA_N":"188.1","SURCOS":"11760","PLANT":"2021","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":8.87,"ACIMUT_GRADOS":36.4,"RUMBO_CARDINAL":"NE","LATITUD":-24.159948,"LONGITUD":-64.783004,"POLIGONO_APROX":[[-24.165174,-64.791556],[-24.165174,-64.774452],[-24.154722,-64.774452],[-24.154722,-64.791556]]},{"ID_UNICO":"3403613","ID_OIA":"103","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3613","LOTE":"Monte Puesto del 1/2 B","VARIEDAD":null,"AREA_B":"30.7","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.01,"ACIMUT_GRADOS":54.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.176499,"LONGITUD":-64.763013,"POLIGONO_APROX":[[-24.178541,-64.766355],[-24.178541,-64.759671],[-24.174457,-64.759671],[-24.174457,-64.766355]]},{"ID_UNICO":"3403612","ID_OIA":"58","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3612","LOTE":"Puesto del 1/2 B","VARIEDAD":"LCP 85-384","AREA_B":"66.0","AREA_N":"53.8","SURCOS":"3363","PLANT":"2013","DIST":"1.6","DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.15,"ACIMUT_GRADOS":71.6,"RUMBO_CARDINAL":"ENE","LATITUD":-24.198185,"LONGITUD":-64.749212,"POLIGONO_APROX":[[-24.201179,-64.754113],[-24.201179,-64.744311],[-24.195191,-64.744311],[-24.195191,-64.754113]]},{"ID_UNICO":"3403633","ID_OIA":"75","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3633","LOTE":"Puesto Abajo B","VARIEDAD":"vacio","AREA_B":"27.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"9","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":9.16,"ACIMUT_GRADOS":45.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.16605,"LONGITUD":-64.770781,"POLIGONO_APROX":[[-24.167965,-64.773915],[-24.167965,-64.767647],[-24.164135,-64.767647],[-24.164135,-64.773915]]},{"ID_UNICO":"3409903","ID_OIA":"79","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"9903","LOTE":"Monte Puesto Nuevo 1","VARIEDAD":"vacio","AREA_B":"221.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"10","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.0,"ACIMUT_GRADOS":65.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.186105,"LONGITUD":-64.745461,"POLIGONO_APROX":[[-24.191585,-64.754428],[-24.191585,-64.736494],[-24.180625,-64.736494],[-24.180625,-64.754428]]},{"ID_UNICO":"3404001","ID_OIA":"73","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"4001","LOTE":"Corrales","VARIEDAD":"LCP 85-384","AREA_B":"104.8","AREA_N":"98.2","SURCOS":"6152","PLANT":"2020","DIST":"1.6","DIST ILE":"10","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.02,"ACIMUT_GRADOS":43.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.15823,"LONGITUD":-64.767556,"POLIGONO_APROX":[[-24.162003,-64.773731],[-24.162003,-64.761381],[-24.154457,-64.761381],[-24.154457,-64.773731]]},{"ID_UNICO":"3403925","ID_OIA":"70","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3925","LOTE":"Arenales 2","VARIEDAD":"vacio","AREA_B":"26.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.86,"ACIMUT_GRADOS":57.7,"RUMBO_CARDINAL":"ENE","LATITUD":-24.171868,"LONGITUD":-64.74443,"POLIGONO_APROX":[[-24.173747,-64.747506],[-24.173747,-64.741354],[-24.169989,-64.741354],[-24.169989,-64.747506]]},{"ID_UNICO":"3403901","ID_OIA":"68","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3901","LOTE":"Afatal","VARIEDAD":"Varias","AREA_B":"128.0","AREA_N":"120.6","SURCOS":"7557","PLANT":"2022","DIST":"1.6","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.88,"ACIMUT_GRADOS":35.7,"RUMBO_CARDINAL":"NE","LATITUD":-24.144676,"LONGITUD":-64.772419,"POLIGONO_APROX":[[-24.148846,-64.779244],[-24.148846,-64.765594],[-24.140506,-64.765594],[-24.140506,-64.779244]]},{"ID_UNICO":"3404002","ID_OIA":"74","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"4002","LOTE":"Lecheronal","VARIEDAD":"LCP 85-384","AREA_B":"79.3","AREA_N":"66.0","SURCOS":"4124","PLANT":"2020","DIST":"1.6","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":10.99,"ACIMUT_GRADOS":72.3,"RUMBO_CARDINAL":"ENE","LATITUD":-24.194122,"LONGITUD":-64.731491,"POLIGONO_APROX":[[-24.197404,-64.736863],[-24.197404,-64.726119],[-24.19084,-64.726119],[-24.19084,-64.736863]]},{"ID_UNICO":"3403924","ID_OIA":"70","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3924","LOTE":"Arenales 1","VARIEDAD":"vacio","AREA_B":"38.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.01,"ACIMUT_GRADOS":50.3,"RUMBO_CARDINAL":"NE","LATITUD":-24.160867,"LONGITUD":-64.751327,"POLIGONO_APROX":[[-24.163139,-64.755045],[-24.163139,-64.747609],[-24.158595,-64.747609],[-24.158595,-64.755045]]},{"ID_UNICO":"3403920","ID_OIA":"70","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3920","LOTE":"Arenales Sur","VARIEDAD":"TUC 03-12","AREA_B":"71.7","AREA_N":"65.0","SURCOS":"4061","PLANT":"2023","DIST":"1.6","DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.15,"ACIMUT_GRADOS":65.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.181717,"LONGITUD":-64.735194,"POLIGONO_APROX":[[-24.184838,-64.740302],[-24.184838,-64.730086],[-24.178596,-64.730086],[-24.178596,-64.740302]]},{"ID_UNICO":"3403921","ID_OIA":"70","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3921","LOTE":"Arenales","VARIEDAD":"Descepe 2024","AREA_B":"146.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"11","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.17,"ACIMUT_GRADOS":43.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.150636,"LONGITUD":-64.75983,"POLIGONO_APROX":[[-24.15509,-64.767119],[-24.15509,-64.752541],[-24.146182,-64.752541],[-24.146182,-64.767119]]},{"ID_UNICO":"3403862","ID_OIA":"63","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3862","LOTE":"Tuscal Arriba","VARIEDAD":"LCP 85-384","AREA_B":"37.9","AREA_N":"31.8","SURCOS":"1990","PLANT":"2016","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.85,"ACIMUT_GRADOS":67.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.18375,"LONGITUD":-64.7267,"POLIGONO_APROX":[[-24.186019,-64.730414],[-24.186019,-64.722986],[-24.181481,-64.722986],[-24.181481,-64.730414]]},{"ID_UNICO":"3409901","ID_OIA":"77","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"9901","LOTE":"Potrero Vacunos","VARIEDAD":"vacio","AREA_B":"183.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.86,"ACIMUT_GRADOS":51.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.157294,"LONGITUD":-64.743702,"POLIGONO_APROX":[[-24.16228,-64.751862],[-24.16228,-64.735542],[-24.152308,-64.735542],[-24.152308,-64.751862]]},{"ID_UNICO":"3403902","ID_OIA":"76","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3902","LOTE":"Monte Afatal","VARIEDAD":"vacio","AREA_B":"23.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":11.88,"ACIMUT_GRADOS":34.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.136354,"LONGITUD":-64.768202,"POLIGONO_APROX":[[-24.138122,-64.771095],[-24.138122,-64.765309],[-24.134586,-64.765309],[-24.134586,-64.771095]]},{"ID_UNICO":"3403885","ID_OIA":"64","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3885","LOTE":"Tuscal Abajo","VARIEDAD":"TUC 03-12","AREA_B":"27.2","AREA_N":"24.8","SURCOS":"1551","PLANT":"2023","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.0,"ACIMUT_GRADOS":62.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.173815,"LONGITUD":-64.730126,"POLIGONO_APROX":[[-24.175737,-64.733272],[-24.175737,-64.72698],[-24.171893,-64.72698],[-24.171893,-64.733272]]},{"ID_UNICO":"3403910","ID_OIA":"69","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3910","LOTE":"Guayacan","VARIEDAD":"TUC 03-12","AREA_B":"44.7","AREA_N":"41.3","SURCOS":"2582","PLANT":"2023","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.02,"ACIMUT_GRADOS":45.8,"RUMBO_CARDINAL":"NE","LATITUD":-24.14866,"LONGITUD":-64.750065,"POLIGONO_APROX":[[-24.151124,-64.754098],[-24.151124,-64.746032],[-24.146196,-64.746032],[-24.146196,-64.754098]]},{"ID_UNICO":"3403801","ID_OIA":"67","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3801","LOTE":"Tuscal Norte","VARIEDAD":"LCP 85-384","AREA_B":"93.2","AREA_N":"88.3","SURCOS":"5528","PLANT":"2020","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.14,"ACIMUT_GRADOS":73.2,"RUMBO_CARDINAL":"ENE","LATITUD":-24.192647,"LONGITUD":-64.720131,"POLIGONO_APROX":[[-24.196205,-64.725954],[-24.196205,-64.714308],[-24.189089,-64.714308],[-24.189089,-64.725954]]},{"ID_UNICO":"3409904","ID_OIA":"105","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"9904","LOTE":"Monte Puesto Nuevo 2","VARIEDAD":"vacio","AREA_B":"297.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.16,"ACIMUT_GRADOS":56.8,"RUMBO_CARDINAL":"ENE","LATITUD":-24.164115,"LONGITUD":-64.734647,"POLIGONO_APROX":[[-24.170467,-64.745043],[-24.170467,-64.724251],[-24.157763,-64.724251],[-24.157763,-64.745043]]},{"ID_UNICO":"3403930","ID_OIA":"72","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3930","LOTE":"Algarrobal","VARIEDAD":"LCP 85-384","AREA_B":"75.0","AREA_N":"68.6","SURCOS":"4340","PLANT":"2020","DIST":"1.6","DIST ILE":"12","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.17,"ACIMUT_GRADOS":40.2,"RUMBO_CARDINAL":"NE","LATITUD":-24.140536,"LONGITUD":-64.757406,"POLIGONO_APROX":[[-24.143728,-64.76263],[-24.143728,-64.752182],[-24.137344,-64.752182],[-24.137344,-64.76263]]},{"ID_UNICO":"3409905","ID_OIA":"106","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"9905","LOTE":"Monte Guayacan","VARIEDAD":null,"AREA_B":"315.1","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.86,"ACIMUT_GRADOS":57.7,"RUMBO_CARDINAL":"ENE","LATITUD":-24.16221,"LONGITUD":-64.727783,"POLIGONO_APROX":[[-24.168753,-64.738491],[-24.168753,-64.717075],[-24.155667,-64.717075],[-24.155667,-64.738491]]},{"ID_UNICO":"3404003","ID_OIA":"106","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"4003","LOTE":"Guayacan Maiz 1","VARIEDAD":"vacio","AREA_B":"93.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.88,"ACIMUT_GRADOS":35.7,"RUMBO_CARDINAL":"NE","LATITUD":-24.130006,"LONGITUD":-64.760932,"POLIGONO_APROX":[[-24.133561,-64.766749],[-24.133561,-64.755115],[-24.126451,-64.755115],[-24.126451,-64.766749]]},{"ID_UNICO":"3403802","ID_OIA":"104","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"3802","LOTE":"Monte Tuscal Norte","VARIEDAD":null,"AREA_B":"114.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":12.99,"ACIMUT_GRADOS":72.3,"RUMBO_CARDINAL":"ENE","LATITUD":-24.188642,"LONGITUD":-64.712719,"POLIGONO_APROX":[[-24.192578,-64.71916],[-24.192578,-64.706278],[-24.184706,-64.706278],[-24.184706,-64.71916]]},{"ID_UNICO":"3404005","ID_OIA":"106","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"4005","LOTE":"Guayacan Sorgo","VARIEDAD":"vacio","AREA_B":"27.5","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.01,"ACIMUT_GRADOS":50.3,"RUMBO_CARDINAL":"NE","LATITUD":-24.14934,"LONGITUD":-64.736162,"POLIGONO_APROX":[[-24.151273,-64.739325],[-24.151273,-64.732999],[-24.147407,-64.732999],[-24.147407,-64.739325]]},{"ID_UNICO":"3409902","ID_OIA":"78","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"9902","LOTE":"Puesto Norte","VARIEDAD":"vacio","AREA_B":"428.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.15,"ACIMUT_GRADOS":65.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.174085,"LONGITUD":-64.717339,"POLIGONO_APROX":[[-24.181711,-64.729818],[-24.181711,-64.70486],[-24.166459,-64.70486],[-24.166459,-64.729818]]},{"ID_UNICO":"3404004","ID_OIA":"106","ID_FINCA":"340","FINCA":"San Antonio","Tipo":"Organico Full","ID_LOTE":"4004","LOTE":"Guayacan Maiz 2","VARIEDAD":"vacio","AREA_B":"49.4","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":"13","DIST_ILE_ESTIMADA":false,"DIST_CALCULADA_KM":13.17,"ACIMUT_GRADOS":43.0,"RUMBO_CARDINAL":"NE","LATITUD":-24.13743,"LONGITUD":-64.746394,"POLIGONO_APROX":[[-24.140021,-64.750634],[-24.140021,-64.742154],[-24.134839,-64.742154],[-24.134839,-64.750634]]},{"ID_UNICO":"3500104","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0104","LOTE":"Potrero 4","VARIEDAD":"Monte","AREA_B":"297.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":14.48,"ACIMUT_GRADOS":85.0,"RUMBO_CARDINAL":"E","LATITUD":-24.212852,"LONGITUD":-64.692448,"POLIGONO_APROX":[[-24.219204,-64.702844],[-24.219204,-64.682052],[-24.2065,-64.682052],[-24.2065,-64.702844]]},{"ID_UNICO":"3500101","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0101","LOTE":"Potrero 1","VARIEDAD":"Monte","AREA_B":"156.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":14.49,"ACIMUT_GRADOS":77.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.194812,"LONGITUD":-64.695565,"POLIGONO_APROX":[[-24.199416,-64.703099],[-24.199416,-64.688031],[-24.190208,-64.688031],[-24.190208,-64.703099]]},{"ID_UNICO":"3500102","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0102","LOTE":"Potrero2","VARIEDAD":"Monte","AREA_B":"298.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":14.49,"ACIMUT_GRADOS":79.7,"RUMBO_CARDINAL":"E","LATITUD":-24.200779,"LONGITUD":-64.694221,"POLIGONO_APROX":[[-24.207142,-64.704634],[-24.207142,-64.683808],[-24.194416,-64.683808],[-24.194416,-64.704634]]},{"ID_UNICO":"3500103","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0103","LOTE":"Potrero 3","VARIEDAD":"Monte","AREA_B":"271.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":14.49,"ACIMUT_GRADOS":82.3,"RUMBO_CARDINAL":"E","LATITUD":-24.206796,"LONGITUD":-64.693181,"POLIGONO_APROX":[[-24.212864,-64.703111],[-24.212864,-64.683251],[-24.200728,-64.683251],[-24.200728,-64.703111]]},{"ID_UNICO":"3500108","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0108","LOTE":"Potrero 8","VARIEDAD":"Monte","AREA_B":"398.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":15.48,"ACIMUT_GRADOS":85.0,"RUMBO_CARDINAL":"E","LATITUD":-24.212065,"LONGITUD":-64.682635,"POLIGONO_APROX":[[-24.219418,-64.694669],[-24.219418,-64.670601],[-24.204712,-64.670601],[-24.204712,-64.694669]]},{"ID_UNICO":"3500105","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0105","LOTE":"Potrero 5","VARIEDAD":"Monte","AREA_B":"386.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":15.49,"ACIMUT_GRADOS":77.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.192781,"LONGITUD":-64.685967,"POLIGONO_APROX":[[-24.200023,-64.697818],[-24.200023,-64.674116],[-24.185539,-64.674116],[-24.185539,-64.697818]]},{"ID_UNICO":"3500106","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0106","LOTE":"Potrero 6","VARIEDAD":"Monte","AREA_B":"295.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":15.49,"ACIMUT_GRADOS":79.7,"RUMBO_CARDINAL":"E","LATITUD":-24.199159,"LONGITUD":-64.68453,"POLIGONO_APROX":[[-24.20549,-64.694891],[-24.20549,-64.674169],[-24.192828,-64.674169],[-24.192828,-64.694891]]},{"ID_UNICO":"3500107","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0107","LOTE":"Potrero 7","VARIEDAD":"Monte","AREA_B":"305.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":15.49,"ACIMUT_GRADOS":82.3,"RUMBO_CARDINAL":"E","LATITUD":-24.205592,"LONGITUD":-64.683419,"POLIGONO_APROX":[[-24.212029,-64.693954],[-24.212029,-64.672884],[-24.199155,-64.672884],[-24.199155,-64.693954]]},{"ID_UNICO":"3500111","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0111","LOTE":"Potrero 11","VARIEDAD":"Monte","AREA_B":"173.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":16.48,"ACIMUT_GRADOS":82.3,"RUMBO_CARDINAL":"E","LATITUD":-24.204387,"LONGITUD":-64.673656,"POLIGONO_APROX":[[-24.209235,-64.68159],[-24.209235,-64.665722],[-24.199539,-64.665722],[-24.199539,-64.68159]]},{"ID_UNICO":"3500112","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0112","LOTE":"Potrero 12","VARIEDAD":"Monte","AREA_B":"210.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":16.48,"ACIMUT_GRADOS":85.0,"RUMBO_CARDINAL":"E","LATITUD":-24.211278,"LONGITUD":-64.672822,"POLIGONO_APROX":[[-24.216619,-64.681563],[-24.216619,-64.664081],[-24.205937,-64.664081],[-24.205937,-64.681563]]},{"ID_UNICO":"3500109","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0109","LOTE":"Potrero 9","VARIEDAD":"Monte","AREA_B":"209.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":16.49,"ACIMUT_GRADOS":77.0,"RUMBO_CARDINAL":"ENE","LATITUD":-24.19075,"LONGITUD":-64.676369,"POLIGONO_APROX":[[-24.196079,-64.68509],[-24.196079,-64.667648],[-24.185421,-64.667648],[-24.185421,-64.68509]]},{"ID_UNICO":"3500110","ID_OIA":null,"ID_FINCA":"350","FINCA":"Meguida","Tipo":"Convencional","ID_LOTE":"0110","LOTE":"Potrero 10","VARIEDAD":"Monte","AREA_B":"324.0","AREA_N":null,"SURCOS":null,"PLANT":null,"DIST":null,"DIST ILE":null,"DIST_ILE_ESTIMADA":true,"DIST_CALCULADA_KM":16.49,"ACIMUT_GRADOS":79.7,"RUMBO_CARDINAL":"E","LATITUD":-24.19754,"LONGITUD":-64.674839,"POLIGONO_APROX":[[-24.204175,-64.685697],[-24.204175,-64.663981],[-24.190905,-64.663981],[-24.190905,-64.685697]]}]}</script>
+  <script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    crossorigin=""
+  ></script>
+  <script>
+    (function () {
+      const data = JSON.parse(document.getElementById("zafra-data").textContent);
+      const ingenio = data.ingenio;
+      const fincas = data.fincas;
+      const lotes = data.lotes;
+
+      const PALETTES = {
+        finca: {
+          title: "Color por Finca",
+          items: [
+            { key: "310", label: "El Quemado (310)", color: "#2563eb" },
+            { key: "320", label: "Parapeti (320)", color: "#16a34a" },
+            { key: "330", label: "Miraflores (330)", color: "#ea580c" },
+            { key: "340", label: "San Antonio (340)", color: "#9333ea" },
+            { key: "350", label: "Meguida (350)", color: "#64748b" },
+          ],
+        },
+        zona: {
+          title: "Color por Zona de distancia",
+          items: [
+            { key: "Cercana", label: "Cercana (1–6 km)", color: "#16a34a" },
+            { key: "Media", label: "Media (7–12 km)", color: "#eab308" },
+            { key: "Lejana", label: "Lejana (13–19 km)", color: "#dc2626" },
+            { key: "Estimada", label: "Estimada (sin DIST ILE)", color: "#64748b" },
+          ],
+        },
+        tipo: {
+          title: "Color por Tipo de cultivo",
+          items: [
+            { key: "Convencional", label: "Convencional", color: "#0284c7" },
+            { key: "Organico Full", label: "Orgánico Full", color: "#15803d" },
+            { key: "Organico NOP", label: "Orgánico NOP", color: "#65a30d" },
+          ],
+        },
+        estado: {
+          title: "Color por Estado / Variedad",
+          items: [
+            { key: "En produccion", label: "En producción", color: "#15803d" },
+            { key: "Descepe 2024", label: "Descepe 2024", color: "#d97706" },
+            { key: "Vacio", label: "Vacío", color: "#64748b" },
+            { key: "Monte", label: "Monte", color: "#78350f" },
+          ],
+        },
+      };
+
+      const FINCA_COLORS = {
+        "310": "#2563eb",
+        "320": "#16a34a",
+        "330": "#ea580c",
+        "340": "#9333ea",
+        "350": "#64748b",
+      };
+
+      function escapeHtml(val) {
+        if (val === null || val === undefined) return "";
+        return String(val)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function normalizeSearch(val) {
+        return String(val || "")
+          .replace(/\ufffd/g, "n")
+          .normalize("NFD")
+          .replace(/[\u0300-\u036f]/g, "")
+          .toLowerCase();
+      }
+
+      function displayName(val) {
+        return String(val || "").replace(/\ufffd/g, "ñ");
+      }
+
+      function getZona(lote) {
+        if (lote.DIST_ILE_ESTIMADA || lote["DIST ILE"] === null || lote["DIST ILE"] === undefined) {
+          return "Estimada";
+        }
+        const d = Number(lote["DIST ILE"]);
+        if (d <= 6) return "Cercana";
+        if (d <= 12) return "Media";
+        return "Lejana";
+      }
+
+      function getEstadoVariedad(lote) {
+        const v = (lote.VARIEDAD || "").trim().toLowerCase();
+        if (v === "descepe 2024") return "Descepe 2024";
+        if (v === "vacio") return "Vacio";
+        if (v === "monte" || (!v && String(lote.LOTE || "").toLowerCase().startsWith("monte"))) {
+          return "Monte";
+        }
+        return "En produccion";
+      }
+
+      function getEstadoLabel(code) {
+        if (code === "En produccion") return "En producción";
+        if (code === "Vacio") return "Vacío";
+        return code;
+      }
+
+      function getLotColor(lote, mode) {
+        const group = PALETTES[mode];
+        let key;
+        if (mode === "finca") key = lote.ID_FINCA;
+        else if (mode === "zona") key = getZona(lote);
+        else if (mode === "tipo") key = lote.Tipo;
+        else key = getEstadoVariedad(lote);
+
+        const found = group.items.find((it) => it.key === key);
+        return found ? found.color : "#334155";
+      }
+
+      function formatHa(num) {
+        return Number(num || 0).toLocaleString("es-AR", {
+          minimumFractionDigits: 1,
+          maximumFractionDigits: 1,
+        }) + " ha";
+      }
+
+      function buildPopupHtml(lote) {
+        const zona = getZona(lote);
+        const estado = getEstadoLabel(getEstadoVariedad(lote));
+        const distIleText = lote["DIST ILE"] !== null && lote["DIST ILE"] !== undefined
+          ? escapeHtml(lote["DIST ILE"]) + " km"
+          : "Sin dato (est. " + escapeHtml(lote.DIST_CALCULADA_KM) + " km)";
+        const areaNText = lote.AREA_N !== null && lote.AREA_N !== undefined
+          ? escapeHtml(lote.AREA_N) + " ha"
+          : "—";
+        const variedadText = lote.VARIEDAD ? escapeHtml(lote.VARIEDAD) : "Sin dato";
+        const surcosText = lote.SURCOS ? escapeHtml(lote.SURCOS) : "—";
+        const plantText = lote.PLANT ? escapeHtml(lote.PLANT) : "—";
+        const oiaText = lote.ID_OIA ? " · OIA " + escapeHtml(lote.ID_OIA) : "";
+        const gmapsUrl = "https://www.google.com/maps?q=" + lote.LATITUD + "," + lote.LONGITUD;
+
+        return `
+          <div class="popup-card">
+            <div class="popup-title">${escapeHtml(displayName(lote.LOTE))}</div>
+            <div class="popup-sub">
+              <strong>${escapeHtml(lote.FINCA)}</strong> (${escapeHtml(lote.ID_FINCA)}) ·
+              ID ${escapeHtml(lote.ID_UNICO)} · Lote ${escapeHtml(lote.ID_LOTE)}${oiaText}
+            </div>
+            <div class="popup-grid">
+              <span class="k">Tipo cultivo:</span><span class="v">${escapeHtml(lote.Tipo)}</span>
+              <span class="k">Variedad / Estado:</span><span class="v">${variedadText} (${escapeHtml(estado)})</span>
+              <span class="k">Sup. Bruta / Neta:</span><span class="v">${escapeHtml(lote.AREA_B)} ha / ${areaNText}</span>
+              <span class="k">Surcos / Plant.:</span><span class="v">${surcosText} / ${plantText}</span>
+              <span class="k">DIST ILE (Zona):</span><span class="v">${distIleText} (${escapeHtml(zona)})</span>
+              <span class="k">Dist. calculada:</span><span class="v">${escapeHtml(lote.DIST_CALCULADA_KM)} km</span>
+              <span class="k">Acimut / Rumbo:</span><span class="v">${escapeHtml(lote.ACIMUT_GRADOS)}° (${escapeHtml(lote.RUMBO_CARDINAL)})</span>
+              <span class="k">Coordenadas:</span><span class="v">${lote.LATITUD.toFixed(6)}, ${lote.LONGITUD.toFixed(6)}</span>
+            </div>
+            <a class="gmaps-link" href="${gmapsUrl}" target="_blank" rel="noopener noreferrer">
+              Abrir en Google Maps
+            </a>
+          </div>
+        `;
+      }
+
+      // Inicializar mapa
+      const map = L.map("map", {
+        center: [ingenio.latitud, ingenio.longitud],
+        zoom: 12,
+        zoomControl: false,
+      });
+      L.control.zoom({ position: "bottomright" }).addTo(map);
+
+      const baseSatelite = L.tileLayer(
+        "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        {
+          attribution: "Tiles &copy; Esri — Source: Esri, Maxar, Earthstar Geographics",
+          maxZoom: 19,
+        }
+      );
+
+      const baseOSM = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+        attribution: "&copy; OpenStreetMap contributors",
+        maxZoom: 19,
+      });
+
+      const baseTopo = L.tileLayer("https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png", {
+        attribution: "Map data: &copy; OpenStreetMap, SRTM | Style: &copy; OpenTopoMap",
+        maxZoom: 17,
+      });
+
+      baseSatelite.addTo(map);
+      L.control.layers(
+        {
+          "Satélite (Esri)": baseSatelite,
+          "Callejero (OpenStreetMap)": baseOSM,
+          "Topográfico (OpenTopoMap)": baseTopo,
+        },
+        null,
+        { position: "topright" }
+      ).addTo(map);
+
+      // Capa de anillos de distancia
+      const ringsLayer = L.layerGroup().addTo(map);
+      for (let km = 1; km <= 19; km++) {
+        const isZoneBoundary = km === 6 || km === 12 || km === 19;
+        L.circle([ingenio.latitud, ingenio.longitud], {
+          radius: km * 1000,
+          color: isZoneBoundary ? "#f8fafc" : "rgba(248, 250, 252, 0.35)",
+          weight: isZoneBoundary ? 2 : 1,
+          dashArray: isZoneBoundary ? "6 5" : "2 6",
+          fill: false,
+          interactive: false,
+        }).addTo(ringsLayer);
+      }
+
+      const zoneRingLabels = [
+        { km: 6, text: "6 km · Cercana" },
+        { km: 12, text: "12 km · Media" },
+        { km: 19, text: "19 km · Lejana" },
+      ];
+      zoneRingLabels.forEach((z) => {
+        const lat = ingenio.latitud - (z.km / 110.758);
+        L.marker([lat, ingenio.longitud], {
+          interactive: false,
+          icon: L.divIcon({
+            className: "",
+            html: `<div class="ring-label">${escapeHtml(z.text)}</div>`,
+            iconSize: [110, 20],
+            iconAnchor: [55, 10],
+          }),
+        }).addTo(ringsLayer);
+      });
+
+      // Marcador del Ingenio La Esperanza
+      const ileMarker = L.marker([ingenio.latitud, ingenio.longitud], {
+        zIndexOffset: 1000,
+        icon: L.divIcon({
+          className: "",
+          html: '<div class="ile-badge" style="width:34px;height:34px;">ILE</div>',
+          iconSize: [34, 34],
+          iconAnchor: [17, 17],
+        }),
+      }).addTo(map);
+
+      ileMarker.bindTooltip("Ingenio La Esperanza (Origen)", { direction: "top" });
+      ileMarker.bindPopup(`
+        <div class="popup-card">
+          <div class="popup-title">${escapeHtml(ingenio.nombre)}</div>
+          <div class="popup-sub">Punto de origen de distancias (ILE)</div>
+          <div class="popup-grid">
+            <span class="k">Latitud:</span><span class="v">${ingenio.latitud}</span>
+            <span class="k">Longitud:</span><span class="v">${ingenio.longitud}</span>
+            <span class="k">Fincas:</span><span class="v">${fincas.length}</span>
+            <span class="k">Lotes únicos:</span><span class="v">${lotes.length}</span>
+          </div>
+          <a class="gmaps-link" href="https://www.google.com/maps?q=${ingenio.latitud},${ingenio.longitud}" target="_blank" rel="noopener noreferrer">
+            Abrir en Google Maps
+          </a>
+        </div>
+      `);
+
+      // Capa de cabeceras de fincas
+      const cabecerasLayer = L.layerGroup().addTo(map);
+      fincas.forEach((f) => {
+        const color = FINCA_COLORS[f.id_finca] || "#0f172a";
+        const m = L.marker([f.latitud_cabecera, f.longitud_cabecera], {
+          zIndexOffset: 600,
+          icon: L.divIcon({
+            className: "",
+            html: `<div class="finca-badge" style="border-color:${color};">${escapeHtml(f.nombre)}</div>`,
+            iconSize: [110, 22],
+            iconAnchor: [55, 11],
+          }),
+        }).addTo(cabecerasLayer);
+
+        const rangoIle = f.rango_dist_ile_km
+          ? `${f.rango_dist_ile_km[0]} – ${f.rango_dist_ile_km[1]} km`
+          : "Sin DIST ILE (estimada)";
+        m.bindPopup(`
+          <div class="popup-card">
+            <div class="popup-title">Cabecera Finca ${escapeHtml(f.nombre)} (${escapeHtml(f.id_finca)})</div>
+            <div class="popup-sub">${escapeHtml(f.referencia_cabecera)}</div>
+            <div class="popup-grid">
+              <span class="k">Lotes únicos:</span><span class="v">${escapeHtml(f.cantidad_lotes)}</span>
+              <span class="k">Sup. Bruta total:</span><span class="v">${formatHa(f.area_bruta_total_ha)}</span>
+              <span class="k">Sector acimut:</span><span class="v">${escapeHtml(f.sector_acimut_grados[0])}° – ${escapeHtml(f.sector_acimut_grados[1])}° (${escapeHtml(f.rumbo)})</span>
+              <span class="k">Rango DIST ILE:</span><span class="v">${escapeHtml(rangoIle)}</span>
+              <span class="k">Cruza Ruta 34:</span><span class="v">${f.cruza_ruta_34 ? "Sí" : "No"}</span>
+              <span class="k">Crítica drenaje:</span><span class="v">${f.critica_drenaje ? "Sí" : "No"}</span>
+            </div>
+          </div>
+        `);
+      });
+
+      // Capas de polígonos y centroides
+      const polygonsLayer = L.layerGroup().addTo(map);
+      const centroidsLayer = L.layerGroup().addTo(map);
+
+      // Referencias DOM
+      const elColorMode = document.getElementById("colorMode");
+      const elFilterFinca = document.getElementById("filterFinca");
+      const elFilterZona = document.getElementById("filterZona");
+      const elFilterTipo = document.getElementById("filterTipo");
+      const elSearchInput = document.getElementById("searchInput");
+      const elBtnClear = document.getElementById("btnClear");
+      const elBtnFit = document.getElementById("btnFit");
+      const elTogglePolygons = document.getElementById("togglePolygons");
+      const elToggleCentroids = document.getElementById("toggleCentroids");
+      const elToggleCabeceras = document.getElementById("toggleCabeceras");
+      const elToggleRings = document.getElementById("toggleRings");
+      const elStatCount = document.getElementById("statCount");
+      const elStatAreaB = document.getElementById("statAreaB");
+      const elStatAreaN = document.getElementById("statAreaN");
+      const elLegendTitle = document.getElementById("legendTitle");
+      const elLegendItems = document.getElementById("legendItems");
+      const elListCountLabel = document.getElementById("listCountLabel");
+      const elLotList = document.getElementById("lotList");
+      const elSidebar = document.getElementById("sidebar");
+      const elSidebarToggle = document.getElementById("sidebarToggle");
+
+      // Poblar selector de fincas
+      fincas.forEach((f) => {
+        const opt = document.createElement("option");
+        opt.value = f.id_finca;
+        opt.textContent = `${f.nombre} (${f.id_finca}) · ${f.cantidad_lotes}`;
+        elFilterFinca.appendChild(opt);
+      });
+
+      // Estado activo
+      let activeLotId = null;
+      let filteredLots = [];
+      const layerLookup = new Map();
+
+      function renderLegend() {
+        const mode = elColorMode.value;
+        const spec = PALETTES[mode];
+        elLegendTitle.textContent = spec.title;
+        elLegendItems.innerHTML = spec.items
+          .map(
+            (it) => `
+            <span class="legend-item">
+              <span class="legend-swatch" style="background:${it.color};"></span>
+              ${escapeHtml(it.label)}
+            </span>`
+          )
+          .join("");
+      }
+
+      function applyFilters() {
+        const fincaVal = elFilterFinca.value;
+        const zonaVal = elFilterZona.value;
+        const tipoVal = elFilterTipo.value;
+        const q = normalizeSearch(elSearchInput.value.trim());
+
+        filteredLots = lotes.filter((lote) => {
+          if (fincaVal !== "ALL" && lote.ID_FINCA !== fincaVal) return false;
+          if (zonaVal !== "ALL" && getZona(lote) !== zonaVal) return false;
+          if (tipoVal !== "ALL" && lote.Tipo !== tipoVal) return false;
+          if (q) {
+            const hay =
+              normalizeSearch(lote.LOTE).includes(q) ||
+              normalizeSearch(lote.ID_UNICO).includes(q) ||
+              normalizeSearch(lote.ID_LOTE).includes(q) ||
+              normalizeSearch(lote.VARIEDAD).includes(q) ||
+              normalizeSearch(lote.FINCA).includes(q);
+            if (!hay) return false;
+          }
+          return true;
+        });
+
+        renderMapLots();
+        renderStatsAndList();
+      }
+
+      function renderMapLots() {
+        polygonsLayer.clearLayers();
+        centroidsLayer.clearLayers();
+        layerLookup.clear();
+
+        const mode = elColorMode.value;
+
+        filteredLots.forEach((lote) => {
+          const color = getLotColor(lote, mode);
+          const popupHtml = buildPopupHtml(lote);
+          const tooltipHtml = `<strong>${escapeHtml(displayName(lote.LOTE))}</strong> · ${escapeHtml(lote.FINCA)} · ${escapeHtml(lote.DIST_CALCULADA_KM)} km`;
+
+          const poly = L.polygon(lote.POLIGONO_APROX, {
+            color: color,
+            weight: 1.5,
+            opacity: 0.9,
+            fillColor: color,
+            fillOpacity: 0.34,
+          });
+          poly.bindTooltip(tooltipHtml, { sticky: true });
+          poly.bindPopup(popupHtml, { maxWidth: 320 });
+          poly.on("mouseover", () => poly.setStyle({ weight: 2.5, fillOpacity: 0.52 }));
+          poly.on("mouseout", () => poly.setStyle({ weight: 1.5, fillOpacity: 0.34 }));
+          poly.on("click", () => highlightListItem(lote.ID_UNICO));
+          poly.addTo(polygonsLayer);
+
+          const marker = L.circleMarker([lote.LATITUD, lote.LONGITUD], {
+            radius: 5,
+            color: "#ffffff",
+            weight: 1.4,
+            fillColor: color,
+            fillOpacity: 0.95,
+          });
+          marker.bindTooltip(tooltipHtml, { direction: "top" });
+          marker.bindPopup(popupHtml, { maxWidth: 320 });
+          marker.on("click", () => highlightListItem(lote.ID_UNICO));
+          marker.addTo(centroidsLayer);
+
+          layerLookup.set(lote.ID_UNICO, { poly, marker, lote });
+        });
+      }
+
+      function renderStatsAndList() {
+        let sumB = 0;
+        let sumN = 0;
+        filteredLots.forEach((l) => {
+          sumB += Number(l.AREA_B || 0);
+          if (l.AREA_N !== null && l.AREA_N !== undefined) {
+            sumN += Number(l.AREA_N);
+          }
+        });
+
+        elStatCount.textContent = `${filteredLots.length} / ${lotes.length}`;
+        elStatAreaB.textContent = formatHa(sumB);
+        elStatAreaN.textContent = formatHa(sumN);
+        elListCountLabel.textContent = `${filteredLots.length} lotes`;
+
+        if (filteredLots.length === 0) {
+          elLotList.innerHTML = '<div class="empty-state">No hay lotes que coincidan con los filtros actuales.</div>';
+          return;
+        }
+
+        const mode = elColorMode.value;
+        elLotList.innerHTML = filteredLots
+          .map((l) => {
+            const color = getLotColor(l, mode);
+            const isActive = l.ID_UNICO === activeLotId ? " active" : "";
+            const distText = l["DIST ILE"] !== null && l["DIST ILE"] !== undefined
+              ? `${l["DIST ILE"]} km`
+              : `~${l.DIST_CALCULADA_KM} km`;
+            const varText = l.VARIEDAD ? l.VARIEDAD : "Monte / s/d";
+
+            return `
+              <div class="lot-row${isActive}" data-id="${escapeHtml(l.ID_UNICO)}">
+                <span class="lot-dot" style="background:${color};"></span>
+                <div class="lot-main">
+                  <div class="lot-name">${escapeHtml(displayName(l.LOTE))}</div>
+                  <div class="lot-sub">${escapeHtml(l.FINCA)} · ${escapeHtml(l.ID_UNICO)} · ${escapeHtml(varText)}</div>
+                </div>
+                <div class="lot-metrics">
+                  <strong>${escapeHtml(distText)}</strong>
+                  <span>${escapeHtml(l.AREA_B)} ha</span>
+                </div>
+              </div>`;
+          })
+          .join("");
+      }
+
+      function highlightListItem(uid) {
+        activeLotId = uid;
+        const rows = elLotList.querySelectorAll(".lot-row");
+        rows.forEach((row) => {
+          const match = row.getAttribute("data-id") === uid;
+          row.classList.toggle("active", match);
+          if (match) {
+            row.scrollIntoView({ block: "nearest", behavior: "smooth" });
+          }
+        });
+      }
+
+      function focusLot(uid) {
+        const entry = layerLookup.get(uid);
+        if (!entry) return;
+        highlightListItem(uid);
+        const target = [entry.lote.LATITUD, entry.lote.LONGITUD];
+        map.setView(target, Math.max(map.getZoom(), 14), { animate: false });
+
+        if (elToggleCentroids.checked && map.hasLayer(centroidsLayer)) {
+          entry.marker.openPopup();
+        } else if (elTogglePolygons.checked && map.hasLayer(polygonsLayer)) {
+          entry.poly.openPopup(target);
+        } else {
+          L.popup({ maxWidth: 320 })
+            .setLatLng(target)
+            .setContent(buildPopupHtml(entry.lote))
+            .openOn(map);
+        }
+      }
+
+      function fitVisibleBounds() {
+        const pts = [[ingenio.latitud, ingenio.longitud]];
+        const source = filteredLots.length > 0 ? filteredLots : lotes;
+        source.forEach((l) => pts.push([l.LATITUD, l.LONGITUD]));
+        map.fitBounds(L.latLngBounds(pts), { padding: [36, 36] });
+      }
+
+      function syncLayerVisibility() {
+        if (elTogglePolygons.checked) {
+          if (!map.hasLayer(polygonsLayer)) map.addLayer(polygonsLayer);
+        } else {
+          map.removeLayer(polygonsLayer);
+        }
+
+        if (elToggleCentroids.checked) {
+          if (!map.hasLayer(centroidsLayer)) map.addLayer(centroidsLayer);
+        } else {
+          map.removeLayer(centroidsLayer);
+        }
+
+        if (elToggleCabeceras.checked) {
+          if (!map.hasLayer(cabecerasLayer)) map.addLayer(cabecerasLayer);
+        } else {
+          map.removeLayer(cabecerasLayer);
+        }
+
+        if (elToggleRings.checked) {
+          if (!map.hasLayer(ringsLayer)) map.addLayer(ringsLayer);
+        } else {
+          map.removeLayer(ringsLayer);
+        }
+      }
+
+      // Eventos
+      elColorMode.addEventListener("change", () => {
+        renderLegend();
+        renderMapLots();
+        renderStatsAndList();
+      });
+
+      elFilterFinca.addEventListener("change", applyFilters);
+      elFilterZona.addEventListener("change", applyFilters);
+      elFilterTipo.addEventListener("change", applyFilters);
+      elSearchInput.addEventListener("input", applyFilters);
+
+      elBtnClear.addEventListener("click", () => {
+        elFilterFinca.value = "ALL";
+        elFilterZona.value = "ALL";
+        elFilterTipo.value = "ALL";
+        elSearchInput.value = "";
+        activeLotId = null;
+        applyFilters();
+        fitVisibleBounds();
+      });
+
+      elBtnFit.addEventListener("click", fitVisibleBounds);
+      elTogglePolygons.addEventListener("change", syncLayerVisibility);
+      elToggleCentroids.addEventListener("change", syncLayerVisibility);
+      elToggleCabeceras.addEventListener("change", syncLayerVisibility);
+      elToggleRings.addEventListener("change", syncLayerVisibility);
+
+      elLotList.addEventListener("click", (ev) => {
+        const row = ev.target.closest(".lot-row");
+        if (!row) return;
+        focusLot(row.getAttribute("data-id"));
+      });
+
+      elSidebarToggle.addEventListener("click", () => {
+        const collapsed = elSidebar.classList.toggle("collapsed");
+        elSidebarToggle.textContent = collapsed ? "▶ Mostrar panel" : "◀ Ocultar panel";
+        setTimeout(() => map.invalidateSize(), 240);
+      });
+
+      // Arranque inicial
+      renderLegend();
+      applyFilters();
+      fitVisibleBounds();
+    })();
+  </script>
+</body>
+</html>
