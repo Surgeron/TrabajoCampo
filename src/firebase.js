@@ -5,8 +5,6 @@ import { getAnalytics, isSupported } from 'firebase/analytics'
 import { getAuth } from 'firebase/auth'
 import { getFirestore } from 'firebase/firestore'
 
-const env = import.meta.env
-
 // Configuración del proyecto de la v1; se puede reemplazar con variables VITE_FIREBASE_*
 const firebaseConfig = {
   apiKey: "AIzaSyCrWFXA2kGr3BgivX6vHkC4r_M_lwBepPM",

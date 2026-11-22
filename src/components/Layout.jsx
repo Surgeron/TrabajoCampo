@@ -4,6 +4,7 @@ import { Navigate, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { BASE_ROL, MENU } from '../config/navegacion'
 import { useNavegacionTV } from '../hooks/useNavegacionTV'
+import { useTema } from '../hooks/useTema'
 import { enviarPendientes } from '../services/colaSinConexion'
 import Icono from './Icono'
 import { Cargando } from './ui'
@@ -62,24 +63,34 @@ function Menu({ items, alNavegar }) {
   )
 }
 
-function Usuario({ perfil, alSalir }) {
+function Usuario({ perfil, alSalir, oscuro, alAlternarTema }) {
   return (
-    <div className="flex items-center gap-2 border-t border-white/10 pt-3">
-      <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-semibold text-white">
-          {perfil.nombre} {perfil.apellido}
-        </p>
-        <p className="truncate text-xs text-monte-texto/70">{perfil.rol_nombre}</p>
-      </div>
+    <div className="flex flex-col gap-2 border-t border-white/10 pt-3">
       <button
         type="button"
-        onClick={alSalir}
-        title="Cerrar sesión"
-        className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-sm text-monte-texto/85 hover:bg-monte-2 hover:text-white"
+        onClick={alAlternarTema}
+        className="flex min-h-9 w-full items-center gap-2.5 rounded-md px-2.5 text-xs font-medium text-monte-texto/85 transition-colors hover:bg-monte-2 hover:text-white"
       >
-        <Icono nombre="salir" />
-        <span className="sr-only lg:not-sr-only lg:text-xs">Salir</span>
+        <Icono nombre={oscuro ? 'sol' : 'luna'} className="h-4 w-4 shrink-0" />
+        <span>{oscuro ? 'Modo claro' : 'Modo oscuro'}</span>
       </button>
+      <div className="flex items-center gap-2 pt-1">
+        <div className="min-w-0 flex-1">
+          <p className="truncate text-sm font-semibold text-white">
+            {perfil.nombre} {perfil.apellido}
+          </p>
+          <p className="truncate text-xs text-monte-texto/70">{perfil.rol_nombre}</p>
+        </div>
+        <button
+          type="button"
+          onClick={alSalir}
+          title="Cerrar sesión"
+          className="inline-flex h-11 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-sm text-monte-texto/85 hover:bg-monte-2 hover:text-white"
+        >
+          <Icono nombre="salir" />
+          <span className="sr-only lg:not-sr-only lg:text-xs">Salir</span>
+        </button>
+      </div>
     </div>
   )
 }
@@ -106,6 +117,7 @@ function SinConexion() {
 
 export default function Layout() {
   const { perfil, cerrarSesion } = useAuth()
+  const { oscuro, alternarTema } = useTema()
   const [abierto, setAbierto] = useState(false)
   const { pathname } = useLocation()
   useNavegacionTV()
@@ -123,7 +135,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[16rem_1fr] tv:grid-cols-[18rem_1fr]">
-      <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[2000] focus:rounded focus:bg-white focus:px-3 focus:py-2">
+      <a href="#contenido" className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[2000] focus:rounded focus:bg-superficie focus:px-3 focus:py-2 focus:text-tinta">
         Saltar al contenido
       </a>
       {/* Barra lateral */}
@@ -135,22 +147,33 @@ export default function Layout() {
           <Menu items={items} />
         </div>
         <div className="px-2">
-          <Usuario perfil={perfil} alSalir={cerrarSesion} />
+          <Usuario perfil={perfil} alSalir={cerrarSesion} oscuro={oscuro} alAlternarTema={alternarTema} />
         </div>
       </aside>
 
       {/* Barra superior del celular */}
       <div className="no-imprimir sticky top-0 z-[1000] flex items-center justify-between bg-monte px-4 py-2.5 lg:hidden">
         <Marca />
-        <button
-          type="button"
-          onClick={() => setAbierto(true)}
-          className="inline-flex h-11 w-11 items-center justify-center rounded-md text-white hover:bg-monte-2"
-          aria-label="Abrir menú"
-          aria-expanded={abierto}
-        >
-          <Icono nombre="menu" className="h-6 w-6" />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={alternarTema}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-white hover:bg-monte-2"
+            aria-label={oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+            title={oscuro ? 'Modo claro' : 'Modo oscuro'}
+          >
+            <Icono nombre={oscuro ? 'sol' : 'luna'} className="h-5 w-5" />
+          </button>
+          <button
+            type="button"
+            onClick={() => setAbierto(true)}
+            className="inline-flex h-11 w-11 items-center justify-center rounded-md text-white hover:bg-monte-2"
+            aria-label="Abrir menú"
+            aria-expanded={abierto}
+          >
+            <Icono nombre="menu" className="h-6 w-6" />
+          </button>
+        </div>
       </div>
 
       {abierto && (
@@ -172,7 +195,7 @@ export default function Layout() {
               <Menu items={items} alNavegar={() => setAbierto(false)} />
             </div>
             <div className="px-2">
-              <Usuario perfil={perfil} alSalir={cerrarSesion} />
+              <Usuario perfil={perfil} alSalir={cerrarSesion} oscuro={oscuro} alAlternarTema={alternarTema} />
             </div>
           </div>
         </div>

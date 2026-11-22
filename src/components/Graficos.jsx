@@ -21,11 +21,11 @@ import {
 import { fechaCorta, fechaHora, num } from '../utils/formato'
 
 export const SERIES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4']
-const TINTA_TENUE = '#6f7c73'
-const GRILLA = '#e1e0d9'
-const BASE = '#c3c2b7'
-const SUPERFICIE = '#fcfcfb'
-const CRITICO = '#d03b3b'
+const TINTA_TENUE = 'var(--color-tenue)'
+const GRILLA = 'var(--color-linea)'
+const BASE = 'var(--color-linea-fuerte)'
+const SUPERFICIE = 'var(--color-superficie)'
+const CRITICO = 'var(--color-critico)'
 
 const ejes = {
   tick: { fill: TINTA_TENUE, fontSize: 12 },
@@ -95,7 +95,7 @@ export function GraficoParadas({ datos }) {
         <CartesianGrid vertical={false} stroke={GRILLA} />
         <XAxis dataKey="semana" {...ejes} interval="preserveStartEnd" />
         <YAxis {...ejes} axisLine={false} unit=" h" width={56} />
-        <Tooltip content={<CajaTooltip formatoEtiqueta={(l) => `Semana del ${l}`} formatoValor={(v) => `${num(v, 1)} h`} />} cursor={{ fill: '#e2efe5', opacity: 0.6 }} />
+        <Tooltip content={<CajaTooltip formatoEtiqueta={(l) => `Semana del ${l}`} formatoValor={(v) => `${num(v, 1)} h`} />} cursor={{ fill: 'var(--color-cana-claro)', opacity: 0.6 }} />
         <Legend content={<Leyenda />} />
         <Bar dataKey="lluvia" name="Lluvia" stackId="p" fill={SERIES[0]} stroke={SUPERFICIE} strokeWidth={2} maxBarSize={24} />
         <Bar dataKey="lejania" name="Lotes lejanos o corte lento" stackId="p" fill={SERIES[1]} stroke={SUPERFICIE} strokeWidth={2} radius={[4, 4, 0, 0]} maxBarSize={24} />
@@ -130,7 +130,7 @@ export function GraficoCobertura({ cobertura }) {
         <XAxis dataKey="etiqueta" {...ejes} tickFormatter={(v) => v.slice(0, 5)} interval="preserveStartEnd" minTickGap={24} />
         <YAxis {...ejes} axisLine={false} unit=" h" width={56} />
         <Tooltip content={<CajaTooltip formatoValor={(v, p) => (p.dataKey === 'horas_cobertura' ? `${num(v, 2)} h (${p.payload.cantidad_carros} carros)` : v)} />} />
-        <ReferenceLine y={cobertura.umbral_h} stroke={CRITICO} strokeWidth={1.5} label={{ value: `Umbral ${num(cobertura.umbral_h, 1)} h`, position: 'insideTopRight', fill: '#a42727', fontSize: 12 }} />
+        <ReferenceLine y={cobertura.umbral_h} stroke={CRITICO} strokeWidth={1.5} label={{ value: `Umbral ${num(cobertura.umbral_h, 1)} h`, position: 'insideTopRight', fill: 'var(--color-critico-texto)', fontSize: 12 }} />
         <Line type="stepAfter" dataKey="horas_cobertura" name="Horas aseguradas" stroke={SERIES[0]} strokeWidth={2} dot={false} activeDot={{ r: 5 }} />
       </LineChart>
     </Figura>
@@ -147,10 +147,10 @@ export function GraficoAvance({ datos }) {
         <YAxis type="category" dataKey="zona" {...ejes} width={64} />
         <Tooltip
           content={<CajaTooltip formatoValor={(v, p) => `${num(v, 1)} % (${num(p.payload.ha_terminadas, 0)} de ${num(p.payload.ha_total, 0)} ha)`} />}
-          cursor={{ fill: '#e2efe5', opacity: 0.6 }}
+          cursor={{ fill: 'var(--color-cana-claro)', opacity: 0.6 }}
         />
-        <Bar dataKey="pct" name="Avance" fill={SERIES[0]} radius={[0, 4, 4, 0]} maxBarSize={24} background={{ fill: '#e5effb', radius: 4 }}>
-          <LabelList dataKey="pct" position="right" formatter={(v) => `${num(v, 1)} %`} fill="#46554b" fontSize={12} />
+        <Bar dataKey="pct" name="Avance" fill={SERIES[0]} radius={[0, 4, 4, 0]} maxBarSize={24} background={{ fill: 'var(--color-lluvia-claro)', radius: 4 }}>
+          <LabelList dataKey="pct" position="right" formatter={(v) => `${num(v, 1)} %`} fill="var(--color-tinta-2)" fontSize={12} />
         </Bar>
       </BarChart>
     </Figura>
@@ -214,7 +214,7 @@ export function GraficoLluvia({ lluvia, finca, alCambiarFinca }) {
                     formatoValor={(v) => `${num(v, 1)} mm`}
                   />
                 }
-                cursor={{ fill: '#e2efe5', opacity: 0.6 }}
+                cursor={{ fill: 'var(--color-cana-claro)', opacity: 0.6 }}
               />
               <Legend content={<Leyenda />} />
               <Bar dataKey="mm" name="Lluvia registrada" fill={SERIES[0]} radius={[4, 4, 0, 0]} maxBarSize={24} />

@@ -3,8 +3,17 @@ import { useState } from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 import { BASE_ROL } from '../config/navegacion'
+import { useTema } from '../hooks/useTema'
+import Icono from '../components/Icono'
 import { Aviso, Boton, Campo } from '../components/ui'
 import { reglas, validar } from '../utils/validacion'
+
+const PERFILES_RAPIDOS = [
+  { rol: 'Equipo técnico agrícola', email: 'tecnico@nexozafra.test', clave: '123456' },
+  { rol: 'Jefe de lote', email: 'jefe.lote@nexozafra.test', clave: '123456' },
+  { rol: 'Personal de báscula', email: 'bascula@nexozafra.test', clave: '123456' },
+  { rol: 'Fábrica', email: 'fabrica@nexozafra.test', clave: '123456' },
+]
 
 // Surcos de caña dibujados: la identidad de la pantalla de ingreso
 function Canaveral() {
@@ -38,11 +47,19 @@ function Canaveral() {
 
 export default function Login() {
   const { perfil, iniciarSesion, error, cargando } = useAuth()
+  const { oscuro, alternarTema } = useTema()
   const [valores, setValores] = useState({ email: '', clave: '' })
   const [errores, setErrores] = useState({})
   const [enviando, setEnviando] = useState(false)
+  const [rapidoAbierto, setRapidoAbierto] = useState(false)
 
   if (perfil) return <Navigate to={BASE_ROL[perfil.rol]} replace />
+
+  const completarPerfil = (p) => {
+    setValores({ email: p.email, clave: p.clave })
+    setErrores({})
+    setRapidoAbierto(false)
+  }
 
   const esquema = {
     email: [reglas.requerido('Ingresá tu correo.'), reglas.email()],
@@ -88,7 +105,17 @@ export default function Login() {
         </div>
       </div>
 
-      <div className="flex flex-col justify-center px-5 py-10 sm:px-10">
+      <div className="relative flex flex-col justify-center px-5 py-10 sm:px-10">
+        <button
+          type="button"
+          onClick={alternarTema}
+          aria-label={oscuro ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
+          title={oscuro ? 'Modo claro' : 'Modo oscuro'}
+          className="absolute top-4 right-4 inline-flex min-h-10 items-center gap-1.5 rounded-md border border-linea-fuerte bg-superficie px-3 text-xs font-semibold text-tinta-2 transition-colors hover:bg-cana-claro hover:text-tinta"
+        >
+          <Icono nombre={oscuro ? 'sol' : 'luna'} className="h-4 w-4" />
+          <span>{oscuro ? 'Claro' : 'Oscuro'}</span>
+        </button>
         <div className="mx-auto w-full max-w-sm">
           <div className="mb-8 lg:hidden">
             <p className="font-display text-sm text-cana">Ingenio La Esperanza</p>
@@ -131,6 +158,33 @@ export default function Login() {
               Ingresar
             </Boton>
           </form>
+
+          <div className="mt-4 border-t border-linea pt-4">
+            <Boton
+              variante="secundario"
+              icono="usuario"
+              className="w-full"
+              aria-expanded={rapidoAbierto}
+              onClick={() => setRapidoAbierto((a) => !a)}
+            >
+              Inicio de sesión rápido
+            </Boton>
+            {rapidoAbierto && (
+              <div className="mt-2 grid gap-1.5 rounded-md border border-linea bg-superficie p-2">
+                {PERFILES_RAPIDOS.map((p) => (
+                  <button
+                    key={p.email}
+                    type="button"
+                    onClick={() => completarPerfil(p)}
+                    className="flex items-center justify-between rounded px-2.5 py-2 text-left text-xs transition-colors hover:bg-cana-claro"
+                  >
+                    <span className="font-semibold text-tinta">{p.rol}</span>
+                    <span className="text-tenue">{p.email}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>

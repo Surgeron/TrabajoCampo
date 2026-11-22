@@ -28,6 +28,9 @@ const TRAZOS = {
   mas: 'M12 5v14M5 12h14',
   nube: 'M7 18a4 4 0 0 1-.6-8A6 6 0 0 1 18 11a3.5 3.5 0 0 1-.5 7z',
   info: 'M12 8v.5M12 11v6M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z',
+  sol: 'M12 3v2m0 14v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M3 12h2m14 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z',
+  luna: 'M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z',
+  usuario: 'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM4 20a8 8 0 0 1 16 0',
 }
 
 export default function Icono({ nombre, className = 'h-5 w-5', titulo }) {
