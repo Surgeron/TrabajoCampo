@@ -1,12 +1,16 @@
 // Selector de lote: primero la finca, después el lote por nombre o número.
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useApi } from '../hooks/useApi'
 import { Campo, Cargando, ErrorCarga } from './ui'
 
-export default function BuscadorLote({ valor, alCambiar, error, filtroLote, etiqueta = 'Lote', ayuda }) {
+export default function BuscadorLote({ valor, alCambiar, error, filtroLote, etiqueta = 'Lote', ayuda, recargarKey, alElegirLote }) {
   const { datos: lotes, cargando, error: errorCarga, recargar } = useApi('/lotes')
   const [finca, setFinca] = useState('')
   const [texto, setTexto] = useState('')
+
+  useEffect(() => {
+    if (recargarKey) recargar(true)
+  }, [recargarKey, recargar])
 
   const fincas = useMemo(() => {
     const m = new Map()
@@ -14,8 +18,12 @@ export default function BuscadorLote({ valor, alCambiar, error, filtroLote, etiq
     return [...m.entries()].sort((a, b) => a[1].localeCompare(b[1]))
   }, [lotes])
 
-  const seleccionado = (lotes || []).find((l) => l.id_unico === valor)
+  const seleccionado = useMemo(() => (lotes || []).find((l) => l.id_unico === valor) || null, [lotes, valor])
   const fincaActiva = finca || seleccionado?.id_finca || ''
+
+  useEffect(() => {
+    alElegirLote?.(seleccionado)
+  }, [seleccionado, alElegirLote])
 
   const opciones = useMemo(() => {
     const t = texto.trim().toLowerCase()
@@ -38,7 +46,7 @@ export default function BuscadorLote({ valor, alCambiar, error, filtroLote, etiq
             value={fincaActiva}
             onChange={(e) => {
               setFinca(e.target.value)
-              alCambiar('')
+              alCambiar('', null)
             }}
           >
             <option value="">Todas</option>
@@ -65,7 +73,16 @@ export default function BuscadorLote({ valor, alCambiar, error, filtroLote, etiq
       </Campo>
       <Campo etiqueta={etiqueta} requerido error={error} ayuda={ayuda || `${opciones.length} lotes en la lista`} className="sm:col-span-2">
         {(a) => (
-          <select {...a} className="campo-entrada" value={valor} onChange={(e) => alCambiar(e.target.value)}>
+          <select
+            {...a}
+            className="campo-entrada"
+            value={valor}
+            onChange={(e) => {
+              const id = e.target.value
+              const lote = opciones.find((l) => l.id_unico === id) || null
+              alCambiar(id, lote)
+            }}
+          >
             <option value="">Elegí un lote</option>
             {opciones.map((l) => (
               <option key={l.id_unico} value={l.id_unico}>

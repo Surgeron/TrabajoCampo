@@ -21,11 +21,12 @@ const esquema = (anioCampania) => ({
   variedad: [reglas.largoMax(60), (v, t) => (t.estado_lote === 'En producción' && !String(v || '').trim() ? 'Un lote en producción necesita su variedad.' : null)],
   anio_plantacion: [reglas.entero(), reglas.minimo(1950), reglas.maximo(anioCampania, `No puede ser posterior a ${anioCampania}.`)],
   cantidad_cortes: [reglas.entero(), reglas.minimo(0), reglas.maximo(30)],
+  toneladas_estimadas: [reglas.numero(), reglas.mayorQue(0, 'Debe ser mayor a cero.'), reglas.maximo(500000)],
   observaciones: [reglas.largoMax(500)],
 })
 
-const CAMPOS = ['nombre', 'nro_lote', 'tipo_cultivo', 'certificacion', 'area_bruta_ha', 'area_neta_ha', 'dist_ingenio_km', 'drenaje', 'id_pluviometro', 'variedad', 'anio_plantacion', 'cantidad_cortes', 'estado_lote', 'observaciones']
-const NUMERICOS = ['area_bruta_ha', 'area_neta_ha', 'dist_ingenio_km', 'anio_plantacion', 'cantidad_cortes']
+const CAMPOS = ['nombre', 'nro_lote', 'tipo_cultivo', 'certificacion', 'area_bruta_ha', 'area_neta_ha', 'dist_ingenio_km', 'drenaje', 'id_pluviometro', 'variedad', 'anio_plantacion', 'cantidad_cortes', 'estado_lote', 'toneladas_estimadas', 'observaciones']
+const NUMERICOS = ['area_bruta_ha', 'area_neta_ha', 'dist_ingenio_km', 'anio_plantacion', 'cantidad_cortes', 'toneladas_estimadas']
 
 export default function EditarLote() {
   const { id } = useParams()
@@ -161,6 +162,9 @@ export default function EditarLote() {
             <Campo etiqueta="Variedad" error={errores.variedad} requerido={valores.estado_lote === 'En producción'}>{entrada('variedad', { maxLength: 60, placeholder: 'Ej.: LCP 85-384' })}</Campo>
             <Campo etiqueta="Año de plantación" error={errores.anio_plantacion}>{entrada('anio_plantacion', { type: 'number', step: '1', min: 1950, max: anio, inputMode: 'numeric' })}</Campo>
             <Campo etiqueta="Cantidad de cortes" error={errores.cantidad_cortes}>{entrada('cantidad_cortes', { type: 'number', step: '1', min: 0, max: 30, inputMode: 'numeric' })}</Campo>
+            <Campo etiqueta="Producción estimada (t)" error={errores.toneladas_estimadas} ayuda="Dejalo vacío para estimar según superficie y rendimiento">
+              {entrada('toneladas_estimadas', { type: 'number', step: '0.1', min: 0, inputMode: 'decimal' })}
+            </Campo>
             <Campo etiqueta="Observaciones" error={errores.observaciones} className="sm:col-span-2 lg:col-span-4">
               {(a) => <textarea {...a} rows={3} className="campo-entrada" value={valores.observaciones} onChange={cambiar('observaciones')} onBlur={alSalir} maxLength={500} />}
             </Campo>

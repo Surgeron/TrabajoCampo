@@ -31,6 +31,7 @@ class LoteCambios(Entrada):
     anio_plantacion: int | None = Field(None, ge=1950, le=2100)
     cantidad_cortes: int | None = Field(None, ge=0, le=30)
     estado_lote: EstadoLote | None = None
+    toneladas_estimadas: float | None = Field(None, gt=0, le=500000)
     observaciones: str | None = Field(None, max_length=500)
 
 

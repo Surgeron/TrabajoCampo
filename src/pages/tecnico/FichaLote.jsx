@@ -70,6 +70,7 @@ export default function FichaLote() {
             <Dato etiqueta="Año de plantación">{l.anio_plantacion}</Dato>
             <Dato etiqueta="Cantidad de cortes">{l.cantidad_cortes}</Dato>
             <Dato etiqueta="Último Brix">{l.brix != null ? `${num(l.brix, 2)} °Bx (${fecha(l.fecha_brix)})` : 'Sin medición'}</Dato>
+            <Dato etiqueta="Producción estimada">{l.toneladas_estimadas ? `${num(l.toneladas_estimadas, 1)} t` : '—'}</Dato>
             <Dato etiqueta="Toneladas cosechadas">{l.toneladas_cosechadas ? `${num(l.toneladas_cosechadas, 1)} t` : '—'}</Dato>
             <Dato etiqueta="Observaciones" className="col-span-2 sm:col-span-3">{l.observaciones}</Dato>
           </dl>

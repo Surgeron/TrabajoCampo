@@ -39,6 +39,7 @@ DEFAULTS = [
     ("lluvia_moderada_min_mm", 15, "mm", "Lluvia acumulada desde la que se considera moderada (valor de prueba)", A_CONFIRMAR, "CU23"),
     ("lluvia_fuerte_min_mm", 35, "mm", "Lluvia acumulada a partir de la cual (más de) se considera fuerte (valor de prueba)", A_CONFIRMAR, "CU23"),
     ("ventana_lluvia_dias", 3, "días", "Días de lecturas que se suman como lluvia acumulada", A_CONFIRMAR, "CU12, CU23"),
+    ("rendimiento_estimado_tha", 75, "t/ha", "Rendimiento promedio estimado por hectárea para calcular la producción del lote (valor de prueba)", A_CONFIRMAR, "CU04, CU16"),
 ]
 
 CLAVES = [c[0] for c in DEFAULTS]

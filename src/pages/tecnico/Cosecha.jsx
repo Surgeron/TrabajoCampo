@@ -1,5 +1,5 @@
 // T10 – Registrar cosecha realizada (CU16)
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
 import { api } from '../../services/api'
 import { useApi } from '../../hooks/useApi'
@@ -9,13 +9,44 @@ import { Aviso, Boton, Campo, Encabezado, Seccion, Tabla } from '../../component
 import { fecha, hoyISO, num } from '../../utils/formato'
 import { reglas, validar } from '../../utils/validacion'
 
+function calcularResumenLote(lote, cosechas, rendimientoDefault) {
+  if (!lote) return null
+  const area = lote.area_neta_ha ?? lote.area_bruta_ha
+  const estimadas =
+    lote.toneladas_estimadas != null
+      ? Number(lote.toneladas_estimadas)
+      : area != null
+        ? Number((Number(area) * rendimientoDefault).toFixed(1))
+        : null
+  const cosechadas =
+    lote.toneladas_cosechadas != null
+      ? Number(lote.toneladas_cosechadas)
+      : Number(
+          (cosechas || [])
+            .filter((c) => c.id_unico === lote.id_unico)
+            .reduce((acc, c) => acc + Number(c.toneladas || 0), 0)
+            .toFixed(1),
+        )
+  const restantes =
+    lote.toneladas_restantes != null
+      ? Number(lote.toneladas_restantes)
+      : estimadas != null
+        ? Math.max(0, Number((estimadas - cosechadas).toFixed(1)))
+        : null
+  return { estimadas, cosechadas, restantes }
+}
+
 export default function Cosecha() {
   const [params] = useSearchParams()
   const { avisar } = useAvisos()
   const parametros = useApi('/parametros')
   const recientes = useApi('/cosechas')
   const inicioCampania = parametros.datos?.campania?.fecha_inicio
+  const rendimientoDefault =
+    Number(parametros.datos?.parametros?.find((p) => p.clave === 'rendimiento_estimado_tha')?.valor) || 75
   const [valores, setValores] = useState({ id_unico: params.get('lote') || '', fecha: hoyISO(), toneladas: '', lote_terminado: false })
+  const [loteSeleccionado, setLoteSeleccionado] = useState(null)
+  const [recargaLotes, setRecargaLotes] = useState(0)
   const [errores, setErrores] = useState({})
   const [enviando, setEnviando] = useState(false)
   const [confirmar, setConfirmar] = useState(false)
@@ -27,10 +58,35 @@ export default function Cosecha() {
     toneladas: [reglas.numero(), reglas.mayorQue(0, 'Las toneladas deben ser mayores a cero.'), reglas.maximo(100000)],
   }
 
+  const resumenLote = useMemo(
+    () => calcularResumenLote(loteSeleccionado, recientes.datos, rendimientoDefault),
+    [loteSeleccionado, recientes.datos, rendimientoDefault],
+  )
+
   const poner = (campo, valor) => {
     const v = { ...valores, [campo]: valor }
     setValores(v)
     if (errores[campo]) setErrores(validar(v, esquema))
+  }
+
+  const cambiarLote = (id, lote) => {
+    setLoteSeleccionado(lote || null)
+    const v = { ...valores, id_unico: id }
+    if (v.lote_terminado) {
+      const res = calcularResumenLote(lote, recientes.datos, rendimientoDefault)
+      if (res?.restantes > 0) v.toneladas = String(res.restantes)
+    }
+    setValores(v)
+    if (errores.id_unico || errores.toneladas) setErrores(validar(v, esquema))
+  }
+
+  const cambiarTerminado = (marcado) => {
+    const v = { ...valores, lote_terminado: marcado }
+    if (marcado && resumenLote?.restantes > 0) {
+      v.toneladas = String(resumenLote.restantes)
+    }
+    setValores(v)
+    if (errores.toneladas) setErrores(validar(v, esquema))
   }
 
   const enviar = async (e) => {
@@ -54,9 +110,12 @@ export default function Cosecha() {
       setResultado(r)
       avisar('Cosecha registrada.')
       r.avisos_reserva?.forEach((a) => avisar(a, 'alerta', 9000))
-      setValores({ ...valores, toneladas: '', lote_terminado: false })
+      const termino = valores.lote_terminado
+      setValores({ ...valores, id_unico: termino ? '' : valores.id_unico, toneladas: '', lote_terminado: false })
+      if (termino) setLoteSeleccionado(null)
       setConfirmar(false)
       recientes.recargar(true)
+      setRecargaLotes((n) => n + 1)
     } catch (err) {
       setErrores(err.campos || {})
       if (!Object.keys(err.campos || {}).length) avisar(err.message, 'error', 8000)
@@ -66,6 +125,10 @@ export default function Cosecha() {
     }
   }
 
+  const ayudaToneladas = resumenLote?.estimadas != null
+    ? `Estimado: ${num(resumenLote.estimadas, 1)} t · Cosechado: ${num(resumenLote.cosechadas, 1)} t · Restante: ${num(resumenLote.restantes, 1)} t`
+    : 'Opcional'
+
   return (
     <>
       <Encabezado codigo="T10" titulo="Cosecha realizada" descripcion="Registrá en qué lotes se está cosechando. Un lote terminado sale del ranking y de la reserva." />
@@ -74,7 +137,9 @@ export default function Cosecha() {
           <Seccion titulo="Lote">
             <BuscadorLote
               valor={valores.id_unico}
-              alCambiar={(v) => poner('id_unico', v)}
+              alCambiar={cambiarLote}
+              alElegirLote={setLoteSeleccionado}
+              recargarKey={recargaLotes}
               error={errores.id_unico}
               filtroLote={(l) => l.estado_lote === 'En producción' && !l.terminado}
               ayuda="Solo lotes en producción y sin terminar"
@@ -85,7 +150,7 @@ export default function Cosecha() {
               <Campo etiqueta="Fecha" requerido error={errores.fecha}>
                 {(a) => <input {...a} type="date" min={inicioCampania} max={hoyISO()} className="campo-entrada" value={valores.fecha} onChange={(e) => poner('fecha', e.target.value)} />}
               </Campo>
-              <Campo etiqueta="Toneladas cosechadas" error={errores.toneladas} ayuda="Opcional">
+              <Campo etiqueta="Toneladas cosechadas" error={errores.toneladas} ayuda={ayudaToneladas}>
                 {(a) => (
                   <input
                     {...a}
@@ -101,7 +166,7 @@ export default function Cosecha() {
                 )}
               </Campo>
               <label className="flex min-h-11 items-center gap-3 sm:col-span-2">
-                <input type="checkbox" className="h-5 w-5 accent-cana" checked={valores.lote_terminado} onChange={(e) => poner('lote_terminado', e.target.checked)} />
+                <input type="checkbox" className="h-5 w-5 accent-cana" checked={valores.lote_terminado} onChange={(e) => cambiarTerminado(e.target.checked)} />
                 <span className="text-sm font-semibold">El lote quedó terminado</span>
               </label>
             </div>

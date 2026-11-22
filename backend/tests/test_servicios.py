@@ -137,7 +137,19 @@ class TestRankingYCampo(Base):
         with self.assertRaises(Conflicto):
             campo.registrar_cosecha(self.repo, TEC, prep["id_unico"], "2026-11-20", None, False)
         top = priorizacion.consultar_ranking(self.repo)["ranking"][0]
+        lote_inicial = lotes.ficha_lote(self.repo, top["id_unico"])["lote"]
+        self.assertGreater(lote_inicial["toneladas_estimadas"], 0)
+        self.assertEqual(lote_inicial["toneladas_restantes"], lote_inicial["toneladas_estimadas"])
         campo.registrar_cosecha(self.repo, TEC, top["id_unico"], "2026-11-20", 350, False)
+        lote_parcial = lotes.ficha_lote(self.repo, top["id_unico"])["lote"]
+        self.assertEqual(lote_parcial["toneladas_cosechadas"], 350.0)
+        self.assertEqual(lote_parcial["toneladas_restantes"], round(max(0.0, lote_inicial["toneladas_estimadas"] - 350.0), 1))
+        lista = next(x for x in lotes.listar_lotes(self.repo) if x["id_unico"] == top["id_unico"])
+        self.assertEqual(lista["toneladas_restantes"], lote_parcial["toneladas_restantes"])
+        segundo = priorizacion.consultar_ranking(self.repo)["ranking"][1]
+        lotes.actualizar_lote(self.repo, TEC, segundo["id_unico"], {"toneladas_estimadas": 20})
+        campo.registrar_cosecha(self.repo, TEC, segundo["id_unico"], "2026-11-20", 12, False)
+        self.assertEqual(lotes.ficha_lote(self.repo, segundo["id_unico"])["lote"]["toneladas_restantes"], 8.0)
         r = priorizacion.consultar_ranking(self.repo)
         self.assertIn(top["id_unico"], [x["id_unico"] for x in r["en_cosecha"]])
         campo.registrar_cosecha(self.repo, TEC, top["id_unico"], "2026-11-21", None, True)

@@ -174,6 +174,19 @@ class Contexto:
         lote["fecha_ultima_cosecha"] = cosechas[-1]["fecha"] if cosechas else None
         lote["toneladas_cosechadas"] = round(sum(float(c.get("toneladas") or 0) for c in cosechas), 1)
         lote["fecha_terminado"] = next((c["fecha"] for c in cosechas if c.get("lote_terminado")), None)
+        est_manual = lc.get("toneladas_estimadas")
+        area = base.get("area_neta_ha") if base.get("area_neta_ha") is not None else base.get("area_bruta_ha")
+        if est_manual is not None:
+            lote["toneladas_estimadas"] = round(float(est_manual), 1)
+        elif area is not None:
+            lote["toneladas_estimadas"] = round(float(area) * float(p.get("rendimiento_estimado_tha") or 75), 1)
+        else:
+            lote["toneladas_estimadas"] = None
+        lote["toneladas_restantes"] = (
+            round(max(0.0, lote["toneladas_estimadas"] - lote["toneladas_cosechadas"]), 1)
+            if lote["toneladas_estimadas"] is not None
+            else None
+        )
 
         lote["datos_incompletos"] = lote["estado_lote"] == ESTADO_PRODUCCION and not base.get("drenaje")
 

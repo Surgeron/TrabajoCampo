@@ -84,6 +84,7 @@ def _vista_lista(l: dict) -> dict:
             "area_bruta_ha", "area_neta_ha", "dist_ingenio_km", "zona", "madurez", "drenaje",
             "id_pluviometro", "pluviometro", "variedad", "estado_lote", "estado_piso", "brix",
             "en_reserva", "terminado", "en_cosecha", "datos_incompletos", "latitud", "longitud", "poligono",
+            "toneladas_estimadas", "toneladas_cosechadas", "toneladas_restantes",
         )
     } | {"drenaje_nombre": NOMBRE_DRENAJE.get(l.get("drenaje")), "riesgo": r.get("nivel"), "riesgo_justificacion": r.get("justificacion")}
 
@@ -133,7 +134,7 @@ def ficha_lote(repo, id_unico: str):
 
 EDITABLES_LOTE = ("nombre", "nro_lote", "tipo_cultivo", "certificacion", "area_bruta_ha", "area_neta_ha",
                   "dist_ingenio_km", "drenaje", "id_pluviometro")
-EDITABLES_CAMPANIA = ("variedad", "anio_plantacion", "cantidad_cortes", "estado_lote", "observaciones")
+EDITABLES_CAMPANIA = ("variedad", "anio_plantacion", "cantidad_cortes", "estado_lote", "toneladas_estimadas", "observaciones")
 
 
 def actualizar_lote(repo, usuario: dict, id_unico: str, cambios: dict):
@@ -174,6 +175,8 @@ def actualizar_lote(repo, usuario: dict, id_unico: str, cambios: dict):
         errores["anio_plantacion"] = f"El año de plantación debe estar entre 1950 y {ctx.campania.get('anio')}."
     if nuevo.get("estado_lote") == ESTADO_PRODUCCION and not str(nuevo.get("variedad") or "").strip():
         errores["variedad"] = "Un lote en producción necesita su variedad."
+    if nuevo.get("toneladas_estimadas") is not None and float(nuevo["toneladas_estimadas"]) <= 0:
+        errores["toneladas_estimadas"] = "Las toneladas estimadas deben ser mayores a cero."
     # Unicidad finca + número de lote
     if "nro_lote" in datos_lote:
         for otro in ctx.lotes:
