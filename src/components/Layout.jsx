@@ -132,6 +132,7 @@ export default function Layout() {
 
   const items = MENU[perfil.rol] || []
   const principales = items.filter((i) => i.principal)
+  const esMapa = pathname.endsWith('/mapa')
 
   return (
     <div className="min-h-dvh lg:grid lg:grid-cols-[16rem_1fr] tv:grid-cols-[18rem_1fr]">
@@ -203,7 +204,14 @@ export default function Layout() {
 
       <div className="flex min-w-0 flex-col">
         <SinConexion />
-        <main id="contenido" className="mx-auto w-full max-w-[90rem] flex-1 px-4 pt-5 pb-28 md:px-8 md:pt-8 lg:pb-12 tv:max-w-none tv:px-12">
+        <main
+          id="contenido"
+          className={
+            esMapa
+              ? 'relative flex-1 overflow-hidden'
+              : 'mx-auto w-full max-w-[90rem] flex-1 px-4 pt-5 pb-28 md:px-8 md:pt-8 lg:pb-12 tv:max-w-none tv:px-12'
+          }
+        >
           <Outlet />
         </main>
       </div>

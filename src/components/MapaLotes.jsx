@@ -36,43 +36,43 @@ function Encuadre({ lotes }) {
 
 export function Leyenda({ modo }) {
   return (
-    <ul className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-tinta-2" aria-label={`Leyenda: ${MODOS[modo].titulo}`}>
+    <ul className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-medium text-tinta" aria-label={`Leyenda: ${MODOS[modo].titulo}`}>
       {MODOS[modo].leyenda.map(([texto, color]) => (
-        <li key={texto} className="flex items-center gap-1.5">
-          <span className="inline-block h-3 w-3 rounded-sm border border-black/15" style={{ background: color }} />
-          {texto}
+        <li key={texto} className="flex items-center gap-2">
+          <span className="inline-block h-4 w-4 shrink-0 rounded border border-black/25 md:h-5 md:w-5" style={{ background: color }} />
+          <span>{texto}</span>
         </li>
       ))}
-      <li className="flex items-center gap-1.5">
-        <span className="inline-block h-3 w-3 rounded-sm border-2 border-dashed border-tinta" />
-        Lote de reserva
+      <li className="flex items-center gap-2">
+        <span className="inline-block h-4 w-4 shrink-0 rounded border-2 border-dashed border-tinta md:h-5 md:w-5" />
+        <span>Lote de reserva</span>
       </li>
     </ul>
   )
 }
 
-export default function MapaLotes({ lotes, modo = 'riesgo', alElegir, alto = 'h-[60vh]', resaltar }) {
+export default function MapaLotes({ lotes, modo = 'riesgo', alElegir, alto = 'h-[60vh]', resaltar, pantallaCompleta = false }) {
   const conUbicacion = useMemo(() => lotes.filter((l) => l.poligono?.length || l.latitud), [lotes])
   return (
-    <div className={`${alto} min-h-80 overflow-hidden rounded-lg border border-linea`}>
+    <div className={pantallaCompleta ? 'relative z-0 h-full w-full overflow-hidden' : `relative z-0 ${alto} min-h-80 overflow-hidden rounded-lg border border-linea`}>
       <MapContainer center={INGENIO} zoom={11} scrollWheelZoom className="h-full w-full">
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          attribution="Tiles &copy; Esri &mdash; Source: Esri, Maxar, Earthstar Geographics"
+          url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
         <Encuadre lotes={conUbicacion} />
-        <CircleMarker center={INGENIO} radius={8} pathOptions={{ color: '#123524', fillColor: '#b9d24a', fillOpacity: 1, weight: 3 }}>
+        <CircleMarker center={INGENIO} radius={8} pathOptions={{ color: '#ffffff', fillColor: '#b9d24a', fillOpacity: 1, weight: 3 }}>
           <Tooltip>Ingenio La Esperanza</Tooltip>
         </CircleMarker>
         {conUbicacion.map((l) => {
           const color = MODOS[modo].color(l)
           const destacado = resaltar?.has?.(l.id_unico)
           const opciones = {
-            color: l.en_reserva ? '#16241b' : destacado ? '#16241b' : color,
+            color: l.en_reserva || destacado ? '#ffffff' : color,
             weight: l.en_reserva || destacado ? 3 : 1.5,
             dashArray: l.en_reserva ? '6 4' : undefined,
             fillColor: color,
-            fillOpacity: 0.55,
+            fillOpacity: 0.6,
           }
           const eventos = alElegir ? { click: () => alElegir(l) } : undefined
           const tooltip = (
