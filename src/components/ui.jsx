@@ -240,6 +240,64 @@ function paginasVisibles(actual, total) {
   return salida
 }
 
+const CLASE_PAG =
+  'inline-flex min-h-9 min-w-9 items-center justify-center rounded-md border px-2.5 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-45'
+
+export function Paginador({ pagina, totalFilas, porPagina = 10, alCambiar, className = 'mt-4' }) {
+  const tamPagina = Math.max(1, porPagina)
+  const totalPaginas = Math.max(1, Math.ceil(totalFilas / tamPagina))
+  if (totalPaginas <= 1) return null
+  const paginaActual = Math.min(Math.max(1, pagina), totalPaginas)
+  const inicio = (paginaActual - 1) * tamPagina
+  return (
+    <nav aria-label="Paginación" className={`no-imprimir ${className} flex flex-wrap items-center justify-between gap-3 border-t border-linea pt-3 text-xs text-tinta-2`}>
+      <span>
+        Mostrando {inicio + 1}–{Math.min(inicio + tamPagina, totalFilas)} de {totalFilas}
+      </span>
+      <div className="flex flex-wrap items-center gap-1">
+        <button
+          type="button"
+          onClick={() => alCambiar(Math.max(1, paginaActual - 1))}
+          disabled={paginaActual === 1}
+          className={`${CLASE_PAG} border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro`}
+        >
+          Anterior
+        </button>
+        {paginasVisibles(paginaActual, totalPaginas).map((item) =>
+          typeof item === 'string' ? (
+            <span key={item} className="px-1.5 text-tenue" aria-hidden="true">
+              …
+            </span>
+          ) : (
+            <button
+              key={item}
+              type="button"
+              onClick={() => alCambiar(item)}
+              aria-current={item === paginaActual ? 'page' : undefined}
+              aria-label={`Página ${item}`}
+              className={`${CLASE_PAG} ${
+                item === paginaActual
+                  ? 'border-cana bg-cana text-white'
+                  : 'border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro'
+              }`}
+            >
+              {item}
+            </button>
+          ),
+        )}
+        <button
+          type="button"
+          onClick={() => alCambiar(Math.min(totalPaginas, paginaActual + 1))}
+          disabled={paginaActual === totalPaginas}
+          className={`${CLASE_PAG} border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro`}
+        >
+          Siguiente
+        </button>
+      </div>
+    </nav>
+  )
+}
+
 // Tabla que en el celular se muestra como lista de fichas. Columnas: {clave, titulo, render, alinear, ordenable, oculta}
 export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, resumenMovil, ordenInicial, etiqueta, porPagina = 10 }) {
   const [orden, setOrden] = useState(ordenInicial || null)
@@ -272,8 +330,6 @@ export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, r
   const visibles = ordenadas.slice(inicio, inicio + tamPagina)
 
   const alinear = (c) => (c.alinear === 'derecha' ? 'text-right' : 'text-left')
-  const clasePag =
-    'inline-flex min-h-9 min-w-9 items-center justify-center rounded-md border px-2.5 text-xs font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-45'
   return (
     <>
       <div className="hidden overflow-x-auto md:block">
@@ -336,53 +392,7 @@ export function Tabla({ columnas, filas, claveFila = 'id', vacio, alTocarFila, r
           </li>
         ))}
       </ul>
-      {totalPaginas > 1 && (
-        <nav aria-label="Paginación" className="no-imprimir mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-linea pt-3 text-xs text-tinta-2">
-          <span>
-            Mostrando {inicio + 1}–{Math.min(inicio + tamPagina, ordenadas.length)} de {ordenadas.length}
-          </span>
-          <div className="flex flex-wrap items-center gap-1">
-            <button
-              type="button"
-              onClick={() => setPagina((p) => Math.max(1, p - 1))}
-              disabled={paginaActual === 1}
-              className={`${clasePag} border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro`}
-            >
-              Anterior
-            </button>
-            {paginasVisibles(paginaActual, totalPaginas).map((item) =>
-              typeof item === 'string' ? (
-                <span key={item} className="px-1.5 text-tenue" aria-hidden="true">
-                  …
-                </span>
-              ) : (
-                <button
-                  key={item}
-                  type="button"
-                  onClick={() => setPagina(item)}
-                  aria-current={item === paginaActual ? 'page' : undefined}
-                  aria-label={`Página ${item}`}
-                  className={`${clasePag} ${
-                    item === paginaActual
-                      ? 'border-cana bg-cana text-white'
-                      : 'border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro'
-                  }`}
-                >
-                  {item}
-                </button>
-              ),
-            )}
-            <button
-              type="button"
-              onClick={() => setPagina((p) => Math.min(totalPaginas, p + 1))}
-              disabled={paginaActual === totalPaginas}
-              className={`${clasePag} border-linea-fuerte bg-superficie text-tinta hover:bg-cana-claro`}
-            >
-              Siguiente
-            </button>
-          </div>
-        </nav>
-      )}
+      <Paginador pagina={paginaActual} totalFilas={ordenadas.length} porPagina={tamPagina} alCambiar={setPagina} />
     </>
   )
 }

@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { useApi } from '../../hooks/useApi'
 import { useAvisos } from '../../context/AvisosContext'
 import { exportarExcel, exportarPdf } from '../../services/exportar'
-import { Aviso, Boton, BotonLink, Cargando, Encabezado, ErrorCarga, Insignia, Seccion, Tabla, Vacio } from '../../components/ui'
+import { Aviso, Boton, BotonLink, Cargando, Encabezado, ErrorCarga, Insignia, Paginador, Seccion, Tabla, Vacio } from '../../components/ui'
 import { InsigniaPiso, InsigniaRiesgo, InsigniaZona } from '../../components/estados'
 import { fechaHora, num } from '../../utils/formato'
 
@@ -68,11 +68,19 @@ function FilaRanking({ l }) {
   )
 }
 
+const POR_PAGINA = 10
+
 export default function Ranking() {
   const { datos, cargando, error, recargar } = useApi('/ranking')
   const { avisar } = useAvisos()
   const [verExcluidos, setVerExcluidos] = useState(false)
   const [exportando, setExportando] = useState(null)
+  const [pagina, setPagina] = useState(1)
+
+  const totalRanking = datos?.ranking.length || 0
+  const totalPaginas = Math.max(1, Math.ceil(totalRanking / POR_PAGINA))
+  const paginaActual = Math.min(pagina, totalPaginas)
+  const rankingVisible = datos ? datos.ranking.slice((paginaActual - 1) * POR_PAGINA, paginaActual * POR_PAGINA) : []
 
   const exportar = async (formato) => {
     setExportando(formato)
@@ -100,7 +108,7 @@ export default function Ranking() {
         descripcion="Primero los lotes con riesgo alto (mal drenados, maduros y con lluvia de 70 % o más); después por zona, lejana → media → cercana, y dentro de cada zona por mayor Brix."
         acciones={
           <>
-            <Boton variante="secundario" icono="actualizar" onClick={() => recargar()} cargando={cargando && !!datos}>
+            <Boton variante="secundario" icono="actualizar" onClick={() => { setPagina(1); recargar() }} cargando={cargando && !!datos}>
               Recalcular
             </Boton>
             <BotonLink to="/tecnico/mapa" icono="mapa">
@@ -152,11 +160,14 @@ export default function Ranking() {
             }
           >
             {datos.ranking.length ? (
-              <ol className="-my-4">
-                {datos.ranking.map((l) => (
-                  <FilaRanking key={l.id_unico} l={l} />
-                ))}
-              </ol>
+              <>
+                <ol className="-my-4">
+                  {rankingVisible.map((l) => (
+                    <FilaRanking key={l.id_unico} l={l} />
+                  ))}
+                </ol>
+                <Paginador pagina={paginaActual} totalFilas={datos.ranking.length} porPagina={POR_PAGINA} alCambiar={setPagina} className="mt-6" />
+              </>
             ) : (
               <Vacio titulo="No queda ningún lote habilitado para cosechar.">
                 Revisá el estado de piso y las mediciones de Brix: los lotes inhabilitados o con menos de {datos.brix_minimo} °Bx no
