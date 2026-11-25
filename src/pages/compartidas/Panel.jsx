@@ -165,16 +165,31 @@ export default function Panel() {
             las paradas y el patio son de toda la fábrica.
           </p>
           <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-            {datos.tarjetas.map((t) => (
-              <article key={t.id} className="rounded-lg border border-linea bg-superficie p-4">
-                <h2 className="font-sans text-sm font-semibold text-tinta-2">{t.titulo}</h2>
-                <p className="cifra mt-2 text-4xl font-semibold tv:text-5xl">{valorTarjeta(t)}</p>
-                <p className="mt-1 text-xs text-tinta-2">{t.detalle}</p>
-                <div className="mt-2">
-                  <Variacion t={t} />
-                </div>
-              </article>
-            ))}
+            {datos.tarjetas.map((t) => {
+              const pctAvance = t.id === 5 ? Math.min(100, Math.max(0, Number(t.valor || 0))) : null
+              return (
+                <article key={t.id} className="rounded-lg border border-linea bg-superficie p-4">
+                  <h2 className="font-sans text-sm font-semibold text-tinta-2">{t.titulo}</h2>
+                  <p className="cifra mt-2 text-4xl font-semibold tv:text-5xl">{valorTarjeta(t)}</p>
+                  {pctAvance !== null && (
+                    <div
+                      className="mt-2.5 h-2 w-full overflow-hidden rounded-full bg-linea"
+                      role="progressbar"
+                      aria-label={t.titulo}
+                      aria-valuemin={0}
+                      aria-valuemax={100}
+                      aria-valuenow={pctAvance}
+                    >
+                      <div className="h-full rounded-full bg-cana transition-all" style={{ width: `${pctAvance}%` }} />
+                    </div>
+                  )}
+                  <p className="mt-1.5 text-xs text-tinta-2">{t.detalle}</p>
+                  <div className="mt-2">
+                    <Variacion t={t} />
+                  </div>
+                </article>
+              )
+            })}
           </div>
           <div className="mb-6 grid gap-3 sm:grid-cols-3">
             {tarjetasToneladas(datos).map((t) => (
