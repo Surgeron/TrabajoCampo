@@ -86,6 +86,16 @@ def _avance(lotes, hasta: date):
     return (round(hechas / total * 100, 1) if total else 0.0), round(hechas, 2), round(total, 2)
 
 
+def _avance_toneladas(ctx: Contexto, lotes: list[dict], hasta: date):
+    total = sum(float(l.get("toneladas_estimadas") or 0) for l in lotes)
+    hechas = 0.0
+    for l in lotes:
+        for c in ctx.cosechas_por_lote_campania.get(l.get("id_lote_campania"), []):
+            if fechas.de_fecha(c["fecha"]) <= hasta:
+                hechas += float(c.get("toneladas") or 0)
+    return (round(hechas / total * 100, 1) if total else 0.0), round(hechas, 1), round(total, 1)
+
+
 def _lluvia_finca_dia(ctx):
     """{(id_finca, fecha): promedio mm de los pluviómetros de la finca}"""
     pluv_por_finca = defaultdict(list)
@@ -174,6 +184,8 @@ def panel(repo, **filtros):
     prod = _produccion(ctx, f)
     av_pct, av_ha, av_total = _avance(prod, f.hasta)
     av_prev, _, _ = _avance(prod, f.hasta - timedelta(days=7))
+    av_t_pct, av_t_hechas, av_t_total = _avance_toneladas(ctx, prod, f.hasta)
+    av_t_prev, _, _ = _avance_toneladas(ctx, prod, f.hasta - timedelta(days=7))
     madura_riesgo = [l for l in prod if not l.get("terminado") and l.get("brix") is not None
                      and float(l["brix"]) >= float(p["brix_minimo"]) and (l.get("riesgo") or {}).get("nivel") == RIESGO_ALTO]
     ha_riesgo = round(sum(float(l.get("area_neta_ha") or 0) for l in madura_riesgo), 2)
@@ -187,8 +199,10 @@ def panel(repo, **filtros):
         {"id": 2, "titulo": "Costo estimado de las paradas", "valor": costos["central"], "unidad": "USD",
          "variacion": round((h_sem - h_prev) * float(p["costo_hora_parada_central"])),
          "detalle": f"Rango {num(costos['bajo'], 0)} a {num(costos['alto'], 0)} USD"},
-        {"id": 5, "titulo": "Avance de cosecha", "valor": av_pct, "unidad": "% del área neta",
+        {"id": 5, "titulo": "Avance de cosecha (hectáreas)", "valor": av_pct, "unidad": "% del área neta",
          "variacion": round(av_pct - av_prev, 1), "detalle": f"{num(av_ha, 0)} de {num(av_total, 0)} ha netas"},
+        {"id": 7, "titulo": "Avance de cosecha (toneladas netas)", "valor": av_t_pct, "unidad": "% de t netas",
+         "variacion": round(av_t_pct - av_t_prev, 1), "detalle": f"{num(av_t_hechas, 0)} de {num(av_t_total, 0)} t netas"},
         {"id": 6, "titulo": "Caña madura en riesgo", "valor": ha_riesgo, "unidad": "ha",
          "variacion": None, "detalle": f"{len(madura_riesgo)} lotes con riesgo alto y ≥ {p['brix_minimo']} °Bx (valor del momento)"},
     ]
@@ -212,11 +226,21 @@ def panel(repo, **filtros):
     total_paradas = sum(_horas_en_rango(x, f.inicio_dt, f.fin_dt, ahora) for x in todas)
     transcurridas = fechas.horas_entre(f.inicio_dt, f.fin_dt)
 
-    # Gráfico 5: avance por zona
+    # Gráfico 5: avance por zona (hectáreas y toneladas netas)
     avance_zona = []
     for z in ("Lejana", "Media", "Cercana"):
-        pct, ha, tot = _avance([l for l in prod if l.get("zona") == z], f.hasta)
-        avance_zona.append({"zona": z, "pct": pct, "ha_terminadas": ha, "ha_total": tot})
+        de_zona = [l for l in prod if l.get("zona") == z]
+        pct, ha, tot = _avance(de_zona, f.hasta)
+        pct_t, t_cos, t_tot = _avance_toneladas(ctx, de_zona, f.hasta)
+        avance_zona.append({
+            "zona": z,
+            "pct": pct,
+            "ha_terminadas": ha,
+            "ha_total": tot,
+            "pct_t": pct_t,
+            "t_cosechadas": t_cos,
+            "t_total": t_tot,
+        })
 
     # Gráfico 8: lluvia por finca con alertas
     lluvia = _lluvia_finca_dia(ctx)
