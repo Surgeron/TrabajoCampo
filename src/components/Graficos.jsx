@@ -137,32 +137,20 @@ export function GraficoCobertura({ cobertura }) {
   )
 }
 
-// 5. Avance de cosecha por zona (barras horizontales: hectáreas y toneladas netas)
+// 5. Avance de cosecha por zona (barras horizontales de progreso)
 export function GraficoAvance({ datos }) {
   return (
-    <Figura titulo="Avance de cosecha por zona" descripcion="Hectáreas netas terminadas y toneladas netas cosechadas por zona; estrategia lejana → media → cercana" alto={260}>
+    <Figura titulo="Avance de cosecha por zona" descripcion="Hectáreas netas terminadas sobre hectáreas netas en producción; estrategia lejana → media → cercana" alto={200}>
       <BarChart data={datos} layout="vertical" margin={{ top: 4, right: 48, left: 8, bottom: 0 }}>
         <CartesianGrid horizontal={false} stroke={GRILLA} />
         <XAxis type="number" domain={[0, 100]} {...ejes} unit=" %" />
         <YAxis type="category" dataKey="zona" {...ejes} width={64} />
         <Tooltip
-          content={
-            <CajaTooltip
-              formatoValor={(v, p) =>
-                p.dataKey === 'pct_t'
-                  ? `${num(v, 1)} % (${num(p.payload.t_cosechadas, 0)} de ${num(p.payload.t_total, 0)} t)`
-                  : `${num(v, 1)} % (${num(p.payload.ha_terminadas, 0)} de ${num(p.payload.ha_total, 0)} ha)`
-              }
-            />
-          }
+          content={<CajaTooltip formatoValor={(v, p) => `${num(v, 1)} % (${num(p.payload.ha_terminadas, 0)} de ${num(p.payload.ha_total, 0)} ha)`} />}
           cursor={{ fill: 'var(--color-cana-claro)', opacity: 0.6 }}
         />
-        <Legend content={<Leyenda />} />
-        <Bar dataKey="pct" name="Hectáreas cosechadas" fill={SERIES[0]} radius={[0, 4, 4, 0]} maxBarSize={18} background={{ fill: 'var(--color-lluvia-claro)', radius: 4 }}>
+        <Bar dataKey="pct" name="Avance" fill={SERIES[0]} radius={[0, 4, 4, 0]} maxBarSize={24} background={{ fill: 'var(--color-lluvia-claro)', radius: 4 }}>
           <LabelList dataKey="pct" position="right" formatter={(v) => `${num(v, 1)} %`} fill="var(--color-tinta-2)" fontSize={12} />
-        </Bar>
-        <Bar dataKey="pct_t" name="Toneladas netas cosechadas" fill={SERIES[2]} radius={[0, 4, 4, 0]} maxBarSize={18} background={{ fill: 'var(--color-cana-claro)', radius: 4 }}>
-          <LabelList dataKey="pct_t" position="right" formatter={(v) => `${num(v, 1)} %`} fill="var(--color-tinta-2)" fontSize={12} />
         </Bar>
       </BarChart>
     </Figura>

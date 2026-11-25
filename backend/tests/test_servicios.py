@@ -325,21 +325,9 @@ class TestSimulacionYGerencia(Base):
         p = gerencia.panel(self.repo)
         horas = next(t for t in p["tarjetas"] if t["id"] == 1)["valor"]
         self.assertEqual(horas, 288 + 3.5 + 3 + 2.5 + 3 + 3.5)
-        t_ha = next(t for t in p["tarjetas"] if t["id"] == 5)
-        t_ton = next(t for t in p["tarjetas"] if t["id"] == 7)
-        self.assertEqual(t_ha["valor"], 0.0)
-        self.assertEqual(t_ton["valor"], 0.0)
         self.assertEqual(p["filtros"]["desde"], "2026-06-01")
         self.assertEqual(len(p["graficos"]["avance_zona"]), 3)
-        self.assertTrue(all("pct_t" in z and "t_cosechadas" in z and "t_total" in z for z in p["graficos"]["avance_zona"]))
         self.assertLess(p["graficos"]["disponibilidad_pct"], 100)
-        lote = self.lote_por(estado_lote="En producción", zona="Lejana")
-        campo.registrar_cosecha(self.repo, TEC, lote["id_unico"], "2026-11-21", 1000, True)
-        p2 = gerencia.panel(self.repo)
-        self.assertGreater(next(t for t in p2["tarjetas"] if t["id"] == 5)["valor"], 0)
-        self.assertGreater(next(t for t in p2["tarjetas"] if t["id"] == 7)["valor"], 0)
-        z_lej = next(z for z in p2["graficos"]["avance_zona"] if z["zona"] == "Lejana")
-        self.assertEqual(z_lej["t_cosechadas"], 1000.0)
         with self.assertRaises(Validacion):
             gerencia.panel(self.repo, desde="2026-11-21", hasta="2026-11-01")
 

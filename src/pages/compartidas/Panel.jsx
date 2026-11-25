@@ -9,7 +9,7 @@ import { GraficoAvance, GraficoCobertura, GraficoDisponibilidad, GraficoLluvia, 
 import { fecha, hoyISO, num } from '../../utils/formato'
 
 // Si sube, ¿es bueno? Define el sentido de la variación de cada tarjeta.
-const SUBIR_ES_BUENO = { 1: false, 2: false, 5: true, 6: false, 7: true }
+const SUBIR_ES_BUENO = { 1: false, 2: false, 5: true, 6: false }
 
 function valorTarjeta(t) {
   if (t.unidad === 'USD') return `${num(t.valor, 0)} USD`
@@ -147,7 +147,7 @@ export default function Panel() {
             Del {fecha(datos.filtros.desde)} al {fecha(datos.filtros.hasta)}. La finca filtra avance, riesgo, hectáreas sin piso y lluvia; la zona y el tipo de cultivo filtran avance, riesgo y hectáreas sin piso;
             las paradas y el patio son de toda la fábrica.
           </p>
-          <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          <div className="mb-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
             {datos.tarjetas.map((t) => (
               <article key={t.id} className="rounded-lg border border-linea bg-superficie p-4">
                 <h2 className="font-sans text-sm font-semibold text-tinta-2">{t.titulo}</h2>

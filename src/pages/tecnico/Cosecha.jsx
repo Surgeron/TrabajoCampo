@@ -43,7 +43,7 @@ export default function Cosecha() {
   const recientes = useApi('/cosechas')
   const inicioCampania = parametros.datos?.campania?.fecha_inicio
   const rendimientoDefault =
-    Number(parametros.datos?.parametros?.find((p) => p.clave === 'rendimiento_estimado_tha')?.valor) || 75
+    Number(parametros.datos?.parametros?.find((p) => p.clave === 'rendimiento_estimado_tha')?.valor) || 85
   const [valores, setValores] = useState({ id_unico: params.get('lote') || '', fecha: hoyISO(), toneladas: '', lote_terminado: false })
   const [loteSeleccionado, setLoteSeleccionado] = useState(null)
   const [recargaLotes, setRecargaLotes] = useState(0)

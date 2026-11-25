@@ -179,7 +179,7 @@ class Contexto:
         if est_manual is not None:
             lote["toneladas_estimadas"] = round(float(est_manual), 1)
         elif area is not None:
-            lote["toneladas_estimadas"] = round(float(area) * float(p.get("rendimiento_estimado_tha") or 75), 1)
+            lote["toneladas_estimadas"] = round(float(area) * float(p.get("rendimiento_estimado_tha") or 85), 1)
         else:
             lote["toneladas_estimadas"] = None
         lote["toneladas_restantes"] = (
