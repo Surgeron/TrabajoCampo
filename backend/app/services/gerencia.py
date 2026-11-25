@@ -238,10 +238,29 @@ def panel(repo, **filtros):
     for l in reservados:
         reserva_zona[l.get("zona")] += float(l.get("area_neta_ha") or 0)
 
+    desde_txt, hasta_txt = fechas.fecha_txt(f.desde), fechas.fecha_txt(f.hasta)
+    ton_total = ton_conv = ton_org = 0.0
+    for l in prod:
+        t_lote = sum(
+            float(c.get("toneladas") or 0)
+            for c in ctx.cosechas_por_lote_campania.get(l.get("id_lote_campania"), [])
+            if desde_txt <= c["fecha"] <= hasta_txt
+        )
+        ton_total += t_lote
+        if l.get("tipo_cultivo") == "Orgánico":
+            ton_org += t_lote
+        elif l.get("tipo_cultivo") == "Convencional":
+            ton_conv += t_lote
+
     return {
         "filtros": f.dict(),
         "campania": {k: ctx.campania.get(k) for k in ("id", "nombre", "fecha_inicio", "fecha_fin", "toneladas_plan")},
         "tarjetas": tarjetas,
+        "toneladas_cosechadas": {
+            "total": round(ton_total, 1),
+            "convencional": round(ton_conv, 1),
+            "organico": round(ton_org, 1),
+        },
         "graficos": {
             "paradas_semana": paradas_semana,
             "disponibilidad": disponibilidad,

@@ -328,6 +328,13 @@ class TestSimulacionYGerencia(Base):
         self.assertEqual(p["filtros"]["desde"], "2026-06-01")
         self.assertEqual(len(p["graficos"]["avance_zona"]), 3)
         self.assertLess(p["graficos"]["disponibilidad_pct"], 100)
+        self.assertEqual(p["toneladas_cosechadas"], {"total": 0.0, "convencional": 0.0, "organico": 0.0})
+        l_conv = self.lote_por(estado_lote="En producción", tipo_cultivo="Convencional")
+        l_org = self.lote_por(estado_lote="En producción", tipo_cultivo="Orgánico")
+        campo.registrar_cosecha(self.repo, TEC, l_conv["id_unico"], "2026-11-21", 120.5, False)
+        campo.registrar_cosecha(self.repo, TEC, l_org["id_unico"], "2026-11-21", 80.0, False)
+        p2 = gerencia.panel(self.repo)
+        self.assertEqual(p2["toneladas_cosechadas"], {"total": 200.5, "convencional": 120.5, "organico": 80.0})
         with self.assertRaises(Validacion):
             gerencia.panel(self.repo, desde="2026-11-21", hasta="2026-11-01")
 

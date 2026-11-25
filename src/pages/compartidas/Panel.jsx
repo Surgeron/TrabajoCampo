@@ -18,6 +18,20 @@ function valorTarjeta(t) {
   return `${num(t.valor, 1)} %`
 }
 
+function formatoToneladas(v) {
+  const n = Number(v || 0)
+  return `${num(n, Number.isInteger(n) ? 0 : 1)} t`
+}
+
+function tarjetasToneladas(datos) {
+  const tc = datos?.toneladas_cosechadas || {}
+  return [
+    { titulo: 'Toneladas cosechadas (total)', valor: tc.total || 0 },
+    { titulo: 'Toneladas cosechadas (convencional)', valor: tc.convencional || 0 },
+    { titulo: 'Toneladas cosechadas (orgánico)', valor: tc.organico || 0 },
+  ]
+}
+
 function Variacion({ t }) {
   if (t.variacion === null || t.variacion === undefined) return <p className="text-xs text-tenue">Sin comparación semanal</p>
   if (t.variacion === 0) return <p className="text-xs text-tenue">Igual que la semana anterior</p>
@@ -67,7 +81,10 @@ export default function Panel() {
       await exportarPanelPdf({
         titulo: 'Panel gerencial',
         subtitulo: `${datos.campania.nombre} · del ${fecha(datos.filtros.desde)} al ${fecha(datos.filtros.hasta)}`,
-        tarjetas: datos.tarjetas.map((t) => ({ titulo: t.titulo, valorTexto: valorTarjeta(t), detalle: t.detalle })),
+        tarjetas: [
+          ...datos.tarjetas.map((t) => ({ titulo: t.titulo, valorTexto: valorTarjeta(t), detalle: t.detalle })),
+          ...tarjetasToneladas(datos).map((t) => ({ titulo: t.titulo, valorTexto: formatoToneladas(t.valor), detalle: 'Acumulado del rango filtrado' })),
+        ],
         contenedor: contenedor.current,
       })
       avisar('Panel exportado a PDF.')
@@ -156,6 +173,14 @@ export default function Panel() {
                 <div className="mt-2">
                   <Variacion t={t} />
                 </div>
+              </article>
+            ))}
+          </div>
+          <div className="mb-6 grid gap-3 sm:grid-cols-3">
+            {tarjetasToneladas(datos).map((t) => (
+              <article key={t.titulo} className="rounded-lg border border-linea bg-superficie p-4">
+                <h2 className="font-sans text-sm font-semibold text-tinta-2">{t.titulo}</h2>
+                <p className="cifra mt-2 text-3xl font-semibold tv:text-4xl">{formatoToneladas(t.valor)}</p>
               </article>
             ))}
           </div>
