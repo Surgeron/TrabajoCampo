@@ -46,7 +46,7 @@ export function InsigniaZona({ zona, madurez }) {
   )
 }
 
-export const COLOR_RIESGO = { Alto: '#d03b3b', Medio: '#fab219', Bajo: '#0ca30c', 'Sin datos': '#898781' }
-export const COLOR_PISO = { Habilitado: '#0ca30c', 'Con restricciones': '#fab219', Inhabilitado: '#d03b3b' }
-// Rampa ordinal de un solo tono (azul) para las zonas: lejana a cercana
-export const COLOR_ZONA = { Lejana: '#1c5cab', Media: '#3987e5', Cercana: '#86b6ef' }
+export const COLOR_RIESGO = { Alto: '#DC2B4A', Medio: '#D97706', Bajo: '#15803D', 'Sin datos': '#7C646A' }
+export const COLOR_PISO = { Habilitado: '#15803D', 'Con restricciones': '#D97706', Inhabilitado: '#DC2B4A' }
+// Rampa ordinal de un solo tono (bordó a rosa) para las zonas: lejana a cercana
+export const COLOR_ZONA = { Lejana: '#561325', Media: '#B81D38', Cercana: '#E57A8E' }

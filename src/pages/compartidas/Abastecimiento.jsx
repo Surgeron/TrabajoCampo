@@ -20,25 +20,25 @@ function Evolucion({ puntos, minimo }) {
   return (
     <figure>
       <svg viewBox={`0 0 ${ancho} ${alto}`} className="h-44 w-full" role="img" aria-label={`Evolución del colchón: de ${puntos[0].cantidad_carros} a ${puntos.at(-1).cantidad_carros} carros`}>
-        <line x1="30" x2={ancho - 10} y1={y(minimo)} y2={y(minimo)} stroke="#d03b3b" strokeWidth="1.5" />
-        <text x={ancho - 12} y={y(minimo) - 5} textAnchor="end" fontSize="12" fill="#a42727">
+        <line x1="30" x2={ancho - 10} y1={y(minimo)} y2={y(minimo)} stroke="var(--color-critico)" strokeWidth="1.5" />
+        <text x={ancho - 12} y={y(minimo) - 5} textAnchor="end" fontSize="12" fill="var(--color-critico-texto)">
           {minimo} carros
         </text>
-        <line x1="30" x2={ancho - 10} y1={alto - 20} y2={alto - 20} stroke="#c3c2b7" />
-        <path d={camino} fill="none" stroke="#2a78d6" strokeWidth="2" strokeLinejoin="round" />
+        <line x1="30" x2={ancho - 10} y1={alto - 20} y2={alto - 20} stroke="var(--color-linea-fuerte)" />
+        <path d={camino} fill="none" stroke="var(--serie-1)" strokeWidth="2" strokeLinejoin="round" />
         {puntos.map((p, i) => (
           <g key={p.fecha_hora}>
-            <circle cx={x(i)} cy={y(p.cantidad_carros)} r="4.5" fill="#2a78d6" stroke="#fcfcfb" strokeWidth="2">
+            <circle cx={x(i)} cy={y(p.cantidad_carros)} r="4.5" fill="var(--serie-1)" stroke="var(--color-superficie)" strokeWidth="2">
               <title>{`${hora(p.fecha_hora)}: ${p.cantidad_carros} carros`}</title>
             </circle>
             {(i === 0 || i === puntos.length - 1) && (
-              <text x={x(i)} y={alto - 4} textAnchor="middle" fontSize="12" fill="#6f7c73">
+              <text x={x(i)} y={alto - 4} textAnchor="middle" fontSize="12" fill="var(--color-tenue)">
                 {hora(p.fecha_hora)}
               </text>
             )}
           </g>
         ))}
-        <text x={x(puntos.length - 1)} y={y(puntos.at(-1).cantidad_carros) - 10} textAnchor="middle" fontSize="12" fontWeight="600" fill="#16241b">
+        <text x={x(puntos.length - 1)} y={y(puntos.at(-1).cantidad_carros) - 10} textAnchor="middle" fontSize="12" fontWeight="600" fill="var(--color-tinta)">
           {puntos.at(-1).cantidad_carros}
         </text>
       </svg>

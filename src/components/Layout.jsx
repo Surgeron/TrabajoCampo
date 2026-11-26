@@ -13,9 +13,9 @@ function Marca({ compacta = false }) {
   return (
     <div className="flex items-center gap-2.5">
       <svg viewBox="0 0 32 32" className="h-8 w-8 shrink-0" aria-hidden="true">
-        <rect width="32" height="32" rx="7" fill="#1c4a33" />
-        <path d="M11 27V9M16 27V5M21 27V11" stroke="#b9d24a" strokeWidth="2.6" strokeLinecap="round" />
-        <path d="M11 15l-4-3M16 12l4-3M21 18l4-3M16 20l-4-3" stroke="#e6eee8" strokeWidth="1.8" strokeLinecap="round" />
+        <rect width="32" height="32" rx="7" fill="#240911" />
+        <path d="M11 27V9M16 27V5M21 27V11" stroke="#DC2B4A" strokeWidth="2.6" strokeLinecap="round" />
+        <path d="M11 15l-4-3M16 12l4-3M21 18l4-3M16 20l-4-3" stroke="#F3E7E9" strokeWidth="1.8" strokeLinecap="round" />
       </svg>
       {!compacta && (
         <div className="leading-tight">

@@ -20,7 +20,7 @@ import {
 } from 'recharts'
 import { fechaCorta, fechaHora, num } from '../utils/formato'
 
-export const SERIES = ['#2a78d6', '#eb6834', '#1baf7a', '#eda100', '#e87ba4']
+export const SERIES = ['var(--serie-1)', 'var(--serie-2)', 'var(--serie-3)', 'var(--serie-4)', 'var(--serie-5)']
 const TINTA_TENUE = 'var(--color-tenue)'
 const GRILLA = 'var(--color-linea)'
 const BASE = 'var(--color-linea-fuerte)'
@@ -217,7 +217,7 @@ export function GraficoLluvia({ lluvia, finca, alCambiarFinca }) {
                 cursor={{ fill: 'var(--color-cana-claro)', opacity: 0.6 }}
               />
               <Legend content={<Leyenda />} />
-              <Bar dataKey="mm" name="Lluvia registrada" fill={SERIES[0]} radius={[4, 4, 0, 0]} maxBarSize={24} />
+              <Bar dataKey="mm" name="Lluvia registrada" fill="var(--serie-lluvia)" radius={[4, 4, 0, 0]} maxBarSize={24} />
               <Scatter dataKey="marcaAlerta" name="Día con alerta de lluvia" fill={CRITICO} shape="triangle" />
             </ComposedChart>
           </ResponsiveContainer>

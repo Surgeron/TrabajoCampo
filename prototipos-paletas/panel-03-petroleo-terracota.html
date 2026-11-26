@@ -1,0 +1,1217 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel gerencial · Propuesta 3: Petróleo Profundo y Terracota – Ingenio La Esperanza</title>
+    <style>
+      :root {
+        --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", sans-serif;
+        --font-display: Bahnschrift, "DIN Alternate", "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
+
+        /* Propuesta 3: Petróleo Profundo y Terracota (#0B252C, #133842, #1D4F5C, #0E7C7B, #D1603D, #F6F4EF) */
+        --color-papel: #F6F4EF;
+        --color-superficie: #FFFFFF;
+        --color-tinta: #0B252C;
+        --color-tinta-2: #42585F;
+        --color-tenue: #6A7E85;
+        --color-linea: #E3DFD5;
+        --color-linea-fuerte: #C8C2B4;
+
+        --color-sidebar: #0B252C;
+        --color-sidebar-2: #133842;
+        --color-sidebar-activo: #1D4F5C;
+        --color-sidebar-acento: #D1603D;
+        --color-sidebar-texto: #DFECEF;
+
+        --color-primario: #0E7C7B;
+        --color-primario-hover: #0A6261;
+        --color-primario-oscuro: #095252;
+        --color-primario-claro: #E4F3F2;
+        --color-track-barra: #E6F2F1;
+
+        --color-bien: #15803D;
+        --color-bien-texto: #166534;
+        --color-bien-claro: #E8F5EC;
+        --color-atencion: #D49B1A;
+        --color-atencion-texto: #855D06;
+        --color-atencion-claro: #FDF5DB;
+        --color-critico: #C53030;
+        --color-critico-texto: #9B2C2C;
+        --color-critico-claro: #FDE8E8;
+
+        --serie-1: #0E7C7B;
+        --serie-2: #D1603D;
+        --serie-3: #C9961A;
+        --serie-lluvia: #1D4F5C;
+      }
+
+      .app-root:has(#modo-oscuro:checked) {
+        color-scheme: dark;
+        --color-papel: #08191E;
+        --color-superficie: #102830;
+        --color-tinta: #ECF4F6;
+        --color-tinta-2: #B9CED3;
+        --color-tenue: #86A1A8;
+        --color-linea: #1E434F;
+        --color-linea-fuerte: #2A5B6B;
+
+        --color-primario: #14A39B;
+        --color-primario-hover: #0E7C7B;
+        --color-primario-claro: #133842;
+        --color-track-barra: #173B45;
+
+        --color-bien-texto: #6EE7B7;
+        --color-bien-claro: #113026;
+        --color-atencion-texto: #FCD34D;
+        --color-atencion-claro: #33270D;
+        --color-critico-texto: #FCA5A5;
+        --color-critico-claro: #3B1818;
+
+        --serie-1: #2DD4BF;
+        --serie-2: #E87D5B;
+        --serie-3: #FBBF24;
+        --serie-lluvia: #38BDF8;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html { -webkit-text-size-adjust: 100%; }
+      body {
+        margin: 0;
+        font-family: var(--font-sans);
+        font-feature-settings: "tnum" 1;
+        background: var(--color-papel);
+        color: var(--color-tinta);
+        line-height: 1.5;
+      }
+      h1, h2, h3, p, ul, figure, figcaption { margin: 0; }
+      ul { padding: 0; list-style: none; }
+      a { color: inherit; text-decoration: none; }
+      input, select, button { font: inherit; }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      .app-root {
+        min-height: 100dvh;
+        background: var(--color-papel);
+        color: var(--color-tinta);
+        transition: background-color 0.2s ease, color 0.2s ease;
+      }
+
+      /* Barra superior móvil */
+      .barra-movil {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: var(--color-sidebar);
+        padding: 0.625rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      }
+      .marca {
+        display: flex;
+        align-items: center;
+        gap: 0.625rem;
+      }
+      .marca-titulo {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        line-height: 1.2;
+      }
+      .marca-sub {
+        font-size: 0.75rem;
+        color: color-mix(in srgb, var(--color-sidebar-texto) 75%, transparent);
+        line-height: 1.2;
+      }
+
+      /* Barra lateral escritorio */
+      .barra-lateral {
+        display: none;
+      }
+      .menu-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 0.125rem;
+      }
+      .menu-grupo {
+        margin: 0.85rem 0 0.25rem;
+        padding: 0 0.75rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+        color: color-mix(in srgb, var(--color-sidebar-texto) 55%, transparent);
+      }
+      .menu-enlace {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        min-height: 2.5rem;
+        padding: 0.35rem 0.75rem;
+        border-radius: 6px;
+        border-left: 4px solid transparent;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: color-mix(in srgb, var(--color-sidebar-texto) 85%, transparent);
+        transition: background-color 0.15s ease, color 0.15s ease;
+      }
+      .menu-enlace:hover {
+        background: color-mix(in srgb, var(--color-sidebar-2) 85%, white 8%);
+        color: #FFFFFF;
+      }
+      .menu-enlace.activo {
+        border-left-color: var(--color-sidebar-acento);
+        background: var(--color-sidebar-activo);
+        color: #FFFFFF;
+        font-weight: 600;
+      }
+      .icono {
+        width: 1.2rem;
+        height: 1.2rem;
+        flex-shrink: 0;
+      }
+      .icono-sm {
+        width: 1rem;
+        height: 1rem;
+        flex-shrink: 0;
+      }
+
+      .pie-usuario {
+        margin-top: auto;
+        border-top: 1px solid rgba(255, 255, 255, 0.12);
+        padding-top: 0.75rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .btn-tema {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        min-height: 2.25rem;
+        width: 100%;
+        padding: 0 0.625rem;
+        border-radius: 6px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        color: color-mix(in srgb, var(--color-sidebar-texto) 85%, transparent);
+        cursor: pointer;
+        user-select: none;
+        transition: background-color 0.15s ease, color 0.15s ease;
+      }
+      .btn-tema:hover {
+        background: var(--color-sidebar-2);
+        color: #FFFFFF;
+      }
+      .btn-tema-movil {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        border-radius: 6px;
+        color: #FFFFFF;
+        cursor: pointer;
+      }
+      .btn-tema-movil:hover { background: var(--color-sidebar-2); }
+
+      /* Alternar ícono y texto del modo oscuro sin JS */
+      .solo-oscuro { display: none; }
+      .solo-claro { display: inline-flex; align-items: center; gap: 0.6rem; }
+      .app-root:has(#modo-oscuro:checked) .solo-oscuro { display: inline-flex; align-items: center; gap: 0.6rem; }
+      .app-root:has(#modo-oscuro:checked) .solo-claro { display: none; }
+
+      .usuario-fila {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem;
+        padding-top: 0.25rem;
+      }
+      .usuario-nombre {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #FFFFFF;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .usuario-rol {
+        font-size: 0.75rem;
+        color: color-mix(in srgb, var(--color-sidebar-texto) 70%, transparent);
+      }
+      .btn-salir {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        height: 2.5rem;
+        padding: 0 0.6rem;
+        border-radius: 6px;
+        border: none;
+        background: transparent;
+        color: color-mix(in srgb, var(--color-sidebar-texto) 85%, transparent);
+        font-size: 0.75rem;
+        cursor: pointer;
+      }
+      .btn-salir:hover {
+        background: var(--color-sidebar-2);
+        color: #FFFFFF;
+      }
+
+      /* Contenido principal */
+      .contenido {
+        max-width: 90rem;
+        margin: 0 auto;
+        padding: 1.25rem 1rem 3rem;
+      }
+
+      /* Barra comparadora de paletas */
+      .barra-paletas {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.75rem 1.25rem;
+        margin-bottom: 1.25rem;
+        padding: 0.75rem 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--color-linea-fuerte);
+        background: var(--color-superficie);
+      }
+      .paleta-info {
+        display: flex;
+        flex-direction: column;
+        gap: 0.2rem;
+      }
+      .paleta-etiqueta {
+        font-size: 0.75rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--color-primario);
+      }
+      .paleta-desc {
+        font-size: 0.8rem;
+        color: var(--color-tinta-2);
+      }
+      .swatches {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        margin-top: 0.25rem;
+      }
+      .swatch {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.15rem 0.45rem;
+        border-radius: 999px;
+        border: 1px solid var(--color-linea);
+        background: var(--color-papel);
+        font-size: 0.7rem;
+        font-weight: 600;
+        color: var(--color-tinta-2);
+      }
+      .swatch-color {
+        width: 0.75rem;
+        height: 0.75rem;
+        border-radius: 50%;
+        border: 1px solid rgba(0, 0, 0, 0.15);
+      }
+      .selector-propuestas {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+      }
+      .pill-paleta {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        border: 1px solid var(--color-linea-fuerte);
+        background: var(--color-papel);
+        color: var(--color-tinta-2);
+        font-size: 0.78rem;
+        font-weight: 600;
+        transition: all 0.15s ease;
+      }
+      .pill-paleta:hover {
+        border-color: var(--color-primario);
+        color: var(--color-tinta);
+      }
+      .pill-paleta.actual {
+        border-color: var(--color-primario);
+        background: var(--color-primario);
+        color: #FFFFFF;
+      }
+
+      /* Encabezado */
+      .encabezado {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .encabezado h1 {
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 600;
+        letter-spacing: -0.005em;
+        color: var(--color-tinta);
+      }
+      .encabezado p {
+        margin-top: 0.25rem;
+        max-width: 48rem;
+        font-size: 0.875rem;
+        color: var(--color-tinta-2);
+      }
+
+      /* Botones y entradas */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        min-height: 2.75rem;
+        padding: 0.5rem 1rem;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        font-size: 0.875rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color 0.15s ease, border-color 0.15s ease;
+      }
+      .btn-primario {
+        background: var(--color-primario);
+        border-color: var(--color-primario);
+        color: #FFFFFF;
+      }
+      .btn-primario:hover {
+        background: var(--color-primario-hover);
+        border-color: var(--color-primario-hover);
+      }
+      .btn-secundario {
+        background: var(--color-superficie);
+        border-color: var(--color-linea-fuerte);
+        color: var(--color-tinta);
+      }
+      .btn-secundario:hover {
+        background: var(--color-primario-claro);
+      }
+
+      /* Barra de filtros */
+      .filtros {
+        display: grid;
+        gap: 0.75rem;
+        align-items: end;
+        margin-bottom: 1.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--color-linea);
+        background: var(--color-superficie);
+      }
+      .campo {
+        display: flex;
+        flex-direction: column;
+        gap: 0.35rem;
+      }
+      .campo label {
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-tinta);
+      }
+      .campo-entrada {
+        width: 100%;
+        min-height: 2.75rem;
+        padding: 0.5rem 0.75rem;
+        border-radius: 6px;
+        border: 1px solid var(--color-linea-fuerte);
+        background: var(--color-superficie);
+        color: var(--color-tinta);
+      }
+      .campo-entrada:disabled {
+        background: var(--color-papel);
+        color: var(--color-tenue);
+      }
+      .campo-entrada:focus {
+        outline: none;
+        border-color: var(--color-primario);
+        box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primario) 22%, transparent);
+      }
+
+      .nota-rango {
+        margin-bottom: 0.75rem;
+        font-size: 0.875rem;
+        color: var(--color-tinta-2);
+      }
+
+      /* Tarjetas KPI */
+      .grid-kpi-4 {
+        display: grid;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .grid-kpi-3 {
+        display: grid;
+        gap: 0.75rem;
+        margin-bottom: 1.5rem;
+      }
+      .tarjeta-kpi {
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--color-linea);
+        background: var(--color-superficie);
+      }
+      .tarjeta-kpi h2 {
+        font-family: var(--font-sans);
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: var(--color-tinta-2);
+      }
+      .cifra {
+        font-family: var(--font-display);
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
+      }
+      .kpi-valor {
+        margin-top: 0.5rem;
+        font-size: 2.25rem;
+        font-weight: 600;
+        color: var(--color-tinta);
+      }
+      .kpi-valor-t {
+        margin-top: 0.5rem;
+        font-size: 1.875rem;
+        font-weight: 600;
+        color: var(--color-tinta);
+      }
+      .progreso-pista {
+        margin-top: 0.625rem;
+        height: 0.5rem;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 999px;
+        background: var(--color-linea);
+      }
+      .progreso-relleno {
+        height: 100%;
+        border-radius: 999px;
+        background: var(--color-primario);
+      }
+      .kpi-detalle {
+        margin-top: 0.45rem;
+        font-size: 0.75rem;
+        color: var(--color-tinta-2);
+      }
+      .kpi-var {
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 600;
+      }
+      .var-bien { color: var(--color-bien-texto); }
+      .var-mal { color: var(--color-critico-texto); }
+      .var-neutro { color: var(--color-tenue); font-weight: 400; }
+
+      /* Gráficos */
+      .grid-graficos {
+        display: grid;
+        gap: 1rem;
+      }
+      .tarjeta-grafico {
+        padding: 1rem;
+        border-radius: 8px;
+        border: 1px solid var(--color-linea);
+        background: var(--color-superficie);
+      }
+      .grafico-cabecera {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+        margin-bottom: 0.75rem;
+      }
+      .grafico-titulo {
+        font-family: var(--font-display);
+        font-size: 1rem;
+        font-weight: 600;
+        color: var(--color-tinta);
+      }
+      .grafico-desc {
+        font-size: 0.75rem;
+        color: var(--color-tenue);
+      }
+      .select-compacto {
+        min-height: 2.25rem;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.875rem;
+      }
+      .svg-grafico {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+      .eje-texto {
+        font-family: var(--font-sans);
+        font-size: 11px;
+        fill: var(--color-tenue);
+      }
+      .eje-texto-fuerte {
+        font-family: var(--font-sans);
+        font-size: 11px;
+        font-weight: 600;
+        fill: var(--color-tinta-2);
+      }
+      .leyenda {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.35rem 1rem;
+        margin-top: 0.5rem;
+        font-size: 0.75rem;
+        color: var(--color-tinta-2);
+      }
+      .leyenda li {
+        display: flex;
+        align-items: center;
+        gap: 0.375rem;
+      }
+      .leyenda-cuadro {
+        display: inline-block;
+        width: 0.625rem;
+        height: 0.625rem;
+        border-radius: 2px;
+      }
+
+      .nota-pie {
+        margin-top: 1rem;
+        font-size: 0.75rem;
+        color: var(--color-tenue);
+      }
+
+      /* Responsive */
+      @media (min-width: 640px) {
+        .filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-kpi-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-kpi-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+      }
+      @media (min-width: 768px) {
+        .encabezado {
+          flex-direction: row;
+          align-items: flex-end;
+          justify-content: space-between;
+        }
+        .encabezado h1 { font-size: 1.875rem; }
+        .contenido { padding: 2rem 2rem 3rem; }
+      }
+      @media (min-width: 1024px) {
+        .app-root {
+          display: grid;
+          grid-template-columns: 16rem 1fr;
+        }
+        .barra-movil { display: none; }
+        .barra-lateral {
+          position: sticky;
+          top: 0;
+          height: 100dvh;
+          display: flex;
+          flex-direction: column;
+          gap: 1rem;
+          overflow-y: auto;
+          background: var(--color-sidebar);
+          padding: 1rem 0.75rem;
+        }
+        .filtros { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+        .grid-graficos { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      }
+      @media (min-width: 1280px) {
+        .grid-kpi-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+      }
+      @media (min-width: 1440px) {
+        .filtros { grid-template-columns: 1.2fr 1fr 1fr 1fr 0.9fr 1fr auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app-root">
+      <input type="checkbox" id="modo-oscuro" class="sr-only" />
+
+      <!-- Barra móvil -->
+      <header class="barra-movil">
+        <div class="marca">
+          <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+            <rect width="32" height="32" rx="7" fill="var(--color-sidebar-2)" />
+            <path d="M11 27V9M16 27V5M21 27V11" stroke="var(--color-sidebar-acento)" stroke-width="2.6" stroke-linecap="round" />
+            <path d="M11 15l-4-3M16 12l4-3M21 18l4-3M16 20l-4-3" stroke="var(--color-sidebar-texto)" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <div>
+            <p class="marca-titulo">Ingenio La Esperanza</p>
+            <p class="marca-sub">Priorización de cosecha</p>
+          </div>
+        </div>
+        <label for="modo-oscuro" class="btn-tema-movil" title="Alternar modo claro/oscuro">
+          <svg class="icono solo-claro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" />
+          </svg>
+          <svg class="icono solo-oscuro" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v2m0 14v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M3 12h2m14 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" />
+          </svg>
+        </label>
+      </header>
+
+      <!-- Barra lateral -->
+      <aside class="barra-lateral">
+        <div class="marca" style="padding: 0 0.5rem;">
+          <svg viewBox="0 0 32 32" width="32" height="32" aria-hidden="true">
+            <rect width="32" height="32" rx="7" fill="var(--color-sidebar-2)" />
+            <path d="M11 27V9M16 27V5M21 27V11" stroke="var(--color-sidebar-acento)" stroke-width="2.6" stroke-linecap="round" />
+            <path d="M11 15l-4-3M16 12l4-3M21 18l4-3M16 20l-4-3" stroke="var(--color-sidebar-texto)" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+          <div>
+            <p class="marca-titulo">Ingenio La Esperanza</p>
+            <p class="marca-sub">Priorización de cosecha</p>
+          </div>
+        </div>
+
+        <nav class="menu-nav" aria-label="Menú principal">
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z" /></svg>
+            <span>Inicio</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h11M4 12h8M4 18h5M18 4v16m0 0l-3-3m3 3l3-3" /></svg>
+            <span>Ranking de cosecha</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2zm0 0v14m6-12v14" /></svg>
+            <span>Mapa de lotes</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h14v17l-7-4-7 4z" /></svg>
+            <span>Lotes de reserva</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h18v14H3zM3 12h18M12 5v14" /></svg>
+            <span>Fincas y lotes</span>
+          </a>
+
+          <p class="menu-grupo">Registros de campo</p>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 18h18M5 18l3-6h8l3 6M9 12V7h6v5" /></svg>
+            <span>Estado de piso</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3h4M11 3v6l-5 9a2 2 0 0 0 2 3h8a2 2 0 0 0 2-3l-5-9V3M8 15h8" /></svg>
+            <span>Medición de Brix</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V9m0 0c0-3 2-5 5-6 0 3-2 5-5 6zm0 0C12 6 10 4 7 3c0 3 2 5 5 6zm0 6c0-2 2-4 5-4 0 2-2 4-5 4zm0 0c0-2-2-4-5-4 0 2 2 4 5 4z" /></svg>
+            <span>Cosecha realizada</span>
+          </a>
+
+          <p class="menu-grupo">Lluvia y patio</p>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 15a4 4 0 0 1-.6-8A6 6 0 0 1 18 8a3.5 3.5 0 0 1-.5 7zM8 18l-1 3m5-3l-1 3m5-3l-1 3" /></svg>
+            <span>Pronóstico de lluvia</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 16h13V7H2zm13-6h4l3 3v3h-7M6 19a2 2 0 1 0 0-.1M18 19a2 2 0 1 0 0-.1" /></svg>
+            <span>Abastecimiento de patio</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20l4-8 4 4 4-9 4 6M4 4v16h16" /></svg>
+            <span>Simular escenario</span>
+          </a>
+
+          <p class="menu-grupo">Gerencia</p>
+          <a href="#" class="menu-enlace activo" aria-current="page">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10m6 10V4m6 16v-7m4 7H2" /></svg>
+            <span>Panel gerencial</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6" /></svg>
+            <span>Informes</span>
+          </a>
+          <a href="#" class="menu-enlace">
+            <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h10m4 0h2M4 17h4m4 0h8M14 5v4m-4 6v4" /></svg>
+            <span>Parámetros</span>
+          </a>
+        </nav>
+
+        <div class="pie-usuario" style="padding: 0.75rem 0.5rem 0;">
+          <label for="modo-oscuro" class="btn-tema">
+            <span class="solo-claro">
+              <svg class="icono-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z" /></svg>
+              <span>Modo oscuro</span>
+            </span>
+            <span class="solo-oscuro">
+              <svg class="icono-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2m0 14v2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M3 12h2m14 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4M16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0z" /></svg>
+              <span>Modo claro</span>
+            </span>
+          </label>
+          <div class="usuario-fila">
+            <div style="min-width: 0; flex: 1;">
+              <p class="usuario-nombre">Carlos Mendoza</p>
+              <p class="usuario-rol">Técnico agrícola</p>
+            </div>
+            <button type="button" class="btn-salir" title="Cerrar sesión">
+              <svg class="icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h4v16h-4M10 8l-4 4 4 4M6 12h10" /></svg>
+              <span>Salir</span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Cuerpo principal -->
+      <main class="contenido">
+        <!-- Barra comparadora de paletas -->
+        <section class="barra-paletas" aria-label="Comparador de paletas de color">
+          <div class="paleta-info">
+            <span class="paleta-etiqueta">Propuesta 3 · Petróleo Profundo y Terracota (propuesta)</span>
+            <p class="paleta-desc">Equilibrio agroindustrial contemporáneo: azul petróleo técnico en navegación y botones, terracota en alertas y énfasis.</p>
+            <div class="swatches">
+              <span class="swatch"><span class="swatch-color" style="background:#0B252C"></span>#0B252C</span>
+              <span class="swatch"><span class="swatch-color" style="background:#133842"></span>#133842</span>
+              <span class="swatch"><span class="swatch-color" style="background:#1D4F5C"></span>#1D4F5C</span>
+              <span class="swatch"><span class="swatch-color" style="background:#0E7C7B"></span>#0E7C7B</span>
+              <span class="swatch"><span class="swatch-color" style="background:#D1603D"></span>#D1603D</span>
+              <span class="swatch"><span class="swatch-color" style="background:#F6F4EF"></span>#F6F4EF</span>
+            </div>
+          </div>
+          <nav class="selector-propuestas" aria-label="Cambiar entre propuestas">
+            <a href="panel-01-bordo-carmesi.html" class="pill-paleta">1. Bordó y Carmesí</a>
+            <a href="panel-02-pizarra-ambar.html" class="pill-paleta">2. Pizarra y Ámbar</a>
+            <a href="panel-03-petroleo-terracota.html" class="pill-paleta actual">3. Petróleo y Terracota</a>
+          </nav>
+        </section>
+
+        <!-- Encabezado de pantalla -->
+        <header class="encabezado">
+          <div>
+            <h1>Panel gerencial</h1>
+            <p>Cuánto cuesta la falta de caña, cuán cerca está la fábrica de parar y cuánta caña está en riesgo por la lluvia.</p>
+          </div>
+          <div>
+            <button type="button" class="btn btn-secundario">
+              <svg class="icono-sm" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0l-4-4m4 4l4-4M5 20h14" /></svg>
+              Exportar a PDF
+            </button>
+          </div>
+        </header>
+
+        <!-- Filtros -->
+        <form class="filtros" action="#">
+          <div class="campo">
+            <label for="f-campania">Campaña</label>
+            <select id="f-campania" class="campo-entrada" disabled>
+              <option>Zafra 2026 (base inventario 2025)</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="f-desde">Desde</label>
+            <input id="f-desde" type="date" class="campo-entrada" value="2026-06-01" />
+          </div>
+          <div class="campo">
+            <label for="f-hasta">Hasta</label>
+            <input id="f-hasta" type="date" class="campo-entrada" value="2026-11-26" />
+          </div>
+          <div class="campo">
+            <label for="f-finca">Finca</label>
+            <select id="f-finca" class="campo-entrada">
+              <option value="">Todas</option>
+              <option>El Quemado</option>
+              <option>Parapeti</option>
+              <option>Miraflores</option>
+              <option>San Antonio</option>
+              <option>Meguida</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="f-zona">Zona</label>
+            <select id="f-zona" class="campo-entrada">
+              <option value="">Todas</option>
+              <option>Lejana</option>
+              <option>Media</option>
+              <option>Cercana</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="f-cultivo">Tipo de cultivo</label>
+            <select id="f-cultivo" class="campo-entrada">
+              <option value="">Todos</option>
+              <option>Convencional</option>
+              <option>Orgánico</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primario">Aplicar filtros</button>
+        </form>
+
+        <p class="nota-rango">
+          Del 01/06/2026 al 26/11/2026. La finca filtra avance, riesgo, hectáreas sin piso y lluvia; la zona y el tipo de cultivo filtran avance, riesgo y hectáreas sin piso; las paradas y el patio son de toda la fábrica.
+        </p>
+
+        <!-- 4 KPI principales -->
+        <section class="grid-kpi-4" aria-label="Indicadores principales">
+          <article class="tarjeta-kpi">
+            <h2>Horas de parada por falta de caña</h2>
+            <p class="cifra kpi-valor">312,5 h</p>
+            <p class="kpi-detalle">Últimos 7 días: 11,5 h (semana anterior 7,0 h)</p>
+            <p class="kpi-var var-mal"><span aria-hidden="true">▲ </span>Subió 4,5 h contra la semana anterior</p>
+          </article>
+
+          <article class="tarjeta-kpi">
+            <h2>Costo estimado de las paradas</h2>
+            <p class="cifra kpi-valor">781.250 USD</p>
+            <p class="kpi-detalle">Rango 562.500 a 1.093.750 USD</p>
+            <p class="kpi-var var-mal"><span aria-hidden="true">▲ </span>Subió 11.250 USD contra la semana anterior</p>
+          </article>
+
+          <article class="tarjeta-kpi">
+            <h2>Avance de cosecha</h2>
+            <p class="cifra kpi-valor">68,4 %</p>
+            <div class="progreso-pista" role="progressbar" aria-label="Avance de cosecha" aria-valuemin="0" aria-valuemax="100" aria-valuenow="68.4">
+              <div class="progreso-relleno" style="width: 68.4%;"></div>
+            </div>
+            <p class="kpi-detalle">6.315 de 9.233 ha netas</p>
+            <p class="kpi-var var-bien"><span aria-hidden="true">▲ </span>Subió 3,8 puntos contra la semana anterior</p>
+          </article>
+
+          <article class="tarjeta-kpi">
+            <h2>Caña madura en riesgo</h2>
+            <p class="cifra kpi-valor">1.142 ha</p>
+            <p class="kpi-detalle">19 lotes con riesgo alto y ≥ 8 °Bx (valor del momento)</p>
+            <p class="kpi-var var-neutro">Sin comparación semanal</p>
+          </article>
+        </section>
+
+        <!-- 3 KPI de toneladas -->
+        <section class="grid-kpi-3" aria-label="Toneladas cosechadas">
+          <article class="tarjeta-kpi">
+            <h2>Toneladas cosechadas (total)</h2>
+            <p class="cifra kpi-valor-t">698.420 t</p>
+          </article>
+          <article class="tarjeta-kpi">
+            <h2>Toneladas cosechadas (convencional)</h2>
+            <p class="cifra kpi-valor-t">542.180 t</p>
+          </article>
+          <article class="tarjeta-kpi">
+            <h2>Toneladas cosechadas (orgánico)</h2>
+            <p class="cifra kpi-valor-t">156.240 t</p>
+          </article>
+        </section>
+
+        <!-- 6 Gráficos -->
+        <section class="grid-graficos" aria-label="Gráficos del panel gerencial">
+          <!-- 1. Horas de parada por falta de caña -->
+          <figure class="tarjeta-grafico">
+            <figcaption class="grafico-cabecera">
+              <div>
+                <p class="grafico-titulo">Horas de parada por falta de caña</p>
+                <p class="grafico-desc">Por semana y causa</p>
+              </div>
+            </figcaption>
+            <svg class="svg-grafico" viewBox="0 0 560 225" role="img" aria-label="Gráfico de horas de parada por semana">
+              <line x1="54" y1="192" x2="544" y2="192" stroke="var(--color-linea-fuerte)" stroke-width="1" />
+              <line x1="54" y1="148" x2="544" y2="148" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="104" x2="544" y2="104" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="60" x2="544" y2="60" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="16" x2="544" y2="16" stroke="var(--color-linea)" stroke-width="1" />
+
+              <text x="46" y="196" text-anchor="end" class="eje-texto">0 h</text>
+              <text x="46" y="152" text-anchor="end" class="eje-texto">40 h</text>
+              <text x="46" y="108" text-anchor="end" class="eje-texto">80 h</text>
+              <text x="46" y="64" text-anchor="end" class="eje-texto">120 h</text>
+              <text x="46" y="20" text-anchor="end" class="eje-texto">160 h</text>
+
+              <rect x="145" y="34" width="22" height="158" fill="var(--serie-1)" rx="3" />
+              <rect x="268" y="34" width="22" height="158" fill="var(--serie-1)" rx="3" />
+              <rect x="432" y="189" width="22" height="3" fill="var(--serie-1)" />
+              <rect x="432" y="184" width="22" height="5" fill="var(--serie-2)" rx="2" />
+              <rect x="473" y="180" width="22" height="12" fill="var(--serie-2)" rx="2" />
+              <rect x="514" y="188" width="22" height="4" fill="var(--serie-1)" />
+              <rect x="514" y="182" width="22" height="6" fill="var(--serie-2)" rx="2" />
+
+              <text x="74" y="212" text-anchor="middle" class="eje-texto">08/06</text>
+              <text x="156" y="212" text-anchor="middle" class="eje-texto">13/07</text>
+              <text x="279" y="212" text-anchor="middle" class="eje-texto">24/08</text>
+              <text x="402" y="212" text-anchor="middle" class="eje-texto">05/10</text>
+              <text x="484" y="212" text-anchor="middle" class="eje-texto">02/11</text>
+              <text x="525" y="212" text-anchor="middle" class="eje-texto">16/11</text>
+            </svg>
+            <ul class="leyenda">
+              <li><span class="leyenda-cuadro" style="background: var(--serie-1)"></span>Lluvia</li>
+              <li><span class="leyenda-cuadro" style="background: var(--serie-2)"></span>Lotes lejanos o corte lento</li>
+            </ul>
+          </figure>
+
+          <!-- 2. Disponibilidad de fábrica -->
+          <figure class="tarjeta-grafico">
+            <figcaption class="grafico-cabecera">
+              <div>
+                <p class="grafico-titulo">Disponibilidad de fábrica</p>
+                <p class="grafico-desc">Porcentaje del tiempo moliendo, por semana. En el rango: 92,4 %</p>
+              </div>
+            </figcaption>
+            <svg class="svg-grafico" viewBox="0 0 560 225" role="img" aria-label="Gráfico de disponibilidad de fábrica">
+              <line x1="54" y1="192" x2="544" y2="192" stroke="var(--color-linea-fuerte)" stroke-width="1" />
+              <line x1="54" y1="148" x2="544" y2="148" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="104" x2="544" y2="104" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="60" x2="544" y2="60" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="16" x2="544" y2="16" stroke="var(--color-linea)" stroke-width="1" />
+
+              <text x="46" y="196" text-anchor="end" class="eje-texto">0 %</text>
+              <text x="46" y="152" text-anchor="end" class="eje-texto">25 %</text>
+              <text x="46" y="108" text-anchor="end" class="eje-texto">50 %</text>
+              <text x="46" y="64" text-anchor="end" class="eje-texto">75 %</text>
+              <text x="46" y="20" text-anchor="end" class="eje-texto">100 %</text>
+
+              <polyline
+                fill="none"
+                stroke="var(--serie-1)"
+                stroke-width="2.2"
+                points="74,16 115,16 156,167 197,16 238,16 279,167 320,16 361,16 402,16 443,22 484,27 525,24"
+              />
+              <g fill="var(--serie-1)" stroke="var(--color-superficie)" stroke-width="2">
+                <circle cx="74" cy="16" r="4" />
+                <circle cx="115" cy="16" r="4" />
+                <circle cx="156" cy="167" r="4" />
+                <circle cx="197" cy="16" r="4" />
+                <circle cx="238" cy="16" r="4" />
+                <circle cx="279" cy="167" r="4" />
+                <circle cx="320" cy="16" r="4" />
+                <circle cx="361" cy="16" r="4" />
+                <circle cx="402" cy="16" r="4" />
+                <circle cx="443" cy="22" r="4" />
+                <circle cx="484" cy="27" r="4" />
+                <circle cx="525" cy="24" r="4" />
+              </g>
+
+              <text x="74" y="212" text-anchor="middle" class="eje-texto">08/06</text>
+              <text x="156" y="212" text-anchor="middle" class="eje-texto">13/07</text>
+              <text x="279" y="212" text-anchor="middle" class="eje-texto">24/08</text>
+              <text x="402" y="212" text-anchor="middle" class="eje-texto">05/10</text>
+              <text x="484" y="212" text-anchor="middle" class="eje-texto">02/11</text>
+              <text x="525" y="212" text-anchor="middle" class="eje-texto">16/11</text>
+            </svg>
+          </figure>
+
+          <!-- 3. Cobertura de patio -->
+          <figure class="tarjeta-grafico">
+            <figcaption class="grafico-cabecera">
+              <div>
+                <p class="grafico-titulo">Cobertura de patio</p>
+                <p class="grafico-desc">Tiempo con menos de 30 carros: 14,8 %</p>
+              </div>
+            </figcaption>
+            <svg class="svg-grafico" viewBox="0 0 560 225" role="img" aria-label="Gráfico de cobertura de patio en horas">
+              <line x1="54" y1="192" x2="544" y2="192" stroke="var(--color-linea-fuerte)" stroke-width="1" />
+              <line x1="54" y1="148" x2="544" y2="148" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="104" x2="544" y2="104" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="60" x2="544" y2="60" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="54" y1="16" x2="544" y2="16" stroke="var(--color-linea)" stroke-width="1" />
+
+              <text x="46" y="196" text-anchor="end" class="eje-texto">0 h</text>
+              <text x="46" y="152" text-anchor="end" class="eje-texto">1,5 h</text>
+              <text x="46" y="108" text-anchor="end" class="eje-texto">3 h</text>
+              <text x="46" y="64" text-anchor="end" class="eje-texto">4,5 h</text>
+              <text x="46" y="20" text-anchor="end" class="eje-texto">6 h</text>
+
+              <polyline
+                fill="none"
+                stroke="var(--serie-1)"
+                stroke-width="2.2"
+                points="58,84 98,84 98,68 138,68 138,98 178,98 178,134 218,134 218,122 258,122 258,76 298,76 298,58 338,58 338,92 378,92 378,130 418,130 418,86 458,86 458,64 498,64 498,82 540,82"
+              />
+
+              <line x1="54" y1="113" x2="544" y2="113" stroke="var(--color-critico)" stroke-width="1.6" />
+              <text x="540" y="107" text-anchor="end" style="font-size: 11px; font-weight: 600; fill: var(--color-critico-texto);">Umbral 2,7 h</text>
+
+              <text x="64" y="212" text-anchor="middle" class="eje-texto">02/11</text>
+              <text x="160" y="212" text-anchor="middle" class="eje-texto">07/11</text>
+              <text x="256" y="212" text-anchor="middle" class="eje-texto">12/11</text>
+              <text x="352" y="212" text-anchor="middle" class="eje-texto">17/11</text>
+              <text x="448" y="212" text-anchor="middle" class="eje-texto">22/11</text>
+              <text x="536" y="212" text-anchor="end" class="eje-texto">26/11</text>
+            </svg>
+          </figure>
+
+          <!-- 4. Avance de cosecha por zona -->
+          <figure class="tarjeta-grafico">
+            <figcaption class="grafico-cabecera">
+              <div>
+                <p class="grafico-titulo">Avance de cosecha por zona</p>
+                <p class="grafico-desc">Hectáreas netas terminadas sobre hectáreas netas en producción; estrategia lejana → media → cercana</p>
+              </div>
+            </figcaption>
+            <svg class="svg-grafico" viewBox="0 0 560 185" role="img" aria-label="Gráfico de avance de cosecha por zona">
+              <line x1="82" y1="16" x2="82" y2="152" stroke="var(--color-linea-fuerte)" stroke-width="1" />
+              <line x1="186" y1="16" x2="186" y2="152" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="291" y1="16" x2="291" y2="152" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="395" y1="16" x2="395" y2="152" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="500" y1="16" x2="500" y2="152" stroke="var(--color-linea)" stroke-width="1" />
+
+              <text x="72" y="42" text-anchor="end" class="eje-texto">Lejana</text>
+              <rect x="82" y="24" width="418" height="24" rx="4" fill="var(--color-track-barra)" />
+              <rect x="82" y="24" width="381" height="24" rx="4" fill="var(--serie-1)" />
+              <text x="508" y="41" class="eje-texto-fuerte">91,2 %</text>
+
+              <text x="72" y="86" text-anchor="end" class="eje-texto">Media</text>
+              <rect x="82" y="68" width="418" height="24" rx="4" fill="var(--color-track-barra)" />
+              <rect x="82" y="68" width="303" height="24" rx="4" fill="var(--serie-1)" />
+              <text x="508" y="85" class="eje-texto-fuerte">72,6 %</text>
+
+              <text x="72" y="130" text-anchor="end" class="eje-texto">Cercana</text>
+              <rect x="82" y="112" width="418" height="24" rx="4" fill="var(--color-track-barra)" />
+              <rect x="82" y="112" width="161" height="24" rx="4" fill="var(--serie-1)" />
+              <text x="508" y="129" class="eje-texto-fuerte">38,5 %</text>
+
+              <text x="82" y="172" text-anchor="middle" class="eje-texto">0 %</text>
+              <text x="186" y="172" text-anchor="middle" class="eje-texto">25 %</text>
+              <text x="291" y="172" text-anchor="middle" class="eje-texto">50 %</text>
+              <text x="395" y="172" text-anchor="middle" class="eje-texto">75 %</text>
+              <text x="500" y="172" text-anchor="middle" class="eje-texto">100 %</text>
+            </svg>
+          </figure>
+
+          <!-- 5. Hectáreas sin piso -->
+          <figure class="tarjeta-grafico">
+            <figcaption class="grafico-cabecera">
+              <div>
+                <p class="grafico-titulo">Hectáreas sin piso</p>
+                <p class="grafico-desc">Hectáreas netas inhabilitadas por día, según el drenaje</p>
+              </div>
+            </figcaption>
+            <svg class="svg-grafico" viewBox="0 0 560 225" role="img" aria-label="Gráfico de hectáreas sin piso por tipo de drenaje">
+              <line x1="64" y1="192" x2="544" y2="192" stroke="var(--color-linea-fuerte)" stroke-width="1" />
+              <line x1="64" y1="148" x2="544" y2="148" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="64" y1="104" x2="544" y2="104" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="64" y1="60" x2="544" y2="60" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="64" y1="16" x2="544" y2="16" stroke="var(--color-linea)" stroke-width="1" />
+
+              <text x="56" y="196" text-anchor="end" class="eje-texto">0 ha</text>
+              <text x="56" y="152" text-anchor="end" class="eje-texto">600 ha</text>
+              <text x="56" y="108" text-anchor="end" class="eje-texto">1.200 ha</text>
+              <text x="56" y="64" text-anchor="end" class="eje-texto">1.800 ha</text>
+              <text x="56" y="20" text-anchor="end" class="eje-texto">2.400 ha</text>
+
+              <polygon
+                fill="var(--serie-3)"
+                fill-opacity="0.16"
+                stroke="var(--serie-3)"
+                stroke-width="1.8"
+                points="64,192 128,192 128,44 176,44 176,126 202,126 202,192 252,192 252,32 302,32 302,118 326,118 326,192 434,192 434,122 478,122 478,158 518,158 518,192 544,192"
+              />
+              <polygon
+                fill="var(--serie-2)"
+                fill-opacity="0.16"
+                stroke="var(--serie-2)"
+                stroke-width="1.8"
+                points="64,192 128,192 128,74 176,74 176,144 202,144 202,192 252,192 252,66 302,66 302,138 326,138 326,192 434,192 434,142 478,142 478,168 518,168 518,192 544,192"
+              />
+              <polygon
+                fill="var(--serie-1)"
+                fill-opacity="0.18"
+                stroke="var(--serie-1)"
+                stroke-width="2"
+                points="64,192 128,192 128,124 176,124 176,166 202,166 202,192 252,192 252,116 302,116 302,160 326,160 326,192 434,192 434,162 478,162 478,178 518,178 518,192 544,192"
+              />
+
+              <text x="68" y="212" text-anchor="start" class="eje-texto">01 jun</text>
+              <text x="156" y="212" text-anchor="middle" class="eje-texto">15 jul</text>
+              <text x="278" y="212" text-anchor="middle" class="eje-texto">26 ago</text>
+              <text x="392" y="212" text-anchor="middle" class="eje-texto">12 oct</text>
+              <text x="540" y="212" text-anchor="end" class="eje-texto">26 nov</text>
+            </svg>
+            <ul class="leyenda">
+              <li><span class="leyenda-cuadro" style="background: var(--serie-1)"></span>Imperfectamente drenado</li>
+              <li><span class="leyenda-cuadro" style="background: var(--serie-2)"></span>Medianamente drenado</li>
+              <li><span class="leyenda-cuadro" style="background: var(--serie-3)"></span>Bien drenado</li>
+            </ul>
+          </figure>
+
+          <!-- 6. Lluvia por finca -->
+          <figure class="tarjeta-grafico">
+            <figcaption class="grafico-cabecera">
+              <div>
+                <p class="grafico-titulo">Lluvia por finca</p>
+                <p class="grafico-desc">Milímetros por día (promedio de sus pluviómetros) y días con alerta</p>
+              </div>
+              <label>
+                <span class="sr-only">Finca</span>
+                <select class="campo-entrada select-compacto">
+                  <option selected>Miraflores</option>
+                  <option>El Quemado</option>
+                  <option>Parapeti</option>
+                  <option>San Antonio</option>
+                  <option>Meguida</option>
+                </select>
+              </label>
+            </figcaption>
+            <svg class="svg-grafico" viewBox="0 0 560 225" role="img" aria-label="Gráfico de lluvia por finca con alertas">
+              <line x1="58" y1="192" x2="544" y2="192" stroke="var(--color-linea-fuerte)" stroke-width="1" />
+              <line x1="58" y1="148" x2="544" y2="148" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="58" y1="104" x2="544" y2="104" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="58" y1="60" x2="544" y2="60" stroke="var(--color-linea)" stroke-width="1" />
+              <line x1="58" y1="16" x2="544" y2="16" stroke="var(--color-linea)" stroke-width="1" />
+
+              <text x="50" y="196" text-anchor="end" class="eje-texto">0 mm</text>
+              <text x="50" y="152" text-anchor="end" class="eje-texto">20 mm</text>
+              <text x="50" y="108" text-anchor="end" class="eje-texto">40 mm</text>
+              <text x="50" y="64" text-anchor="end" class="eje-texto">60 mm</text>
+              <text x="50" y="20" text-anchor="end" class="eje-texto">80 mm</text>
+
+              <rect x="74" y="174" width="16" height="18" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="132" y="72" width="16" height="120" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="160" y="122" width="16" height="70" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="244" y="54" width="16" height="138" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="272" y="96" width="16" height="96" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="356" y="160" width="16" height="32" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="440" y="106" width="16" height="86" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="468" y="138" width="16" height="54" rx="3" fill="var(--serie-lluvia)" />
+              <rect x="524" y="178" width="16" height="14" rx="3" fill="var(--serie-lluvia)" />
+
+              <polygon points="140,60 134,70 146,70" fill="var(--color-critico)" />
+              <polygon points="252,42 246,52 258,52" fill="var(--color-critico)" />
+              <polygon points="280,84 274,94 286,94" fill="var(--color-critico)" />
+              <polygon points="448,94 442,104 454,104" fill="var(--color-critico)" />
+              <polygon points="504,174 498,184 510,184" fill="var(--color-critico)" />
+
+              <text x="82" y="212" text-anchor="middle" class="eje-texto">01 nov</text>
+              <text x="168" y="212" text-anchor="middle" class="eje-texto">06 nov</text>
+              <text x="252" y="212" text-anchor="middle" class="eje-texto">11 nov</text>
+              <text x="364" y="212" text-anchor="middle" class="eje-texto">16 nov</text>
+              <text x="448" y="212" text-anchor="middle" class="eje-texto">21 nov</text>
+              <text x="532" y="212" text-anchor="middle" class="eje-texto">26 nov</text>
+            </svg>
+            <ul class="leyenda">
+              <li><span class="leyenda-cuadro" style="background: var(--serie-lluvia)"></span>Lluvia registrada</li>
+              <li>
+                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                  <polygon points="5,1 1,9 9,9" fill="var(--color-critico)" />
+                </svg>
+                Día con alerta de lluvia
+              </li>
+            </ul>
+          </figure>
+        </section>
+
+        <p class="nota-pie">
+          Costo por hora de parada: 1.800 / 2.500 / 3.500 USD (escenarios bajo, central y alto). El detalle de cada indicador está en Informes.
+        </p>
+      </main>
+    </div>
+  </body>
+</html>

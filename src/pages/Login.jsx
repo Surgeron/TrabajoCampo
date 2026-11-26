@@ -24,10 +24,10 @@ function Canaveral() {
         const x = 12 + i * 19.5
         const alto = 150 + ((i * 37) % 90)
         return (
-          <g key={i} stroke="#b9d24a" strokeLinecap="round" opacity={0.35 + ((i * 13) % 10) / 20}>
+          <g key={i} stroke="#DC2B4A" strokeLinecap="round" opacity={0.4 + ((i * 13) % 10) / 20}>
             <path d={`M${x} 300 V${300 - alto}`} strokeWidth="3" />
-            <path d={`M${x} ${300 - alto * 0.55} l${i % 2 ? 14 : -14} -16`} strokeWidth="2" stroke="#e6eee8" />
-            <path d={`M${x} ${300 - alto * 0.8} l${i % 2 ? -12 : 12} -14`} strokeWidth="2" stroke="#e6eee8" />
+            <path d={`M${x} ${300 - alto * 0.55} l${i % 2 ? 14 : -14} -16`} strokeWidth="2" stroke="#F3E7E9" />
+            <path d={`M${x} ${300 - alto * 0.8} l${i % 2 ? -12 : 12} -14`} strokeWidth="2" stroke="#F3E7E9" />
           </g>
         )
       })}
@@ -35,7 +35,7 @@ function Canaveral() {
         <path
           key={`l${i}`}
           d={`M${30 + i * 27} ${20 + ((i * 41) % 60)} l-6 16`}
-          stroke="#86b6ef"
+          stroke="#F59E0B"
           strokeWidth="2"
           strokeLinecap="round"
           opacity="0.7"

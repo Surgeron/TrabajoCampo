@@ -61,7 +61,7 @@ export default function MapaLotes({ lotes, modo = 'riesgo', alElegir, alto = 'h-
           url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
         />
         <Encuadre lotes={conUbicacion} />
-        <CircleMarker center={INGENIO} radius={8} pathOptions={{ color: '#ffffff', fillColor: '#b9d24a', fillOpacity: 1, weight: 3 }}>
+        <CircleMarker center={INGENIO} radius={8} pathOptions={{ color: '#ffffff', fillColor: '#DC2B4A', fillOpacity: 1, weight: 3 }}>
           <Tooltip>Ingenio La Esperanza</Tooltip>
         </CircleMarker>
         {conUbicacion.map((l) => {

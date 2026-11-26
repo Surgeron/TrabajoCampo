@@ -1,74 +1,97 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
-/* Sistema visual: libreta de campo del ingenio.
-   Verde monte para la estructura, verde caña para las acciones, azul lluvia para
-   pronóstico y alertas, y los colores de estado solo con ícono + texto. */
+/* Sistema visual: Bordó y Carmesí (#14060A, #240911, #561325, #B81D38, #DC2B4A, #FAF7F5). */
 @theme {
   --font-sans: "Segoe UI Variable Text", "Segoe UI", system-ui, -apple-system, Roboto, "Helvetica Neue", sans-serif;
   --font-display: Bahnschrift, "DIN Alternate", "Roboto Condensed", "Arial Narrow", "Segoe UI", system-ui, sans-serif;
 
-  --color-papel: #f3f5f1;
-  --color-superficie: #fcfcfb;
-  --color-tinta: #16241b;
-  --color-tinta-2: #46554b;
-  --color-tenue: #6f7c73;
-  --color-linea: #dae1d9;
-  --color-linea-fuerte: #b9c4bb;
+  --color-papel: #FAF7F5;
+  --color-superficie: #FFFFFF;
+  --color-tinta: #14060A;
+  --color-tinta-2: #523A40;
+  --color-tenue: #7C646A;
+  --color-linea: #EAE0DF;
+  --color-linea-fuerte: #D2BFC2;
 
-  --color-monte: #123524;
-  --color-monte-2: #1c4a33;
-  --color-monte-texto: #e6eee8;
-  --color-cogollo: #b9d24a;
+  --color-monte: #14060A;
+  --color-monte-2: #561325;
+  --color-monte-texto: #F3E7E9;
+  --color-cogollo: #DC2B4A;
 
-  --color-cana: #2f7d4f;
-  --color-cana-oscuro: #22603b;
-  --color-cana-claro: #e2efe5;
+  --color-cana: #B81D38;
+  --color-cana-oscuro: #DC2B4A;
+  --color-cana-claro: #F9E6EA;
 
-  --color-lluvia: #2a78d6;
-  --color-lluvia-oscuro: #1c5cab;
-  --color-lluvia-claro: #e5effb;
+  --color-lluvia: #561325;
+  --color-lluvia-oscuro: #3A0C19;
+  --color-lluvia-claro: #F5E6E9;
 
-  --color-bien: #0ca30c;
-  --color-bien-texto: #006300;
-  --color-bien-claro: #e4f4e2;
-  --color-atencion: #fab219;
-  --color-atencion-texto: #7a5200;
-  --color-atencion-claro: #fdf3d8;
-  --color-serio: #ec835a;
-  --color-critico: #d03b3b;
-  --color-critico-texto: #a42727;
-  --color-critico-claro: #fbe7e6;
+  --color-bien: #15803D;
+  --color-bien-texto: #166534;
+  --color-bien-claro: #E8F5EC;
+  --color-atencion: #D97706;
+  --color-atencion-texto: #92400E;
+  --color-atencion-claro: #FEF3C7;
+  --color-serio: #D97706;
+  --color-critico: #DC2B4A;
+  --color-critico-texto: #9F1239;
+  --color-critico-claro: #FDE8EC;
 
   --breakpoint-tv: 112rem;
 }
 
+:root {
+  --serie-1: #B81D38;
+  --serie-2: #D97706;
+  --serie-3: #1E6F64;
+  --serie-4: #561325;
+  --serie-5: #DC2B4A;
+  --serie-lluvia: #561325;
+}
+
+.text-cana-oscuro {
+  color: #9F1239;
+}
+
 html.dark {
   color-scheme: dark;
-  --color-papel: #0d1510;
-  --color-superficie: #142019;
-  --color-tinta: #e7efe9;
-  --color-tinta-2: #b8c6bc;
-  --color-tenue: #8c9b91;
-  --color-linea: #25382c;
-  --color-linea-fuerte: #354e3f;
+  --color-papel: #14060A;
+  --color-superficie: #240911;
+  --color-tinta: #FAF7F5;
+  --color-tinta-2: #D8C4C8;
+  --color-tenue: #A58B91;
+  --color-linea: #3D1521;
+  --color-linea-fuerte: #561325;
 
-  --color-cana-claro: #173323;
-  --color-lluvia-claro: #152b44;
-  --color-bien-claro: #122d1a;
-  --color-bien-texto: #66db66;
-  --color-atencion-claro: #33270d;
-  --color-atencion-texto: #fbcf58;
-  --color-critico-claro: #391618;
-  --color-critico-texto: #f48686;
+  --color-cana: #DC2B4A;
+  --color-cana-oscuro: #B81D38;
+  --color-cana-claro: #3A101C;
+  --color-lluvia: #8C233F;
+  --color-lluvia-oscuro: #561325;
+  --color-lluvia-claro: #3A101C;
+
+  --color-bien-claro: #142F22;
+  --color-bien-texto: #6EE7B7;
+  --color-atencion-claro: #38260E;
+  --color-atencion-texto: #FCD34D;
+  --color-critico-claro: #451220;
+  --color-critico-texto: #FB7185;
+
+  --serie-1: #DC2B4A;
+  --serie-2: #F59E0B;
+  --serie-3: #2DD4BF;
+  --serie-4: #B81D38;
+  --serie-5: #FB7185;
+  --serie-lluvia: #B81D38;
 }
 
 html.dark .text-cana-oscuro {
-  color: #7ee2a3;
+  color: #FB7185;
 }
 
 html.dark .text-lluvia-oscuro {
-  color: #84baf8;
+  color: #F3B6C3;
 }
 
 @layer base {
@@ -89,7 +112,7 @@ html.dark .text-lluvia-oscuro {
     min-height: 100dvh;
   }
   :focus-visible {
-    outline: 3px solid var(--color-lluvia);
+    outline: 3px solid var(--color-cana);
     outline-offset: 2px;
   }
   h1,
@@ -132,8 +155,8 @@ html.dark .text-lluvia-oscuro {
   }
   .campo-entrada:focus {
     outline: none;
-    border-color: var(--color-lluvia);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-lluvia) 25%, transparent);
+    border-color: var(--color-cana);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-cana) 22%, transparent);
   }
   .campo-entrada[aria-invalid="true"] {
     border-color: var(--color-critico);
@@ -158,7 +181,7 @@ html.dark .text-lluvia-oscuro {
 /* Leaflet: tooltips con la tipografía de la aplicación */
 .leaflet-container {
   font-family: var(--font-sans);
-  background: #dfe6dc;
+  background: var(--color-papel);
 }
 
 @media print {
